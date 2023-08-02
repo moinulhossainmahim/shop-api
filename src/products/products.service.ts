@@ -1,22 +1,32 @@
 import { Injectable } from '@nestjs/common';
-import { Product } from './interfaces/product.interface';
 import { CreateProductDto } from './dto/create-product.dto';
 import { ProductStatus } from './enums/product-status.enum';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Product } from './product.entity';
+import { Repository } from 'typeorm';
 
 @Injectable()
 export class ProductsService {
-  private readonly products: Product[] = [];
+  constructor(
+    @InjectRepository(Product)
+    private productsRepository: Repository<Product>,
+  ) {}
 
-  createProduct(createProductDto: CreateProductDto) {
-    const product: Product = {
+  async createProduct(createProductDto: CreateProductDto): Promise<Product> {
+    const product = this.productsRepository.create({
       ...createProductDto,
       status: ProductStatus.DRAFT,
-    };
-    this.products.push(product);
+    });
+    await this.productsRepository.save(product);
     return product;
   }
 
-  getAllProducts(): Product[] {
-    return this.products;
+  async getAllProducts(): Promise<Product[]> {
+    try {
+      const products = await this.productsRepository.find();
+      return products;
+    } catch (error) {
+      console.log(error.message);
+    }
   }
 }
