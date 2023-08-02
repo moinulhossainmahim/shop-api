@@ -14,4 +14,10 @@ export class Product {
 
   @Column()
   status: ProductStatus;
+
+  @Column()
+  featuredImg: string;
+
+  @Column('simple-array')
+  galleryImg: string[];
 }

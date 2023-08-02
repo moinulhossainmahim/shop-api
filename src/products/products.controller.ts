@@ -1,15 +1,50 @@
-import { Body, Controller, Get, Post } from '@nestjs/common';
+import {
+  BadRequestException,
+  Body,
+  Controller,
+  Get,
+  Param,
+  Post,
+  Res,
+  UploadedFiles,
+  UseInterceptors,
+} from '@nestjs/common';
 import { ProductsService } from './products.service';
-import { CreateProductDto } from './dto/create-product.dto';
 import { Product } from './product.entity';
+import { FilesInterceptor } from '@nestjs/platform-express';
+import { diskStorage } from 'multer';
+import { Response } from 'express';
+import { CreateProductDto } from './dto/create-product.dto';
+import { editFilename, imageFileFilter } from './file-upload.utils';
 
 @Controller('products')
 export class ProductsController {
   constructor(private readonly productsServie: ProductsService) {}
 
   @Post()
-  createProduct(@Body() createPorductDto: CreateProductDto): Promise<Product> {
-    return this.productsServie.createProduct(createPorductDto);
+  @UseInterceptors(
+    FilesInterceptor('files', 10, {
+      storage: diskStorage({
+        destination: './uploads',
+        filename: editFilename,
+      }),
+      fileFilter: imageFileFilter,
+    }),
+  )
+  createProduct(
+    @Body() createProductDto: CreateProductDto,
+    @UploadedFiles() files: Array<Express.Multer.File>,
+  ): Promise<Product> {
+    if (!files) {
+      throw new BadRequestException('File is not an image');
+    } else {
+      return this.productsServie.createProduct(createProductDto, files);
+    }
+  }
+
+  @Get(`pictures/:filename`)
+  async getPicture(@Param('filename') filename: string, @Res() res: Response) {
+    res.sendFile(filename, { root: './uploads' });
   }
 
   @Get()

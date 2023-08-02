@@ -12,11 +12,21 @@ export class ProductsService {
     private productsRepository: Repository<Product>,
   ) {}
 
-  async createProduct(createProductDto: CreateProductDto): Promise<Product> {
+  async createProduct(
+    createProductDto: CreateProductDto,
+    files: Array<Express.Multer.File>,
+  ): Promise<Product> {
     const product = this.productsRepository.create({
       ...createProductDto,
       status: ProductStatus.DRAFT,
     });
+
+    product.featuredImg = `http://localhost:3000/products/pictures/${files[0].filename}`;
+    product.galleryImg = files
+      .slice(1)
+      .map(
+        (file) => `http://localhost:3000/products/pictures/${file.filename}`,
+      );
     await this.productsRepository.save(product);
     return product;
   }
