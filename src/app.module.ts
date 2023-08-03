@@ -6,6 +6,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { Product } from './products/product.entity';
 import { ProductsModule } from './products/products.module';
 import { MulterModule } from '@nestjs/platform-express';
+import { CategoriesModule } from './categories/categories.module';
 
 @Module({
   imports: [
@@ -24,6 +25,7 @@ import { MulterModule } from '@nestjs/platform-express';
       synchronize: true,
     }),
     ProductsModule,
+    CategoriesModule,
   ],
   controllers: [AppController],
   providers: [AppService],
