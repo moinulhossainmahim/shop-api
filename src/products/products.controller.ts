@@ -5,6 +5,7 @@ import {
   Delete,
   Get,
   Param,
+  Patch,
   Post,
   Res,
   UploadedFiles,
@@ -17,6 +18,7 @@ import { diskStorage } from 'multer';
 import { Response } from 'express';
 import { CreateProductDto } from './dto/create-product.dto';
 import { editFilename, imageFileFilter } from './file-upload.utils';
+import { UpdateProductDto } from './dto/update-product.dto';
 
 @Controller('products')
 export class ProductsController {
@@ -61,5 +63,27 @@ export class ProductsController {
   @Delete('/:id')
   deleteProductById(@Param('id') id: string): Promise<void> {
     return this.productsServie.deleteProductById(id);
+  }
+
+  @Patch('/:id')
+  @UseInterceptors(
+    FilesInterceptor('files', 10, {
+      storage: diskStorage({
+        destination: './uploads',
+        filename: editFilename,
+      }),
+      fileFilter: imageFileFilter,
+    }),
+  )
+  updateProduct(
+    @Body() updateProductDto: Partial<UpdateProductDto>,
+    @UploadedFiles() files: Array<Express.Multer.File>,
+    @Param('id') id: string,
+  ): Promise<Product> {
+    if (!files) {
+      throw new BadRequestException('File is not an image');
+    } else {
+      return this.productsServie.updateProduct(updateProductDto, files, id);
+    }
   }
 }
