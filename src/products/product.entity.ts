@@ -6,7 +6,7 @@ export class Product {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
-  @Column()
+  @Column({ unique: true })
   name: string;
 
   @Column()
@@ -20,4 +20,22 @@ export class Product {
 
   @Column('simple-array')
   galleryImg: string[];
+
+  @Column()
+  unit: string;
+
+  @Column()
+  price: string;
+
+  @Column()
+  salePrice: string;
+
+  @Column()
+  quantity: number;
+
+  @Column({ unique: true })
+  sku: string;
+
+  @Column()
+  slug: string;
 }

@@ -1,4 +1,8 @@
-import { Injectable } from '@nestjs/common';
+import {
+  BadRequestException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { CreateProductDto } from './dto/create-product.dto';
 import { ProductStatus } from './enums/product-status.enum';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -27,8 +31,16 @@ export class ProductsService {
       .map(
         (file) => `http://localhost:3000/products/pictures/${file.filename}`,
       );
-    await this.productsRepository.save(product);
-    return product;
+    try {
+      await this.productsRepository.save(product);
+      return product;
+    } catch (error) {
+      if (error.errno === 1062) {
+        throw new BadRequestException(`Product name and sku must be unique`);
+      } else {
+        console.log(error);
+      }
+    }
   }
 
   async getAllProducts(): Promise<Product[]> {
@@ -37,6 +49,13 @@ export class ProductsService {
       return products;
     } catch (error) {
       console.log(error.message);
+    }
+  }
+
+  async deleteProductById(id: string): Promise<void> {
+    const result = await this.productsRepository.delete(id);
+    if (result.affected === 0) {
+      throw new NotFoundException(`Product with ID ${id} not found`);
     }
   }
 }

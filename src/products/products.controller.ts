@@ -2,6 +2,7 @@ import {
   BadRequestException,
   Body,
   Controller,
+  Delete,
   Get,
   Param,
   Post,
@@ -50,5 +51,10 @@ export class ProductsController {
   @Get()
   getAllProducts(): Promise<Product[]> {
     return this.productsServie.getAllProducts();
+  }
+
+  @Delete('/:id')
+  deleteProductById(@Param('id') id: string): Promise<void> {
+    return this.productsServie.deleteProductById(id);
   }
 }
