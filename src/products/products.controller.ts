@@ -53,6 +53,11 @@ export class ProductsController {
     return this.productsServie.getAllProducts();
   }
 
+  @Get('/:id')
+  getProductById(@Param('id') id: string): Promise<Product> {
+    return this.productsServie.getProductById(id);
+  }
+
   @Delete('/:id')
   deleteProductById(@Param('id') id: string): Promise<void> {
     return this.productsServie.deleteProductById(id);
