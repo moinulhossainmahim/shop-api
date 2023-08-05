@@ -25,4 +25,6 @@ services:
     environment:
       MYSQL_ROOT_PASSWORD: 'Mahimmysql123'
       MYSQL_DATABASE: 'shop'
+    ports:
+      - '3308:3306'
     restart: unless-stopped  # Automatically restart the container unless explicitly stopped
