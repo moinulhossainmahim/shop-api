@@ -5,15 +5,12 @@ import { AppService } from './app.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { Product } from './products/product.entity';
 import { ProductsModule } from './products/products.module';
-import { MulterModule } from '@nestjs/platform-express';
 import { CategoriesModule } from './categories/categories.module';
+import { Category } from './categories/category.entity';
 
 @Module({
   imports: [
     ConfigModule.forRoot(),
-    MulterModule.register({
-      dest: './uploads',
-    }),
     TypeOrmModule.forRoot({
       type: 'mysql',
       host: process.env.DB_HOST,
@@ -21,8 +18,7 @@ import { CategoriesModule } from './categories/categories.module';
       username: process.env.DB_USERNAME,
       password: process.env.DB_PASSWORD,
       database: process.env.DB_NAME,
-      entities: [Product],
-      synchronize: true,
+      entities: [Product, Category],
     }),
     ProductsModule,
     CategoriesModule,

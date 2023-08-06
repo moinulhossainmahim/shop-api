@@ -3,7 +3,6 @@ import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
 @Entity()
 export class Category {
   @PrimaryGeneratedColumn('uuid')
-  @Column()
   id: string;
 
   @Column({ unique: true })
@@ -11,6 +10,9 @@ export class Category {
 
   @Column()
   slug: string;
+
+  @Column()
+  description: string;
 
   @Column()
   icon: string;
