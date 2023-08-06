@@ -1,0 +1,17 @@
+# Generate a new migration:
+	- npm run migration:generate ./src/migration/CreateProductsTable
+
+# Show migrations status:
+	- npm run migration:show
+
+# Run migrations:
+	- npm run migration:run
+
+# Revert/Rollback last migration:
+	- npm run migration:revert
+
+# Generate a new migration:
+	- npm run migration:generate ./src/migration/CreateProductsTable
+
+# Generate another new migration:
+npm run migration:generate ./src/migration/AddPriceColumnToProductsTable
