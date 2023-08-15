@@ -5,7 +5,7 @@ import {
 } from '@nestjs/common';
 import { CreateProductDto } from './dto/create-product.dto';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Product } from './product.entity';
+import { Product } from 'src/entity/Product';
 import { Repository } from 'typeorm';
 import { UpdateProductDto } from './dto/update-product.dto';
 

@@ -16,7 +16,6 @@ services:
       DB_NAME: shop  # Replace with your MySQL database name
     volumes:
       - .:/app  # Map the current directory on the host to the /app directory in the container
-    restart: unless-stopped  # Automatically restart the container unless explicitly stopped
 
   # MySQL service
   shop-api-db-dev:
@@ -27,4 +26,6 @@ services:
       MYSQL_DATABASE: 'shop'
     ports:
       - '3308:3306'
-    restart: unless-stopped  # Automatically restart the container unless explicitly stopped
+
+networks:
+  shop:

@@ -14,7 +14,7 @@ import { FileInterceptor } from '@nestjs/platform-express';
 import { diskStorage } from 'multer';
 import { editFilename, imageFileFilter } from 'src/products/file-upload.utils';
 import { CreateCategoryDto } from './dto/create-category.dto';
-import { Category } from './category.entity';
+import { Categories } from '../entity/Categories';
 import { Response } from 'express';
 
 @Controller('categories')
@@ -34,7 +34,7 @@ export class CategoriesController {
   createProduct(
     @Body() createCategoryDto: CreateCategoryDto,
     @UploadedFile() file: Express.Multer.File,
-  ): Promise<Category> {
+  ): Promise<Categories> {
     if (!file) {
       throw new BadRequestException('File is not an image');
     } else {

@@ -1,20 +1,20 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Category } from './category.entity';
+import { Categories } from '../entity/Categories';
 import { Repository } from 'typeorm';
 import { CreateCategoryDto } from './dto/create-category.dto';
 
 @Injectable()
 export class CategoriesService {
   constructor(
-    @InjectRepository(Category)
-    private categoriesRepository: Repository<Category>,
+    @InjectRepository(Categories)
+    private categoriesRepository: Repository<Categories>,
   ) {}
 
   async createCategory(
     createCategoryDto: CreateCategoryDto,
     file: Express.Multer.File,
-  ): Promise<Category> {
+  ): Promise<Categories> {
     const category = this.categoriesRepository.create({
       ...createCategoryDto,
     });
