@@ -7,11 +7,12 @@ import { Product } from './entity/Product';
 import { ProductsModule } from './products/products.module';
 import { CategoriesModule } from './categories/categories.module';
 import { TypeOrmConfig } from './utils/typeorm.config';
+import { Categories } from './entity/Categories';
 
 @Module({
   imports: [
     ConfigModule.forRoot(),
-    TypeOrmModule.forFeature([Product]),
+    TypeOrmModule.forFeature([Product, Categories]),
     TypeOrmConfig,
     ProductsModule,
     CategoriesModule,

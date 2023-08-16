@@ -22,7 +22,7 @@ import { UpdateProductDto } from './dto/update-product.dto';
 
 @Controller('products')
 export class ProductsController {
-  constructor(private readonly productsServie: ProductsService) {}
+  constructor(private readonly productsService: ProductsService) {}
 
   @Post()
   @UseInterceptors(
@@ -41,7 +41,7 @@ export class ProductsController {
     if (!files) {
       throw new BadRequestException('File is not an image');
     } else {
-      return this.productsServie.createProduct(createProductDto, files);
+      return this.productsService.createProduct(createProductDto, files);
     }
   }
 
@@ -52,17 +52,17 @@ export class ProductsController {
 
   @Get()
   getAllProducts(): Promise<Product[]> {
-    return this.productsServie.getAllProducts();
+    return this.productsService.getAllProducts();
   }
 
   @Get('/:id')
   getProductById(@Param('id') id: string): Promise<Product> {
-    return this.productsServie.getProductById(id);
+    return this.productsService.getProductById(id);
   }
 
   @Delete('/:id')
   deleteProductById(@Param('id') id: string): Promise<void> {
-    return this.productsServie.deleteProductById(id);
+    return this.productsService.deleteProductById(id);
   }
 
   @Patch('/:id')
@@ -83,7 +83,7 @@ export class ProductsController {
     if (!files) {
       throw new BadRequestException('File is not an image');
     } else {
-      return this.productsServie.updateProduct(updateProductDto, files, id);
+      return this.productsService.updateProduct(updateProductDto, files, id);
     }
   }
 }
