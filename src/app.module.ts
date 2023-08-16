@@ -8,14 +8,17 @@ import { ProductsModule } from './products/products.module';
 import { CategoriesModule } from './categories/categories.module';
 import { TypeOrmConfig } from './utils/typeorm.config';
 import { Categories } from './entity/Categories';
+import { SubCategoriesModule } from './sub-categories/sub-categories.module';
+import { SubCategory } from './entity/SubCategory';
 
 @Module({
   imports: [
     ConfigModule.forRoot(),
-    TypeOrmModule.forFeature([Product, Categories]),
+    TypeOrmModule.forFeature([Product, Categories, SubCategory]),
     TypeOrmConfig,
     ProductsModule,
     CategoriesModule,
+    SubCategoriesModule,
   ],
   controllers: [AppController],
   providers: [AppService],

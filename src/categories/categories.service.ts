@@ -31,7 +31,9 @@ export class CategoriesService {
 
   async getAllCategories(): Promise<Categories[]> {
     try {
-      const categories = await this.categoriesRepository.find();
+      const categories = await this.categoriesRepository.find({
+        relations: ['subCategories'],
+      });
       return categories;
     } catch (error) {
       console.log(error);
@@ -41,6 +43,7 @@ export class CategoriesService {
   async getCategoryById(id: string): Promise<Categories> {
     const category = await this.categoriesRepository.findOne({
       where: { id },
+      relations: ['subCategories'],
     });
     if (category) {
       return category;
