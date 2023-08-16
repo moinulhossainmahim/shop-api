@@ -1,0 +1,31 @@
+version: '3'
+
+services:
+  # NestJS service
+  shop-api-dev:
+    build:
+      context: .  # Use the current directory (where the Dockerfile is located)
+    ports:
+      - '3000:3000'  # Map the host port 3000 to container port 3000 for the NestJS API
+    environment:
+      NODE_ENV: development
+      DB_HOST: shop-api-db-dev  # Connect to the MySQL service using the service name
+      DB_PORT: 3306
+      DB_USER: root  # Replace with your MySQL username (root is default for MySQL)
+      DB_PASSWORD: Mahimmysql123  # Replace with your MySQL password
+      DB_NAME: shop  # Replace with your MySQL database name
+    volumes:
+      - .:/app  # Map the current directory on the host to the /app directory in the container
+
+  # MySQL service
+  shop-api-db-dev:
+    platform: linux/amd64
+    image: mysql:5.7
+    environment:
+      MYSQL_ROOT_PASSWORD: 'Mahimmysql123'
+      MYSQL_DATABASE: 'shop'
+    ports:
+      - '3308:3306'
+
+networks:
+  shop:
