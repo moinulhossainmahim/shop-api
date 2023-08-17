@@ -1,4 +1,5 @@
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
+import { SubCategory } from './SubCategory';
 
 @Entity()
 export class Categories {
@@ -16,4 +17,9 @@ export class Categories {
 
   @Column()
   icon: string;
+
+  @OneToMany(() => SubCategory, (subCategory) => subCategory.category, {
+    onDelete: 'SET NULL',
+  })
+  subCategories: SubCategory[];
 }
