@@ -10,6 +10,8 @@ import { TypeOrmConfig } from './utils/typeorm.config';
 import { Categories } from './entity/Categories';
 import { SubCategoriesModule } from './sub-categories/sub-categories.module';
 import { SubCategory } from './entity/SubCategory';
+import { AuthModule } from './auth/auth.module';
+import { UsersModule } from './users/users.module';
 
 @Module({
   imports: [
@@ -19,6 +21,8 @@ import { SubCategory } from './entity/SubCategory';
     ProductsModule,
     CategoriesModule,
     SubCategoriesModule,
+    AuthModule,
+    UsersModule,
   ],
   controllers: [AppController],
   providers: [AppService],
