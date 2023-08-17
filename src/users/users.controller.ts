@@ -44,7 +44,7 @@ export class UsersController {
     @Body() updateUserDto: Partial<UpdateUserDto>,
     @Param('id') id: string,
     @UploadedFile() file?: Express.Multer.File,
-  ): Promise<void> {
+  ): Promise<Partial<User>> {
     return this.usersService.updateUser(id, updateUserDto, file);
   }
 }

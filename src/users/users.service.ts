@@ -25,11 +25,15 @@ export class UsersService {
     return user;
   }
 
+  async findUserByEmail(email: string): Promise<User> {
+    return this.userRepository.findOne({ where: { email } });
+  }
+
   async updateUser(
     id: string,
     updateUserDto: Partial<UpdateUserDto>,
     file?: Express.Multer.File,
-  ): Promise<void> {
+  ): Promise<Partial<User>> {
     const user = await this.getUserById(id);
     if (file) {
       user.avatar = `http://localhost:3000/users/pictures/${file.filename}`;
@@ -37,6 +41,9 @@ export class UsersService {
     Object.assign(user, updateUserDto);
     try {
       await this.userRepository.save(user);
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+      const { password, salt, validatePassword, ...result } = user;
+      return result;
     } catch (error) {
       console.log(error);
     }
