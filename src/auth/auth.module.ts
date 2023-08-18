@@ -6,10 +6,13 @@ import { User } from 'src/entity/User';
 import { UsersModule } from 'src/users/users.module';
 import { JwtModule } from '@nestjs/jwt';
 import { AuthHelpers } from 'src/utils/auth-helpers';
+import { JwtStrategy } from './middleware/jwt.strategy';
+import { PassportModule } from '@nestjs/passport';
 
 @Module({
   imports: [
     TypeOrmModule.forFeature([User]),
+    PassportModule,
     UsersModule,
     JwtModule.register({
       secret: 'hello_user123',
@@ -17,6 +20,6 @@ import { AuthHelpers } from 'src/utils/auth-helpers';
     }),
   ],
   controllers: [AuthController],
-  providers: [AuthService, AuthHelpers],
+  providers: [AuthService, AuthHelpers, JwtStrategy],
 })
 export class AuthModule {}

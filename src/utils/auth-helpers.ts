@@ -1,23 +1,23 @@
 import { SignInCredentialsDto } from 'src/auth/dto/signin-credentials.dto';
 import { UsersService } from 'src/users/users.service';
+import { Injectable } from '@nestjs/common';
 import * as bcrypt from 'bcrypt';
-import { Inject, Injectable } from '@nestjs/common';
+import { User } from 'src/entity/User';
 
 @Injectable()
 export class AuthHelpers {
-  constructor(
-    @Inject(UsersService)
-    private readonly usersService: UsersService,
-  ) {}
+  constructor(private readonly usersService: UsersService) {}
 
-  public async validateUserPassword(
+  public async validateUser(
     signInCredentialsDto: SignInCredentialsDto,
-  ): Promise<{ name: string; userId: string } | null> {
+  ): Promise<Omit<User, 'password' | 'validatePassword'> | null> {
     const { email, password } = signInCredentialsDto;
-    const user = await this.usersService.findUserByEmail(email);
+    const foundUser = await this.usersService.findUserByEmail(email);
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    const { password: userPassword, validatePassword, ...user } = foundUser;
 
-    if (user && (await user.validatePassword(password))) {
-      return { name: user.fullName, userId: user.id };
+    if (foundUser && (await foundUser.validatePassword(password))) {
+      return user;
     } else {
       return null;
     }

@@ -9,7 +9,6 @@ import { User } from 'src/entity/User';
 import { Repository } from 'typeorm';
 import * as bcrypt from 'bcrypt';
 import { JwtService } from '@nestjs/jwt';
-
 import { SignUpCredentialsDto } from './dto/signup-credentials.dto';
 import { SignInCredentialsDto } from './dto/signin-credentials.dto';
 import { JwtPayload } from './interfaces/jwt-payload.interface';
@@ -49,14 +48,12 @@ export class AuthService {
   public async signIn(
     signInCredentialsDto: SignInCredentialsDto,
   ): Promise<{ accessToken: string }> {
-    const user = await this.authHelpers.validateUserPassword(
-      signInCredentialsDto,
-    );
+    const user = await this.authHelpers.validateUser(signInCredentialsDto);
 
     if (!user) {
       throw new UnauthorizedException('Invalid credentials');
     }
-    const payload: JwtPayload = user;
+    const payload: JwtPayload = { name: user.fullName, userId: user.id };
     const accessToken = this.jwtService.sign(payload);
     return { accessToken };
   }
