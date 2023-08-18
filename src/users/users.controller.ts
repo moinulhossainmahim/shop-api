@@ -15,8 +15,10 @@ import { diskStorage } from 'multer';
 import { Response } from 'express';
 import { editFilename, imageFileFilter } from 'src/products/file-upload.utils';
 import { UpdateUserDto } from './dto/update-user.dto';
+import { ApiTags } from '@nestjs/swagger';
 
 @Controller('users')
+@ApiTags('users')
 export class UsersController {
   constructor(private readonly usersService: UsersService) {}
 
