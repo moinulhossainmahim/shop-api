@@ -19,8 +19,10 @@ import { Response } from 'express';
 import { CreateProductDto } from './dto/create-product.dto';
 import { editFilename, imageFileFilter } from './file-upload.utils';
 import { UpdateProductDto } from './dto/update-product.dto';
+import { ApiTags } from '@nestjs/swagger';
 
 @Controller('products')
+@ApiTags('Products')
 export class ProductsController {
   constructor(private readonly productsService: ProductsService) {}
 
