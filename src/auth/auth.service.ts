@@ -9,18 +9,19 @@ import { User } from 'src/entity/User';
 import { Repository } from 'typeorm';
 import * as bcrypt from 'bcrypt';
 import { JwtService } from '@nestjs/jwt';
+
 import { SignUpCredentialsDto } from './dto/signup-credentials.dto';
 import { SignInCredentialsDto } from './dto/signin-credentials.dto';
-import { UsersService } from 'src/users/users.service';
-import { JwtPayload } from './interface/jwt-payload.interface';
+import { JwtPayload } from './interfaces/jwt-payload.interface';
+import { AuthHelpers } from 'src/utils/auth-helpers';
 
 @Injectable()
 export class AuthService {
   constructor(
     @InjectRepository(User)
     private userRepository: Repository<User>,
-    private readonly usersService: UsersService,
     private jwtService: JwtService,
+    private authHelpers: AuthHelpers,
   ) {}
 
   public async signUp(
@@ -31,7 +32,7 @@ export class AuthService {
     const user = new User();
     user.fullName = fullName;
     user.salt = await bcrypt.genSalt();
-    user.password = await this.hashPassword(password, user.salt);
+    user.password = await this.authHelpers.hashPassword(password, user.salt);
     user.email = email;
 
     try {
@@ -48,7 +49,9 @@ export class AuthService {
   public async signIn(
     signInCredentialsDto: SignInCredentialsDto,
   ): Promise<{ accessToken: string }> {
-    const user = await this.validateUserPassword(signInCredentialsDto);
+    const user = await this.authHelpers.validateUserPassword(
+      signInCredentialsDto,
+    );
 
     if (!user) {
       throw new UnauthorizedException('Invalid credentials');
@@ -56,22 +59,5 @@ export class AuthService {
     const payload: JwtPayload = user;
     const accessToken = this.jwtService.sign(payload);
     return { accessToken };
-  }
-
-  private async validateUserPassword(
-    signInCredentialsDto: SignInCredentialsDto,
-  ): Promise<{ name: string; userId: string } | null> {
-    const { email, password } = signInCredentialsDto;
-    const user = await this.usersService.findUserByEmail(email);
-
-    if (user && (await user.validatePassword(password))) {
-      return { name: user.fullName, userId: user.id };
-    } else {
-      return null;
-    }
-  }
-
-  private async hashPassword(password: string, salt: string): Promise<string> {
-    return await bcrypt.hash(password, salt);
   }
 }
