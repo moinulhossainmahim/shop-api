@@ -2,7 +2,7 @@ import {
   Injectable,
   CanActivate,
   ExecutionContext,
-  ForbiddenException,
+  UnauthorizedException,
 } from '@nestjs/common';
 import { Reflector } from '@nestjs/core';
 import { ROLE_KEY } from '../decorators/role.decorator';
@@ -22,8 +22,8 @@ export class RoleGuard implements CanActivate {
     }
     const { user } = context.switchToHttp().getRequest();
     if (requiredRole !== user.userType) {
-      throw new ForbiddenException(
-        'Only administrative users can access this resource',
+      throw new UnauthorizedException(
+        'Only administrative user can access this resource',
       );
     }
     return true;
