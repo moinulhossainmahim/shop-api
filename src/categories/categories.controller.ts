@@ -9,6 +9,7 @@ import {
   Post,
   Res,
   UploadedFile,
+  UseGuards,
   UseInterceptors,
 } from '@nestjs/common';
 import { CategoriesService } from './categories.service';
@@ -20,7 +21,13 @@ import { Categories } from '../entity/Categories';
 import { Response } from 'express';
 import { UpdateCategoryDto } from './dto/update-category.dto';
 import { ApiTags } from '@nestjs/swagger';
+import { JwtAuthGuard } from 'src/guards/jwt-auth.guard';
+import { RoleGuard } from 'src/guards/role.guard';
+import { UserRole } from 'src/decorators/role.decorator';
+import { Role } from 'src/users/enums/role.enum';
 
+@UseGuards(JwtAuthGuard, RoleGuard)
+@UserRole(Role.Admin)
 @Controller('categories')
 @ApiTags('Categories')
 export class CategoriesController {
