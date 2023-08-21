@@ -6,13 +6,20 @@ import {
   Param,
   Patch,
   Post,
+  UseGuards,
 } from '@nestjs/common';
 import { SubCategoriesService } from './sub-categories.service';
 import { SubCategory } from 'src/entity/SubCategory';
 import { SubCategoryDto } from './dto/sub-category.dto';
 import { ApiTags } from '@nestjs/swagger';
+import { UserRole } from 'src/decorators/role.decorator';
+import { JwtAuthGuard } from 'src/guards/jwt-auth.guard';
+import { RoleGuard } from 'src/guards/role.guard';
+import { Role } from 'src/users/enums/role.enum';
 
 @Controller('sub-categories')
+@UseGuards(JwtAuthGuard, RoleGuard)
+@UserRole(Role.Admin)
 @ApiTags('sub-categories')
 export class SubCategoriesController {
   constructor(private readonly subCategoriesService: SubCategoriesService) {}

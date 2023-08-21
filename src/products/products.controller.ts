@@ -9,6 +9,7 @@ import {
   Post,
   Res,
   UploadedFiles,
+  UseGuards,
   UseInterceptors,
 } from '@nestjs/common';
 import { ProductsService } from './products.service';
@@ -20,7 +21,13 @@ import { CreateProductDto } from './dto/create-product.dto';
 import { editFilename, imageFileFilter } from './file-upload.utils';
 import { UpdateProductDto } from './dto/update-product.dto';
 import { ApiTags } from '@nestjs/swagger';
+import { JwtAuthGuard } from 'src/guards/jwt-auth.guard';
+import { RoleGuard } from 'src/guards/role.guard';
+import { UserRole } from 'src/decorators/role.decorator';
+import { Role } from 'src/users/enums/role.enum';
 
+@UseGuards(JwtAuthGuard, RoleGuard)
+@UserRole(Role.Admin)
 @Controller('products')
 @ApiTags('Products')
 export class ProductsController {
