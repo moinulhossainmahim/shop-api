@@ -1,4 +1,4 @@
-export const enum AddressType {
+export enum AddressType {
   Shipping = 'shipping',
   Billing = 'billing',
 }
