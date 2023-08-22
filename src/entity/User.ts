@@ -1,7 +1,14 @@
 import { UserStatus } from 'src/users/enums/user-status.enum';
 import { Role } from 'src/users/enums/role.enum';
-import { Column, Entity, PrimaryGeneratedColumn, Unique } from 'typeorm';
+import {
+  Column,
+  Entity,
+  OneToMany,
+  PrimaryGeneratedColumn,
+  Unique,
+} from 'typeorm';
 import * as bcrypt from 'bcrypt';
+import { Address } from './Address';
 
 @Entity()
 @Unique(['email'])
@@ -30,6 +37,12 @@ export class User {
 
   @Column({ default: UserStatus.Active })
   status: UserStatus;
+
+  @OneToMany(() => Address, (address) => address.user, {
+    onDelete: 'SET NULL',
+    eager: true,
+  })
+  address: Address[];
 
   async validatePassword(password: string): Promise<boolean> {
     const hash = await bcrypt.hash(password, this.salt);
