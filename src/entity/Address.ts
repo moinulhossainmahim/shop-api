@@ -1,6 +1,6 @@
 import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
 import { User } from './User';
-import { AddressType } from 'src/Address/enums/address-type.enum';
+import { AddressType } from 'src/address/enums/address-type.enum';
 
 @Entity()
 export class Address {
