@@ -9,6 +9,7 @@ import {
 } from 'typeorm';
 import * as bcrypt from 'bcrypt';
 import { Address } from './Address';
+import { Wishlist } from './Wishlist';
 
 @Entity()
 @Unique(['email'])
@@ -43,6 +44,9 @@ export class User {
     eager: true,
   })
   address: Address[];
+
+  @OneToMany(() => Wishlist, (wishlist) => wishlist.user)
+  wishlist: Wishlist[];
 
   async validatePassword(password: string): Promise<boolean> {
     const hash = await bcrypt.hash(password, this.salt);

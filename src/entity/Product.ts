@@ -1,5 +1,6 @@
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
 import { ProductStatus } from 'src/products/enums/product-status.enum';
+import { Wishlist } from './Wishlist';
 
 @Entity()
 export class Product {
@@ -38,4 +39,7 @@ export class Product {
 
   @Column()
   slug: string;
+
+  @OneToMany(() => Wishlist, (wishlist) => wishlist.product)
+  wishlist: Wishlist[];
 }
