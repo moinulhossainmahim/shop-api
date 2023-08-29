@@ -45,11 +45,8 @@ export class User {
   })
   address: Address[];
 
-  @OneToMany(() => Wishlist, (wishlist) => wishlist.user, {
-    onDelete: 'SET NULL',
-    eager: true,
-  })
-  wishlists: Wishlist[];
+  @OneToMany(() => Wishlist, (wishlist) => wishlist.user)
+  wishlist: Wishlist[];
 
   async validatePassword(password: string): Promise<boolean> {
     const hash = await bcrypt.hash(password, this.salt);

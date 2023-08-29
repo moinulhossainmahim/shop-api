@@ -26,7 +26,11 @@ export class UsersService {
   }
 
   async findUserByEmail(email: string): Promise<User> {
-    return this.userRepository.findOne({ where: { email } });
+    const user = await this.userRepository.findOne({ where: { email } });
+    if (!user) {
+      throw new NotFoundException(`Invalid credentials`);
+    }
+    return user;
   }
 
   async updateUser(

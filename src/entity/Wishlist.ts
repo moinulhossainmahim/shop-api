@@ -1,14 +1,15 @@
-import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
+import { Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
 import { User } from './User';
+import { Product } from './Product';
 
 @Entity()
 export class Wishlist {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
-  @Column()
-  productId: string;
+  @ManyToOne(() => Product, (product) => product.wishlist)
+  product: Product;
 
-  @ManyToOne(() => User, (user) => user.wishlists)
+  @ManyToOne(() => User, (user) => user.wishlist)
   user: User;
 }
