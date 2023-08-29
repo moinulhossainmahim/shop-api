@@ -10,6 +10,7 @@ import {
 import * as bcrypt from 'bcrypt';
 import { Address } from './Address';
 import { Wishlist } from './Wishlist';
+import { Order } from './Order';
 
 @Entity()
 @Unique(['email'])
@@ -47,6 +48,9 @@ export class User {
 
   @OneToMany(() => Wishlist, (wishlist) => wishlist.user)
   wishlist: Wishlist[];
+
+  @OneToMany(() => Order, (order) => order.user)
+  orders: Order[];
 
   async validatePassword(password: string): Promise<boolean> {
     const hash = await bcrypt.hash(password, this.salt);
