@@ -27,10 +27,10 @@ export class Product {
   unit: string;
 
   @Column()
-  price: string;
+  price: number;
 
   @Column()
-  salePrice: string;
+  salePrice: number;
 
   @Column()
   quantity: number;

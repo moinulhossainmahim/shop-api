@@ -20,11 +20,11 @@ export class CreateProductDto {
 
   @IsNotEmpty()
   @IsNumberString()
-  price: string;
+  price: number;
 
   @IsNotEmpty()
   @IsNumberString()
-  salePrice: string;
+  salePrice: number;
 
   @IsNotEmpty()
   @IsNumberString()

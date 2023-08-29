@@ -7,6 +7,7 @@ import {
 } from 'typeorm';
 import { OrderItem } from './OrderItem';
 import { User } from './User';
+import { OrderStatus } from 'src/orders/enums/order-status.enum';
 
 @Entity()
 export class Order {
@@ -19,8 +20,8 @@ export class Order {
   @Column({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
   order_date: Date;
 
-  @Column()
-  order_status: string;
+  @Column({ default: OrderStatus.Pending })
+  order_status: OrderStatus;
 
   @Column({ type: 'decimal', precision: 10, scale: 2 })
   delivery_fee: number;
@@ -32,9 +33,6 @@ export class Order {
   tax: number;
 
   @Column()
-  payment_method: string;
-
-  @Column()
   payment_status: string;
 
   @Column('text')
@@ -43,7 +41,9 @@ export class Order {
   @Column('text')
   billing_address: string;
 
-  @OneToMany(() => OrderItem, (orderItem) => orderItem.order)
+  @OneToMany(() => OrderItem, (orderItem) => orderItem.order, {
+    onDelete: 'CASCADE',
+  })
   orderItems: OrderItem[];
 
   @ManyToOne(() => User, (user) => user.orders)
