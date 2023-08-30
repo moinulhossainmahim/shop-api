@@ -1,13 +1,11 @@
-import {
-  BadRequestException,
-  Injectable,
-  NotFoundException,
-} from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { CreateProductDto } from './dto/create-product.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Product } from 'src/entity/Product';
 import { Repository } from 'typeorm';
 import { UpdateProductDto } from './dto/update-product.dto';
+import { CreateApiResponse } from 'src/common/create-response.interface';
+import { ApiGetResponse } from 'src/common/get-response.interface';
 
 @Injectable()
 export class ProductsService {
@@ -19,7 +17,7 @@ export class ProductsService {
   async createProduct(
     createProductDto: CreateProductDto,
     files: Array<Express.Multer.File>,
-  ): Promise<Product> {
+  ): Promise<CreateApiResponse<Product>> {
     const product = this.productsRepository.create({
       ...createProductDto,
     });
@@ -32,29 +30,48 @@ export class ProductsService {
       );
     try {
       await this.productsRepository.save(product);
-      return product;
+      return {
+        success: true,
+        message: 'Product created successfully',
+        data: product,
+      };
     } catch (error) {
       if (error.errno === 1062) {
-        throw new BadRequestException(`Product name and sku must be unique`);
+        console.log('hello');
+        return {
+          error: true,
+          success: false,
+          message: 'product name and sku must be unique',
+          data: product,
+        };
       } else {
         console.log(error);
       }
     }
   }
 
-  async getAllProducts(): Promise<Product[]> {
+  async getAllProducts(): Promise<ApiGetResponse<Product>> {
     try {
       const products = await this.productsRepository.find();
-      return products;
+      return {
+        success: true,
+        message: 'Fetch products successfully',
+        data: products,
+        meta: {},
+      };
     } catch (error) {
       console.log(error.message);
     }
   }
 
-  async getProductById(id: string): Promise<Product> {
+  async getProductById(id: string): Promise<CreateApiResponse<Product>> {
     const product = await this.productsRepository.findOne({ where: { id } });
     if (product) {
-      return product;
+      return {
+        success: true,
+        message: 'Get product successfully',
+        data: product,
+      };
     } else {
       throw new NotFoundException(`Product with ID ${id} not found!`);
     }
@@ -65,7 +82,7 @@ export class ProductsService {
     files: Array<Express.Multer.File>,
     id: string,
   ): Promise<Product> {
-    const product = await this.getProductById(id);
+    const { data: product } = await this.getProductById(id);
     if (product) {
       if (files.length) {
         product.featuredImg = `http://localhost:3000/products/pictures/${files[0].filename}`;

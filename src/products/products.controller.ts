@@ -25,6 +25,9 @@ import { JwtAuthGuard } from 'src/guards/jwt-auth.guard';
 import { RoleGuard } from 'src/guards/role.guard';
 import { UserRole } from 'src/decorators/role.decorator';
 import { Role } from 'src/users/enums/role.enum';
+import { ResponseInterceptor } from 'src/interceptors/response.interceptor';
+import { CreateApiResponse } from 'src/common/create-response.interface';
+import { ApiGetResponse } from 'src/common/get-response.interface';
 
 @UseGuards(JwtAuthGuard, RoleGuard)
 @UserRole(Role.Admin)
@@ -42,11 +45,12 @@ export class ProductsController {
       }),
       fileFilter: imageFileFilter,
     }),
+    ResponseInterceptor,
   )
   createProduct(
     @Body() createProductDto: CreateProductDto,
     @UploadedFiles() files: Array<Express.Multer.File>,
-  ): Promise<Product> {
+  ): Promise<CreateApiResponse<Product>> {
     if (!files) {
       throw new BadRequestException('File is not an image');
     } else {
@@ -60,12 +64,14 @@ export class ProductsController {
   }
 
   @Get()
-  getAllProducts(): Promise<Product[]> {
+  @UseInterceptors(ResponseInterceptor)
+  getAllProducts(): Promise<ApiGetResponse<Product>> {
     return this.productsService.getAllProducts();
   }
 
   @Get('/:id')
-  getProductById(@Param('id') id: string): Promise<Product> {
+  @UseInterceptors(ResponseInterceptor)
+  getProductById(@Param('id') id: string): Promise<CreateApiResponse<Product>> {
     return this.productsService.getProductById(id);
   }
 
