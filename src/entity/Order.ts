@@ -42,7 +42,7 @@ export class Order {
   billing_address: string;
 
   @OneToMany(() => OrderItem, (orderItem) => orderItem.order, {
-    onDelete: 'CASCADE',
+    onDelete: 'SET NULL',
   })
   orderItems: OrderItem[];
 

@@ -5,6 +5,7 @@ import { Repository } from 'typeorm';
 import { CreateOrderDto } from './dto/create-order.dto';
 import { User } from 'src/entity/User';
 import { OrderItemsService } from 'src/order-items/order-items.service';
+import { generateTrackingNo } from 'src/utils/generate-tracking-no';
 
 @Injectable()
 export class OrdersService {
@@ -16,16 +17,10 @@ export class OrdersService {
 
   async createOrder(user: User, createOrderDto: CreateOrderDto) {
     const { orderItems, ...newCreateOrderDto } = createOrderDto;
-    const currentDate = new Date();
-    const year = currentDate.getFullYear();
-    const month = currentDate.getMonth() + 1;
-    const day = currentDate.getDate();
     const order = this.OrdersRepository.create({
       user,
       ...newCreateOrderDto,
-      tracking_no: `${year}${month}${day}${
-        (await this.OrdersRepository.count()) + 1
-      }`,
+      tracking_no: generateTrackingNo(),
     });
     try {
       const orderedItem = await this.OrdersRepository.save(order);
