@@ -8,6 +8,7 @@ import {
 import { OrderStatus } from '../enums/order-status.enum';
 import { PaymentStatus } from '../enums/payment-status.enum';
 import { Product } from 'src/entity/Product';
+import { PaymentMethod } from '../enums/payment-method.enum';
 
 export class CreateOrderDto {
   @IsOptional()
@@ -30,6 +31,10 @@ export class CreateOrderDto {
   @IsNotEmpty()
   @IsString()
   shipping_address: string;
+
+  @IsNotEmpty()
+  @IsEnum(PaymentMethod)
+  payment_method: PaymentMethod;
 
   @IsNotEmpty()
   @IsString()

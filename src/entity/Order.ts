@@ -8,6 +8,7 @@ import {
 import { OrderItem } from './OrderItem';
 import { User } from './User';
 import { OrderStatus } from 'src/orders/enums/order-status.enum';
+import { PaymentMethod } from 'src/orders/enums/payment-method.enum';
 
 @Entity()
 export class Order {
@@ -34,6 +35,9 @@ export class Order {
 
   @Column()
   payment_status: string;
+
+  @Column()
+  payment_method: PaymentMethod;
 
   @Column('text')
   shipping_address: string;
