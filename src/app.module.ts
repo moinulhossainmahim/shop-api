@@ -10,6 +10,8 @@ import { AuthModule } from './auth/auth.module';
 import { UsersModule } from './users/users.module';
 import { ShippingModule } from './address/address.module';
 import { WishlistsModule } from './wishlists/wishlists.module';
+import { OrdersModule } from './orders/orders.module';
+import { OrderItemsModule } from './order-items/order-items.module';
 
 @Module({
   imports: [
@@ -22,6 +24,8 @@ import { WishlistsModule } from './wishlists/wishlists.module';
     UsersModule,
     ShippingModule,
     WishlistsModule,
+    OrdersModule,
+    OrderItemsModule,
   ],
   controllers: [AppController],
   providers: [AppService],
