@@ -26,10 +26,10 @@ export class Product {
   @Column()
   unit: string;
 
-  @Column()
+  @Column({ type: 'decimal', precision: 10, scale: 2 })
   price: number;
 
-  @Column()
+  @Column({ type: 'decimal', precision: 10, scale: 2 })
   salePrice: number;
 
   @Column()

@@ -22,7 +22,8 @@ export class SubCategory {
   slug: string;
 
   @ManyToOne(() => Categories, (category) => category.subCategories, {
-    cascade: true,
+    onDelete: 'SET NULL',
+    onUpdate: 'CASCADE',
   })
   @JoinColumn({ name: 'categoryID' })
   category: Categories;

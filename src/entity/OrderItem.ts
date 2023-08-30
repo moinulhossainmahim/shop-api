@@ -22,6 +22,9 @@ export class OrderItem {
   @Column({ type: 'decimal', precision: 10, scale: 2 })
   unit_price: number;
 
-  @ManyToOne(() => Order, (order) => order.orderItems)
+  @ManyToOne(() => Order, (order) => order.orderItems, {
+    onDelete: 'CASCADE',
+    onUpdate: 'CASCADE',
+  })
   order: Order;
 }

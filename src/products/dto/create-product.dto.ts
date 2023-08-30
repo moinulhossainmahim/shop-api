@@ -1,4 +1,4 @@
-import { IsEnum, IsNotEmpty, IsNumberString, IsString } from 'class-validator';
+import { IsEnum, IsNotEmpty, IsString } from 'class-validator';
 import { ProductStatus } from '../enums/product-status.enum';
 
 export class CreateProductDto {
@@ -19,15 +19,12 @@ export class CreateProductDto {
   unit: string;
 
   @IsNotEmpty()
-  @IsNumberString()
   price: number;
 
   @IsNotEmpty()
-  @IsNumberString()
   salePrice: number;
 
   @IsNotEmpty()
-  @IsNumberString()
   quantity: number;
 
   @IsNotEmpty()

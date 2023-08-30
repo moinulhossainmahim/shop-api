@@ -41,9 +41,7 @@ export class Order {
   @Column('text')
   billing_address: string;
 
-  @OneToMany(() => OrderItem, (orderItem) => orderItem.order, {
-    onDelete: 'SET NULL',
-  })
+  @OneToMany(() => OrderItem, (orderItem) => orderItem.order)
   orderItems: OrderItem[];
 
   @ManyToOne(() => User, (user) => user.orders)

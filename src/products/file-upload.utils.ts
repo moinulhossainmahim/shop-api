@@ -7,7 +7,7 @@ export const editFilename = (req, file, cb) => {
 };
 
 export const imageFileFilter = (req, file, cb) => {
-  if (!file.originalname.match(/\.(jpg|jpeg|png)$/)) {
+  if (!file.originalname.match(/\.(jpg|jpeg|png|webp)$/)) {
     return cb(null, false);
   }
   cb(null, true);

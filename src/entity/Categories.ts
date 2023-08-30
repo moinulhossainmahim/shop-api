@@ -18,8 +18,6 @@ export class Categories {
   @Column()
   icon: string;
 
-  @OneToMany(() => SubCategory, (subCategory) => subCategory.category, {
-    onDelete: 'SET NULL',
-  })
+  @OneToMany(() => SubCategory, (subCategory) => subCategory.category)
   subCategories: SubCategory[];
 }
