@@ -30,6 +30,7 @@ export class ProductsService {
       );
     try {
       await this.productsRepository.save(product);
+      console.log('product saved');
       return {
         success: true,
         message: 'Product created successfully',
@@ -37,7 +38,6 @@ export class ProductsService {
       };
     } catch (error) {
       if (error.errno === 1062) {
-        console.log('hello');
         return {
           error: true,
           success: false,
