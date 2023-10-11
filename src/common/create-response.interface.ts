@@ -1,6 +1,6 @@
 export interface CreateApiResponse<T = any> {
   success: boolean;
-  data: T;
+  data?: T;
   message: string;
   error?: boolean;
 }

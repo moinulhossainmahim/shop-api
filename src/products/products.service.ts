@@ -1,4 +1,8 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import {
+  BadRequestException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { CreateProductDto } from './dto/create-product.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Product } from 'src/entity/Product';
@@ -38,12 +42,7 @@ export class ProductsService {
       };
     } catch (error) {
       if (error.errno === 1062) {
-        return {
-          error: true,
-          success: false,
-          message: 'product name and sku must be unique',
-          data: product,
-        };
+        throw new BadRequestException('Prodcut name and sku must be unique');
       } else {
         console.log(error);
       }

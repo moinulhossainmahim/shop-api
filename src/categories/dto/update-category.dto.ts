@@ -1,12 +1,12 @@
-import { IsNotEmpty } from 'class-validator';
+import { IsString } from 'class-validator';
 
 export class UpdateCategoryDto {
-  @IsNotEmpty()
+  @IsString()
   name: string;
 
-  @IsNotEmpty()
+  @IsString()
   description: string;
 
-  @IsNotEmpty()
+  @IsString()
   slug: string;
 }
