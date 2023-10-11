@@ -7,6 +7,7 @@ import {
   Patch,
   Post,
   UseGuards,
+  UseInterceptors,
 } from '@nestjs/common';
 import { JwtAuthGuard } from 'src/guards/jwt-auth.guard';
 import { AddressService } from './address.service';
@@ -14,8 +15,13 @@ import { CreateAddressDto } from './dto/create-address.dto';
 import { GetUser } from 'src/decorators/get-user.decorator';
 import { User } from 'src/entity/User';
 import { Address } from 'src/entity/Address';
+import { ResponseInterceptor } from 'src/interceptors/response.interceptor';
+import { CreateApiResponse } from 'src/common/create-response.interface';
+import { ApiGetResponse } from 'src/common/get-response.interface';
+import { ApiDeleteResponse } from 'src/common/delete-response.interface';
 
 @UseGuards(JwtAuthGuard)
+@UseInterceptors(ResponseInterceptor)
 @Controller('address')
 export class AddressController {
   constructor(private readonly addressService: AddressService) {}
@@ -24,12 +30,12 @@ export class AddressController {
   async createAddress(
     @Body() createAddressDto: CreateAddressDto,
     @GetUser() user: User,
-  ): Promise<Address> {
+  ): Promise<CreateApiResponse<Address>> {
     return this.addressService.createAddress(createAddressDto, user);
   }
 
   @Get()
-  async getAllAddress(@GetUser() user: User): Promise<Address[]> {
+  async getAllAddress(@GetUser() user: User): Promise<ApiGetResponse<Address>> {
     return this.addressService.getAllAddress(user);
   }
 
@@ -38,7 +44,7 @@ export class AddressController {
     @GetUser() user: User,
     @Body() updateAddressDto: Partial<CreateAddressDto>,
     @Param('id') id: string,
-  ): Promise<Address> {
+  ): Promise<CreateApiResponse<Address>> {
     return this.addressService.updateAddress(user, updateAddressDto, id);
   }
 
@@ -46,7 +52,7 @@ export class AddressController {
   async deleteAddress(
     @GetUser() user: User,
     @Param('id') id: string,
-  ): Promise<void> {
+  ): Promise<ApiDeleteResponse> {
     return this.addressService.deleteAddress(user, id);
   }
 }
