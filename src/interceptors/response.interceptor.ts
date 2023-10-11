@@ -5,7 +5,7 @@ import {
   NestInterceptor,
 } from '@nestjs/common';
 import { Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { catchError, map } from 'rxjs/operators';
 
 @Injectable()
 export class ResponseInterceptor implements NestInterceptor {
@@ -24,6 +24,13 @@ export class ResponseInterceptor implements NestInterceptor {
           data: data.data,
           meta: data.meta,
           message: data.message,
+        };
+      }),
+      catchError(async (error) => {
+        return {
+          success: false,
+          data: [],
+          message: error.response.message,
         };
       }),
     );

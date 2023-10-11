@@ -7,6 +7,7 @@ import {
   Param,
   Patch,
   Post,
+  Req,
   Res,
   UploadedFiles,
   UseGuards,
@@ -28,6 +29,8 @@ import { Role } from 'src/users/enums/role.enum';
 import { ResponseInterceptor } from 'src/interceptors/response.interceptor';
 import { CreateApiResponse } from 'src/common/create-response.interface';
 import { ApiGetResponse } from 'src/common/get-response.interface';
+import { ApiDeleteResponse } from 'src/common/delete-response.interface';
+import { UNSUPPORTED_FILE } from 'src/utils/constants';
 
 @UseGuards(JwtAuthGuard, RoleGuard)
 @UserRole(Role.Admin)
@@ -50,9 +53,12 @@ export class ProductsController {
   createProduct(
     @Body() createProductDto: CreateProductDto,
     @UploadedFiles() files: Array<Express.Multer.File>,
+    @Req() req,
   ): Promise<CreateApiResponse<Product>> {
-    if (!files) {
-      throw new BadRequestException('File is not an image');
+    if (req[UNSUPPORTED_FILE]) {
+      throw new BadRequestException(
+        `Accepted file extensions are: jpg, jpeg, webp, png`,
+      );
     } else {
       return this.productsService.createProduct(createProductDto, files);
     }
@@ -76,7 +82,8 @@ export class ProductsController {
   }
 
   @Delete('/:id')
-  deleteProductById(@Param('id') id: string): Promise<void> {
+  @UseInterceptors(ResponseInterceptor)
+  deleteProductById(@Param('id') id: string): Promise<ApiDeleteResponse> {
     return this.productsService.deleteProductById(id);
   }
 
@@ -89,16 +96,20 @@ export class ProductsController {
       }),
       fileFilter: imageFileFilter,
     }),
+    ResponseInterceptor,
   )
   updateProduct(
     @Body() updateProductDto: Partial<UpdateProductDto>,
-    @UploadedFiles() files: Array<Express.Multer.File>,
     @Param('id') id: string,
-  ): Promise<Product> {
-    if (!files) {
-      throw new BadRequestException('File is not an image');
+    @Req() req,
+    @UploadedFiles() files?: Array<Express.Multer.File>,
+  ): Promise<CreateApiResponse<Product>> {
+    if (req[UNSUPPORTED_FILE]) {
+      throw new BadRequestException(
+        `Accepted file extensions are: jpg, jpeg, webp, png`,
+      );
     } else {
-      return this.productsService.updateProduct(updateProductDto, files, id);
+      return this.productsService.updateProduct(updateProductDto, id, files);
     }
   }
 }
