@@ -6,6 +6,7 @@ import {
   Patch,
   Res,
   UploadedFile,
+  UseGuards,
   UseInterceptors,
 } from '@nestjs/common';
 import { UsersService } from './users.service';
@@ -19,6 +20,8 @@ import { ApiTags } from '@nestjs/swagger';
 import { ResponseInterceptor } from 'src/interceptors/response.interceptor';
 import { ApiGetResponse } from 'src/common/get-response.interface';
 import { CreateApiResponse } from 'src/common/create-response.interface';
+import { GetUser } from 'src/decorators/get-user.decorator';
+import { JwtAuthGuard } from 'src/guards/jwt-auth.guard';
 
 @Controller('users')
 @ApiTags('users')
@@ -34,6 +37,17 @@ export class UsersController {
   @Get(`pictures/:filename`)
   async getPicture(@Param('filename') filename: string, @Res() res: Response) {
     res.sendFile(filename, { root: './uploads' });
+  }
+
+  @UseGuards(JwtAuthGuard)
+  @UseInterceptors(ResponseInterceptor)
+  @Get('/profile')
+  getProfile(@GetUser() user: User): CreateApiResponse<Partial<User>> {
+    return {
+      message: 'Fetched user successfully',
+      data: user,
+      success: true,
+    };
   }
 
   @Patch('/:id')
