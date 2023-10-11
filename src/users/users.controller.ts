@@ -16,6 +16,9 @@ import { Response } from 'express';
 import { editFilename, imageFileFilter } from 'src/products/file-upload.utils';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { ApiTags } from '@nestjs/swagger';
+import { ResponseInterceptor } from 'src/interceptors/response.interceptor';
+import { ApiGetResponse } from 'src/common/get-response.interface';
+import { CreateApiResponse } from 'src/common/create-response.interface';
 
 @Controller('users')
 @ApiTags('users')
@@ -23,7 +26,8 @@ export class UsersController {
   constructor(private readonly usersService: UsersService) {}
 
   @Get()
-  async getAllUsers(): Promise<User[]> {
+  @UseInterceptors(ResponseInterceptor)
+  async getAllUsers(): Promise<ApiGetResponse<User>> {
     return this.usersService.getAllUsers();
   }
 
@@ -41,12 +45,13 @@ export class UsersController {
       }),
       fileFilter: imageFileFilter,
     }),
+    ResponseInterceptor,
   )
   updateCategory(
     @Body() updateUserDto: Partial<UpdateUserDto>,
     @Param('id') id: string,
     @UploadedFile() file?: Express.Multer.File,
-  ): Promise<Partial<User>> {
+  ): Promise<CreateApiResponse<Partial<User>>> {
     return this.usersService.updateUser(id, updateUserDto, file);
   }
 }
