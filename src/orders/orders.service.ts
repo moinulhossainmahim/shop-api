@@ -6,6 +6,7 @@ import { CreateOrderDto } from './dto/create-order.dto';
 import { User } from 'src/entity/User';
 import { OrderItemsService } from 'src/order-items/order-items.service';
 import { generateTrackingNo } from 'src/utils/generate-tracking-no';
+import { ApiGetResponse } from 'src/common/get-response.interface';
 
 @Injectable()
 export class OrdersService {
@@ -37,12 +38,24 @@ export class OrdersService {
     }
   }
 
-  async getAllOrdersOfAUser(user: User): Promise<Order[]> {
+  async getAllOrdersOfAUser(user: User): Promise<ApiGetResponse<Order>> {
     const orders = await this.OrdersRepository.find({
       where: { user: { id: user.id } },
       relations: ['orderItems'],
     });
-    return orders;
+    return {
+      success: true,
+      data: orders,
+      meta: {
+        page: 1,
+        take: 0,
+        itemCount: 0,
+        pageCount: 0,
+        hasPreviousPage: false,
+        hasNextPage: true,
+      },
+      message: 'Orders fetch successfully',
+    };
   }
 
   async deleteOrderById(id: string) {
