@@ -1,4 +1,8 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import {
+  BadRequestException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { CreateProductDto } from './dto/create-product.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Product } from 'src/entity/Product';
@@ -6,6 +10,7 @@ import { Repository } from 'typeorm';
 import { UpdateProductDto } from './dto/update-product.dto';
 import { CreateApiResponse } from 'src/common/create-response.interface';
 import { ApiGetResponse } from 'src/common/get-response.interface';
+import { ApiDeleteResponse } from 'src/common/delete-response.interface';
 
 @Injectable()
 export class ProductsService {
@@ -30,7 +35,6 @@ export class ProductsService {
       );
     try {
       await this.productsRepository.save(product);
-      console.log('product saved');
       return {
         success: true,
         message: 'Product created successfully',
@@ -38,12 +42,7 @@ export class ProductsService {
       };
     } catch (error) {
       if (error.errno === 1062) {
-        return {
-          error: true,
-          success: false,
-          message: 'product name and sku must be unique',
-          data: product,
-        };
+        throw new BadRequestException('Prodcut name and sku must be unique');
       } else {
         console.log(error);
       }
@@ -79,9 +78,9 @@ export class ProductsService {
 
   async updateProduct(
     createProductDto: Partial<UpdateProductDto>,
-    files: Array<Express.Multer.File>,
     id: string,
-  ): Promise<Product> {
+    files?: Array<Express.Multer.File>,
+  ): Promise<CreateApiResponse<Product>> {
     const { data: product } = await this.getProductById(id);
     if (product) {
       if (files.length) {
@@ -96,17 +95,26 @@ export class ProductsService {
       Object.assign(product, createProductDto);
       try {
         await this.productsRepository.save(product);
-        return product;
+        return {
+          message: 'Product updated successfully',
+          success: true,
+          data: product,
+        };
       } catch (error) {
         console.log(error);
       }
     }
   }
 
-  async deleteProductById(id: string): Promise<void> {
+  async deleteProductById(id: string): Promise<ApiDeleteResponse> {
     const result = await this.productsRepository.delete(id);
     if (result.affected === 0) {
       throw new NotFoundException(`Product with ID ${id} not found`);
     }
+    return {
+      data: [],
+      success: true,
+      message: 'Successfully deleted the product',
+    };
   }
 }

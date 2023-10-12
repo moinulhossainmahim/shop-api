@@ -8,6 +8,9 @@ import { Address } from 'src/entity/Address';
 import { User } from 'src/entity/User';
 import { Repository } from 'typeorm';
 import { CreateAddressDto } from './dto/create-address.dto';
+import { CreateApiResponse } from 'src/common/create-response.interface';
+import { ApiGetResponse } from 'src/common/get-response.interface';
+import { ApiDeleteResponse } from 'src/common/delete-response.interface';
 
 @Injectable()
 export class AddressService {
@@ -40,7 +43,7 @@ export class AddressService {
   async createAddress(
     createAddressDto: CreateAddressDto,
     user: User,
-  ): Promise<Address> {
+  ): Promise<CreateApiResponse<Address>> {
     const address = this.addressRepository.create({
       ...createAddressDto,
       user,
@@ -48,36 +51,57 @@ export class AddressService {
     try {
       await this.addressRepository.save(address);
       delete address.user;
-      return address;
+      return {
+        message: 'Address added successfully',
+        success: true,
+        data: address,
+      };
     } catch (error) {
       console.log(error);
     }
   }
 
-  async getAllAddress(user: User): Promise<Address[]> {
+  async getAllAddress(user: User): Promise<ApiGetResponse<Address>> {
     const query = this.addressRepository.createQueryBuilder('address');
     query.where('address.userId = :userId', { userId: user.id });
     const allAddress = await query.getMany();
-    return allAddress;
+    return {
+      message: 'Fetched addresses successfully',
+      data: allAddress,
+      success: true,
+      meta: {},
+    };
   }
 
   async updateAddress(
     user: User,
     updateAddressDto: Partial<CreateAddressDto>,
     id: string,
-  ): Promise<Address> {
+  ): Promise<CreateApiResponse<Address>> {
     const address = await this.getAddressById(user, id);
     Object.assign(address, updateAddressDto);
     try {
       await this.addressRepository.save(address);
-      return address;
+      return {
+        message: 'Address updated successfully',
+        success: true,
+        data: address,
+      };
     } catch (error) {
       console.log(error);
     }
   }
 
-  async deleteAddress(user: User, id: string): Promise<void> {
+  async deleteAddress(user: User, id: string): Promise<ApiDeleteResponse> {
     const address = await this.getAddressById(user, id);
-    await this.addressRepository.delete(address.id);
+    const result = await this.addressRepository.delete(address.id);
+    if (result.affected === 0) {
+      throw new NotFoundException(`Category with ID ${id} is not found`);
+    }
+    return {
+      success: true,
+      data: [],
+      message: 'Address deleted successfully',
+    };
   }
 }

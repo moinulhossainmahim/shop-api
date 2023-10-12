@@ -13,6 +13,7 @@ import { SignUpCredentialsDto } from './dto/signup-credentials.dto';
 import { SignInCredentialsDto } from './dto/signin-credentials.dto';
 import { JwtPayload } from './interfaces/jwt-payload.interface';
 import { AuthHelpers } from 'src/utils/auth-helpers';
+import { CreateApiResponse } from 'src/common/create-response.interface';
 
 @Injectable()
 export class AuthService {
@@ -25,7 +26,7 @@ export class AuthService {
 
   public async signUp(
     signUpCredentialsDto: SignUpCredentialsDto,
-  ): Promise<void> {
+  ): Promise<CreateApiResponse<any>> {
     const { fullName, email, password } = signUpCredentialsDto;
 
     const user = new User();
@@ -36,6 +37,11 @@ export class AuthService {
 
     try {
       await this.userRepository.save(user);
+      return {
+        message: 'sign up successfully',
+        data: {},
+        success: true,
+      };
     } catch (error) {
       if (error.errno === 1062) {
         throw new ConflictException('Email already exists');
@@ -47,7 +53,7 @@ export class AuthService {
 
   public async signIn(
     signInCredentialsDto: SignInCredentialsDto,
-  ): Promise<{ accessToken: string }> {
+  ): Promise<CreateApiResponse<{ accessToken: string }>> {
     const user = await this.authHelpers.validateUser(signInCredentialsDto);
 
     if (!user) {
@@ -55,6 +61,10 @@ export class AuthService {
     }
     const payload: JwtPayload = { name: user.fullName, userId: user.id };
     const accessToken = this.jwtService.sign(payload);
-    return { accessToken };
+    return {
+      message: 'sign in successfully',
+      data: { accessToken },
+      success: true,
+    };
   }
 }

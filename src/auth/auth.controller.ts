@@ -1,13 +1,13 @@
-import { Body, Controller, Get, Post, UseGuards } from '@nestjs/common';
+import { Body, Controller, Post, UseInterceptors } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { SignUpCredentialsDto } from './dto/signup-credentials.dto';
 import { SignInCredentialsDto } from './dto/signin-credentials.dto';
-import { JwtAuthGuard } from '../guards/jwt-auth.guard';
 import { ApiTags } from '@nestjs/swagger';
-import { GetUser } from 'src/decorators/get-user.decorator';
-import { User } from 'src/entity/User';
+import { CreateApiResponse } from 'src/common/create-response.interface';
+import { ResponseInterceptor } from 'src/interceptors/response.interceptor';
 
 @Controller('auth')
+@UseInterceptors(ResponseInterceptor)
 @ApiTags('authentication')
 export class AuthController {
   constructor(private readonly authService: AuthService) {}
@@ -15,20 +15,14 @@ export class AuthController {
   @Post('/signup')
   async signUp(
     @Body() signUpCredentialsDto: SignUpCredentialsDto,
-  ): Promise<void> {
+  ): Promise<CreateApiResponse<any>> {
     return this.authService.signUp(signUpCredentialsDto);
   }
 
   @Post('/signin')
   async signIn(
     @Body() signInCredentialsDto: SignInCredentialsDto,
-  ): Promise<{ accessToken: string }> {
+  ): Promise<CreateApiResponse<{ accessToken: string }>> {
     return this.authService.signIn(signInCredentialsDto);
-  }
-
-  @UseGuards(JwtAuthGuard)
-  @Get('/profile')
-  getProfile(@GetUser() user: User) {
-    return user;
   }
 }

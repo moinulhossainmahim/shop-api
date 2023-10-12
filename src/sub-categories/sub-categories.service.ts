@@ -8,6 +8,9 @@ import { SubCategory } from 'src/entity/SubCategory';
 import { Repository } from 'typeorm';
 import { SubCategoryDto } from './dto/sub-category.dto';
 import { Categories } from 'src/entity/Categories';
+import { CreateApiResponse } from 'src/common/create-response.interface';
+import { ApiGetResponse } from 'src/common/get-response.interface';
+import { ApiDeleteResponse } from 'src/common/delete-response.interface';
 
 @Injectable()
 export class SubCategoriesService {
@@ -20,7 +23,7 @@ export class SubCategoriesService {
 
   public async createSubCategory(
     subCategoryDto: SubCategoryDto,
-  ): Promise<SubCategory> {
+  ): Promise<CreateApiResponse<SubCategory>> {
     const category = await this.categoriesRepository.findOne({
       where: { id: subCategoryDto.categoryID },
     });
@@ -30,16 +33,23 @@ export class SubCategoriesService {
     });
     try {
       await this.subCategoriesRepository.save(subCategory);
-      return subCategory;
+      return {
+        message: 'Sub category created successfully',
+        success: true,
+        data: subCategory,
+      };
     } catch (error) {
+      if (error.errno === 1062) {
+        throw new BadRequestException('Sub category name must be unique');
+      }
       console.log(error);
     }
   }
 
   public async updateSubCategoryById(
     id: string,
-    subCategoryDto: SubCategoryDto,
-  ): Promise<SubCategory> {
+    subCategoryDto: Partial<SubCategoryDto>,
+  ): Promise<CreateApiResponse<SubCategory>> {
     const subCategory = await this.subCategoriesRepository.findOne({
       where: { id },
     });
@@ -47,22 +57,36 @@ export class SubCategoriesService {
       throw new BadRequestException(`SubCategory with ID ${id} not found!`);
     }
     Object.assign(subCategory, subCategoryDto);
-    return subCategory;
+    return {
+      message: 'SubCategory updated successfully',
+      data: subCategory,
+      success: true,
+    };
   }
 
-  async getAllSubCategories(): Promise<SubCategory[]> {
+  async getAllSubCategories(): Promise<ApiGetResponse<SubCategory>> {
     try {
       const subCategories = await this.subCategoriesRepository.find();
-      return subCategories;
+      return {
+        message: 'Fetched categories successfully',
+        data: subCategories,
+        success: true,
+        meta: {},
+      };
     } catch (error) {
       console.log(error);
     }
   }
 
-  public async deleteSubCategoryById(id: string): Promise<void> {
+  public async deleteSubCategoryById(id: string): Promise<ApiDeleteResponse> {
     const result = await this.subCategoriesRepository.delete(id);
     if (result.affected === 0) {
       throw new NotFoundException(`Sub Category with ID ${id} not found!`);
     }
+    return {
+      message: 'Sub category deleted successfully',
+      data: [],
+      success: true,
+    };
   }
 }

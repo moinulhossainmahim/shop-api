@@ -3,6 +3,8 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { User } from 'src/entity/User';
 import { Repository } from 'typeorm';
 import { UpdateUserDto } from './dto/update-user.dto';
+import { ApiGetResponse } from 'src/common/get-response.interface';
+import { CreateApiResponse } from 'src/common/create-response.interface';
 
 @Injectable()
 export class UsersService {
@@ -11,14 +13,20 @@ export class UsersService {
     private userRepository: Repository<User>,
   ) {}
 
-  async getAllUsers(): Promise<User[]> {
-    return await this.userRepository.find({
+  async getAllUsers(): Promise<ApiGetResponse<User>> {
+    const users = await this.userRepository.find({
       select: ['id', 'avatar', 'email', 'fullName', 'status', 'userType'],
     });
+    return {
+      message: 'Fetched users successfully',
+      success: true,
+      data: users,
+      meta: {},
+    };
   }
 
   async getUserById(id: string): Promise<User> {
-    const user = this.userRepository.findOne({ where: { id } });
+    const user = await this.userRepository.findOne({ where: { id } });
     if (!user) {
       throw new NotFoundException(`User with ID ${id} not found!`);
     }
@@ -37,9 +45,9 @@ export class UsersService {
     id: string,
     updateUserDto: Partial<UpdateUserDto>,
     file?: Express.Multer.File,
-  ): Promise<Partial<User>> {
+  ): Promise<CreateApiResponse<Partial<User>>> {
     const user = await this.getUserById(id);
-    if (file) {
+    if (file?.filename) {
       user.avatar = `http://localhost:3000/users/pictures/${file.filename}`;
     }
     Object.assign(user, updateUserDto);
@@ -47,7 +55,11 @@ export class UsersService {
       await this.userRepository.save(user);
       // eslint-disable-next-line @typescript-eslint/no-unused-vars
       const { password, salt, validatePassword, ...result } = user;
-      return result;
+      return {
+        message: 'Updated user successfully',
+        success: true,
+        data: result,
+      };
     } catch (error) {
       console.log(error);
     }

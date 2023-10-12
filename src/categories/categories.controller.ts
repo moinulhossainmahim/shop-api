@@ -7,6 +7,7 @@ import {
   Param,
   Patch,
   Post,
+  Req,
   Res,
   UploadedFile,
   UseGuards,
@@ -25,6 +26,11 @@ import { JwtAuthGuard } from 'src/guards/jwt-auth.guard';
 import { RoleGuard } from 'src/guards/role.guard';
 import { UserRole } from 'src/decorators/role.decorator';
 import { Role } from 'src/users/enums/role.enum';
+import { UNSUPPORTED_FILE } from 'src/utils/constants';
+import { CreateApiResponse } from 'src/common/create-response.interface';
+import { ResponseInterceptor } from 'src/interceptors/response.interceptor';
+import { ApiGetResponse } from 'src/common/get-response.interface';
+import { ApiDeleteResponse } from 'src/common/delete-response.interface';
 
 @UseGuards(JwtAuthGuard, RoleGuard)
 @UserRole(Role.Admin)
@@ -42,13 +48,17 @@ export class CategoriesController {
       }),
       fileFilter: imageFileFilter,
     }),
+    ResponseInterceptor,
   )
   createCategories(
     @Body() createCategoryDto: CreateCategoryDto,
     @UploadedFile() file: Express.Multer.File,
-  ): Promise<Categories> {
-    if (!file) {
-      throw new BadRequestException('File is not an image');
+    @Req() req,
+  ): Promise<CreateApiResponse<Categories>> {
+    if (req[UNSUPPORTED_FILE]) {
+      throw new BadRequestException(
+        `Accepted file extensions are: jpg, jpeg, webp, png`,
+      );
     } else {
       return this.categoriesService.createCategory(createCategoryDto, file);
     }
@@ -60,17 +70,24 @@ export class CategoriesController {
   }
 
   @Get()
-  async getAllCategories(): Promise<Categories[]> {
+  @UseInterceptors(ResponseInterceptor)
+  async getAllCategories(): Promise<ApiGetResponse<Categories>> {
     return this.categoriesService.getAllCategories();
   }
 
   @Get('/:id')
-  async getCategoryById(@Param('id') id: string): Promise<Categories> {
+  @UseInterceptors(ResponseInterceptor)
+  async getCategoryById(
+    @Param('id') id: string,
+  ): Promise<CreateApiResponse<Categories>> {
     return this.categoriesService.getCategoryById(id);
   }
 
   @Delete('/:id')
-  async deleteCategoryById(@Param('id') id: string): Promise<void> {
+  @UseInterceptors(ResponseInterceptor)
+  async deleteCategoryById(
+    @Param('id') id: string,
+  ): Promise<ApiDeleteResponse> {
     return this.categoriesService.deleteCategoryById(id);
   }
 
@@ -83,14 +100,18 @@ export class CategoriesController {
       }),
       fileFilter: imageFileFilter,
     }),
+    ResponseInterceptor,
   )
   updateCategory(
-    @Body() updateCategoryDto: UpdateCategoryDto,
-    @UploadedFile() file: Express.Multer.File,
+    @Body() updateCategoryDto: Partial<UpdateCategoryDto>,
     @Param('id') id: string,
-  ): Promise<Categories> {
-    if (!file) {
-      throw new BadRequestException('File is not an image');
+    @Req() req,
+    @UploadedFile() file?: Express.Multer.File,
+  ): Promise<CreateApiResponse<Categories>> {
+    if (req[UNSUPPORTED_FILE]) {
+      throw new BadRequestException(
+        `Accepted file extensions are: jpg, jpeg, webp, png`,
+      );
     } else {
       return this.categoriesService.updateCategory(id, updateCategoryDto, file);
     }
