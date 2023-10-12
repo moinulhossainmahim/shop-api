@@ -7,6 +7,8 @@ import { User } from 'src/entity/User';
 import { OrderItemsService } from 'src/order-items/order-items.service';
 import { generateTrackingNo } from 'src/utils/generate-tracking-no';
 import { ApiGetResponse } from 'src/common/get-response.interface';
+import { ApiDeleteResponse } from 'src/common/delete-response.interface';
+import { CreateApiResponse } from 'src/common/create-response.interface';
 
 @Injectable()
 export class OrdersService {
@@ -16,7 +18,10 @@ export class OrdersService {
     private orderItemsService: OrderItemsService,
   ) {}
 
-  async createOrder(user: User, createOrderDto: CreateOrderDto) {
+  async createOrder(
+    user: User,
+    createOrderDto: CreateOrderDto,
+  ): Promise<CreateApiResponse<Order>> {
     const { orderItems, ...newCreateOrderDto } = createOrderDto;
     const order = this.OrdersRepository.create({
       user,
@@ -33,6 +38,15 @@ export class OrdersService {
           orderId: orderedItem.id,
         });
       }
+      const orders = await this.OrdersRepository.findOne({
+        where: { id: orderedItem.id },
+        relations: ['orderItems'],
+      });
+      return {
+        data: orders,
+        message: 'Order placed successfully',
+        success: true,
+      };
     } catch (error) {
       console.log(error);
     }
@@ -52,16 +66,21 @@ export class OrdersService {
         itemCount: 0,
         pageCount: 0,
         hasPreviousPage: false,
-        hasNextPage: true,
+        hasNextPage: false,
       },
-      message: 'Orders fetch successfully',
+      message: 'Orders fetched successfully',
     };
   }
 
-  async deleteOrderById(id: string) {
+  async deleteOrderById(id: string): Promise<ApiDeleteResponse> {
     const result = await this.OrdersRepository.delete(id);
     if (result.affected === 0) {
       throw new NotFoundException(`Order with ID ${id} not found!`);
     }
+    return {
+      message: 'Order deleted successfully',
+      data: [],
+      success: true,
+    };
   }
 }
