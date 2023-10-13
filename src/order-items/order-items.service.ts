@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { OrderItem } from 'src/entity/OrderItem';
 import { Repository } from 'typeorm';
@@ -15,6 +15,9 @@ export class OrderItemsService {
     try {
       await this.OrderItemRepository.save(orderItem);
     } catch (error) {
+      if (error.errno === 1452) {
+        throw new BadRequestException('Order item ID must be a product ID');
+      }
       console.log(error);
     }
   }
