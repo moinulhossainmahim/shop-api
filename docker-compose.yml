@@ -8,7 +8,7 @@ services:
     ports:
       - '3308:3306'
     volumes:
-      - shop-data:/var/lib/mysql
+      - shop-db-data:/var/lib/mysql
 
   backend:
     build: .
@@ -23,4 +23,4 @@ services:
       - mysql
 
 volumes:
-  shop-data:
+  shop-db-data:
