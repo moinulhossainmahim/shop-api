@@ -15,13 +15,13 @@ export class ResponseInterceptor implements NestInterceptor {
         if (data && data.error) {
           return {
             success: data.success,
-            data: [],
+            content: [],
             message: data.message,
           };
         }
         return {
           success: data.success,
-          data: data.data,
+          content: data.data,
           meta: data.meta,
           message: data.message,
         };
@@ -29,7 +29,7 @@ export class ResponseInterceptor implements NestInterceptor {
       catchError(async (error) => {
         return {
           success: false,
-          data: [],
+          content: [],
           message: error.response.message,
         };
       }),
