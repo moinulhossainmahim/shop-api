@@ -32,6 +32,8 @@ import { ApiGetResponse } from 'src/common/get-response.interface';
 import { ApiDeleteResponse } from 'src/common/delete-response.interface';
 import { UNSUPPORTED_FILE } from 'src/utils/constants';
 
+@UseGuards(JwtAuthGuard, RoleGuard)
+@UserRole(Role.Customer)
 @Controller('products')
 @ApiTags('Products')
 export class ProductsController {

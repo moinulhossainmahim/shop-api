@@ -39,7 +39,7 @@ export class AuthService {
       await this.userRepository.save(user);
       return {
         message: 'sign up successfully',
-        data: {},
+        data: [],
         success: true,
       };
     } catch (error) {
