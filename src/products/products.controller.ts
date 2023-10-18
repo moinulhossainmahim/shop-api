@@ -33,7 +33,7 @@ import { ApiDeleteResponse } from 'src/common/delete-response.interface';
 import { UNSUPPORTED_FILE } from 'src/utils/constants';
 
 @UseGuards(JwtAuthGuard, RoleGuard)
-@UserRole(Role.Customer)
+@UserRole(Role.Admin)
 @Controller('products')
 @ApiTags('Products')
 export class ProductsController {
