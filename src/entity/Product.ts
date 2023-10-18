@@ -1,7 +1,15 @@
-import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
+import {
+  Column,
+  Entity,
+  ManyToMany,
+  OneToMany,
+  PrimaryGeneratedColumn,
+} from 'typeorm';
 import { ProductStatus } from 'src/products/enums/product-status.enum';
 import { Wishlist } from './Wishlist';
 import { OrderItem } from './OrderItem';
+import { Categories } from './Categories';
+import { SubCategory } from './SubCategory';
 
 @Entity()
 export class Product {
@@ -46,4 +54,10 @@ export class Product {
 
   @OneToMany(() => OrderItem, (orderItem) => orderItem.product)
   orderItems: OrderItem[];
+
+  @ManyToMany(() => Categories, (category) => category.products)
+  categories: Categories[];
+
+  @ManyToMany(() => SubCategory, (subCategory) => subCategory.products)
+  subcategories: SubCategory[];
 }

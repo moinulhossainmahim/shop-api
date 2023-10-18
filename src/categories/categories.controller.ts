@@ -32,14 +32,14 @@ import { ResponseInterceptor } from 'src/interceptors/response.interceptor';
 import { ApiGetResponse } from 'src/common/get-response.interface';
 import { ApiDeleteResponse } from 'src/common/delete-response.interface';
 
-@UseGuards(JwtAuthGuard, RoleGuard)
-@UserRole(Role.Admin)
 @Controller('categories')
 @ApiTags('Categories')
 export class CategoriesController {
   constructor(private readonly categoriesService: CategoriesService) {}
 
   @Post()
+  @UseGuards(JwtAuthGuard, RoleGuard)
+  @UserRole(Role.Admin)
   @UseInterceptors(
     FileInterceptor('file', {
       storage: diskStorage({
@@ -70,12 +70,16 @@ export class CategoriesController {
   }
 
   @Get()
+  @UseGuards(JwtAuthGuard, RoleGuard)
+  @UserRole(Role.Admin)
   @UseInterceptors(ResponseInterceptor)
   async getAllCategories(): Promise<ApiGetResponse<Categories>> {
     return this.categoriesService.getAllCategories();
   }
 
   @Get('/:id')
+  @UseGuards(JwtAuthGuard, RoleGuard)
+  @UserRole(Role.Admin)
   @UseInterceptors(ResponseInterceptor)
   async getCategoryById(
     @Param('id') id: string,
@@ -84,6 +88,8 @@ export class CategoriesController {
   }
 
   @Delete('/:id')
+  @UseGuards(JwtAuthGuard, RoleGuard)
+  @UserRole(Role.Admin)
   @UseInterceptors(ResponseInterceptor)
   async deleteCategoryById(
     @Param('id') id: string,
@@ -92,8 +98,10 @@ export class CategoriesController {
   }
 
   @Patch('/:id')
+  @UseGuards(JwtAuthGuard, RoleGuard)
+  @UserRole(Role.Admin)
   @UseInterceptors(
-    FileInterceptor('file', {
+    FileInterceptor('icon', {
       storage: diskStorage({
         destination: './uploads',
         filename: editFilename,
@@ -106,14 +114,14 @@ export class CategoriesController {
     @Body() updateCategoryDto: Partial<UpdateCategoryDto>,
     @Param('id') id: string,
     @Req() req,
-    @UploadedFile() file?: Express.Multer.File,
+    @UploadedFile() icon?: Express.Multer.File,
   ): Promise<CreateApiResponse<Categories>> {
     if (req[UNSUPPORTED_FILE]) {
       throw new BadRequestException(
         `Accepted file extensions are: jpg, jpeg, webp, png`,
       );
     } else {
-      return this.categoriesService.updateCategory(id, updateCategoryDto, file);
+      return this.categoriesService.updateCategory(id, updateCategoryDto, icon);
     }
   }
 }

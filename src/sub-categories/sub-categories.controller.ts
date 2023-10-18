@@ -33,7 +33,7 @@ export class SubCategoriesController {
   @Post()
   async createSubCategory(
     @Body() subCategoryDto: SubCategoryDto,
-  ): Promise<CreateApiResponse<SubCategory>> {
+  ): Promise<CreateApiResponse<SubCategory[]>> {
     return this.subCategoriesService.createSubCategory(subCategoryDto);
   }
 

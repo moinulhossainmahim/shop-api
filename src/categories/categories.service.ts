@@ -64,7 +64,6 @@ export class CategoriesService {
   async getCategoryById(id: string): Promise<CreateApiResponse<Categories>> {
     const category = await this.categoriesRepository.findOne({
       where: { id },
-      relations: ['subCategories'],
     });
     if (category) {
       return {
@@ -101,7 +100,7 @@ export class CategoriesService {
       }
       Object.assign(category, updateCategoryDto);
       try {
-        await this.categoriesRepository.save(category);
+        await this.categoriesRepository.update(id, category);
         return {
           success: true,
           message: 'Category updated successfully',

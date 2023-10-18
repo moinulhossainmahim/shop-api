@@ -22,7 +22,12 @@ import { ApiGetResponse } from 'src/common/get-response.interface';
 import { CreateApiResponse } from 'src/common/create-response.interface';
 import { GetUser } from 'src/decorators/get-user.decorator';
 import { JwtAuthGuard } from 'src/guards/jwt-auth.guard';
+import { RoleGuard } from 'src/guards/role.guard';
+import { UserRole } from 'src/decorators/role.decorator';
+import { Role } from './enums/role.enum';
 
+@UseGuards(JwtAuthGuard, RoleGuard)
+@UserRole(Role.Admin)
 @Controller('users')
 @ApiTags('users')
 export class UsersController {
@@ -39,13 +44,12 @@ export class UsersController {
     res.sendFile(filename, { root: './uploads' });
   }
 
-  @UseGuards(JwtAuthGuard)
-  @UseInterceptors(ResponseInterceptor)
   @Get('/profile')
-  getProfile(@GetUser() user: User): CreateApiResponse<Partial<User>> {
+  @UseInterceptors(ResponseInterceptor)
+  getProfile(@GetUser() user: User): CreateApiResponse<Partial<User[]>> {
     return {
       message: 'Fetched user successfully',
-      data: user,
+      data: [user],
       success: true,
     };
   }
@@ -61,7 +65,7 @@ export class UsersController {
     }),
     ResponseInterceptor,
   )
-  updateCategory(
+  updateUser(
     @Body() updateUserDto: Partial<UpdateUserDto>,
     @Param('id') id: string,
     @UploadedFile() file?: Express.Multer.File,
