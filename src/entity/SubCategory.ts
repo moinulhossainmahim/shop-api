@@ -1,7 +1,6 @@
 import {
   Column,
   Entity,
-  JoinColumn,
   ManyToMany,
   ManyToOne,
   PrimaryGeneratedColumn,
@@ -27,7 +26,6 @@ export class SubCategory {
     onDelete: 'SET NULL',
     onUpdate: 'CASCADE',
   })
-  @JoinColumn({ name: 'categoryID' })
   category: Categories;
 
   @ManyToMany(() => Product, (product) => product.subcategories)

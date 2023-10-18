@@ -23,20 +23,14 @@ export class SubCategoriesService {
 
   public async createSubCategory(
     subCategoryDto: SubCategoryDto,
-  ): Promise<CreateApiResponse<SubCategory>> {
-    const category = await this.categoriesRepository.findOne({
-      where: { id: subCategoryDto.categoryID },
-    });
-    const subCategory = this.subCategoriesRepository.create({
-      ...subCategoryDto,
-      category,
-    });
+  ): Promise<CreateApiResponse<SubCategory[]>> {
+    const subCategory = this.subCategoriesRepository.create(subCategoryDto);
     try {
       await this.subCategoriesRepository.save(subCategory);
       return {
         message: 'Sub category created successfully',
         success: true,
-        data: subCategory,
+        data: [subCategory],
       };
     } catch (error) {
       if (error.errno === 1062) {
@@ -56,17 +50,27 @@ export class SubCategoriesService {
     if (!subCategory) {
       throw new BadRequestException(`SubCategory with ID ${id} not found!`);
     }
-    Object.assign(subCategory, subCategoryDto);
-    return {
-      message: 'SubCategory updated successfully',
-      data: subCategory,
-      success: true,
-    };
+    try {
+      await this.subCategoriesRepository.update(id, subCategoryDto);
+      const subCategories = await this.subCategoriesRepository.findOne({
+        where: { id },
+        relations: ['category'],
+      });
+      return {
+        message: 'SubCategory updated successfully',
+        data: subCategories,
+        success: true,
+      };
+    } catch (error) {
+      console.log(error);
+    }
   }
 
   async getAllSubCategories(): Promise<ApiGetResponse<SubCategory>> {
     try {
-      const subCategories = await this.subCategoriesRepository.find();
+      const subCategories = await this.subCategoriesRepository.find({
+        relations: ['category'],
+      });
       return {
         message: 'Fetched categories successfully',
         data: subCategories,
