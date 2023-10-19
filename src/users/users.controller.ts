@@ -8,6 +8,7 @@ import {
   UploadedFile,
   UseGuards,
   UseInterceptors,
+  Delete,
 } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { User } from 'src/entity/User';
@@ -25,6 +26,7 @@ import { JwtAuthGuard } from 'src/guards/jwt-auth.guard';
 import { RoleGuard } from 'src/guards/role.guard';
 import { UserRole } from 'src/decorators/role.decorator';
 import { Role } from './enums/role.enum';
+import { ApiDeleteResponse } from 'src/common/delete-response.interface';
 
 @UseGuards(JwtAuthGuard, RoleGuard)
 @UserRole(Role.Admin)
@@ -54,9 +56,15 @@ export class UsersController {
     };
   }
 
+  @Delete('/:id')
+  @UseInterceptors(ResponseInterceptor)
+  async deleteUserById(@Param('id') id: string): Promise<ApiDeleteResponse> {
+    return this.usersService.deleteUserById(id);
+  }
+
   @Patch('/:id')
   @UseInterceptors(
-    FileInterceptor('file', {
+    FileInterceptor('avatar', {
       storage: diskStorage({
         destination: './uploads',
         filename: editFilename,
@@ -68,8 +76,8 @@ export class UsersController {
   updateUser(
     @Body() updateUserDto: Partial<UpdateUserDto>,
     @Param('id') id: string,
-    @UploadedFile() file?: Express.Multer.File,
+    @UploadedFile() avatar?: Express.Multer.File,
   ): Promise<CreateApiResponse<Partial<User>>> {
-    return this.usersService.updateUser(id, updateUserDto, file);
+    return this.usersService.updateUser(id, updateUserDto, avatar);
   }
 }

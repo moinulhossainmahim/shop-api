@@ -5,6 +5,7 @@ import { Repository } from 'typeorm';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { ApiGetResponse } from 'src/common/get-response.interface';
 import { CreateApiResponse } from 'src/common/create-response.interface';
+import { ApiDeleteResponse } from 'src/common/delete-response.interface';
 
 @Injectable()
 export class UsersService {
@@ -16,6 +17,7 @@ export class UsersService {
   async getAllUsers(): Promise<ApiGetResponse<User>> {
     const users = await this.userRepository.find({
       select: ['id', 'avatar', 'email', 'fullName', 'status', 'userType'],
+      relations: ['address'],
     });
     return {
       message: 'Fetched users successfully',
@@ -41,20 +43,33 @@ export class UsersService {
     return user;
   }
 
+  async deleteUserById(id: string): Promise<ApiDeleteResponse> {
+    const result = await this.userRepository.delete(id);
+    if (result.affected === 0) {
+      throw new NotFoundException(`User with ID ${id} is not found`);
+    }
+    return {
+      success: true,
+      data: [],
+      message: 'User deleted successfully',
+    };
+  }
+
   async updateUser(
     id: string,
     updateUserDto: Partial<UpdateUserDto>,
-    file?: Express.Multer.File,
+    avatar?: Express.Multer.File,
   ): Promise<CreateApiResponse<Partial<User>>> {
     const user = await this.getUserById(id);
-    if (file?.filename) {
-      user.avatar = `http://localhost:3000/users/pictures/${file.filename}`;
+    if (avatar?.filename) {
+      user.avatar = `http://localhost:3000/users/pictures/${avatar.filename}`;
     }
     Object.assign(user, updateUserDto);
     try {
-      await this.userRepository.save(user);
+      await this.userRepository.update(id, user);
       // eslint-disable-next-line @typescript-eslint/no-unused-vars
-      const { password, salt, validatePassword, ...result } = user;
+      const { password, salt, validatePassword, ...result } =
+        await this.userRepository.findOne({ where: { id } });
       return {
         message: 'Updated user successfully',
         success: true,

@@ -28,6 +28,10 @@ export class Address {
   @Column()
   addressType: AddressType;
 
-  @ManyToOne(() => User, (user) => user.address, { cascade: true })
+  @ManyToOne(() => User, (user) => user.address, {
+    cascade: true,
+    onDelete: 'CASCADE',
+    onUpdate: 'CASCADE',
+  })
   user: User;
 }
