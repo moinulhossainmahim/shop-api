@@ -21,18 +21,19 @@ export class ProductsService {
 
   async createProduct(
     createProductDto: CreateProductDto,
-    files: Array<Express.Multer.File>,
+    images: Array<Express.Multer.File>,
   ): Promise<CreateApiResponse<Product>> {
     const product = this.productsRepository.create({
       ...createProductDto,
+      salePrice: Number(createProductDto.salePrice),
+      price: Number(createProductDto.price),
+      quantity: Number(createProductDto.quantity),
     });
 
-    product.featuredImg = `http://localhost:3000/products/pictures/${files[0].filename}`;
-    product.galleryImg = files
+    product.featuredImg = `http://localhost:3000/products/pictures/${images[0].filename}`;
+    product.galleryImg = images
       .slice(1)
-      .map(
-        (file) => `http://localhost:3000/products/pictures/${file.filename}`,
-      );
+      .map((img) => `http://localhost:3000/products/pictures/${img.filename}`);
     try {
       await this.productsRepository.save(product);
       return {

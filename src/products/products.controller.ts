@@ -32,16 +32,16 @@ import { ApiGetResponse } from 'src/common/get-response.interface';
 import { ApiDeleteResponse } from 'src/common/delete-response.interface';
 import { UNSUPPORTED_FILE } from 'src/utils/constants';
 
-@UseGuards(JwtAuthGuard, RoleGuard)
-@UserRole(Role.Admin)
 @Controller('products')
 @ApiTags('Products')
 export class ProductsController {
   constructor(private readonly productsService: ProductsService) {}
 
   @Post()
+  @UseGuards(JwtAuthGuard, RoleGuard)
+  @UserRole(Role.Admin)
   @UseInterceptors(
-    FilesInterceptor('files', 10, {
+    FilesInterceptor('images', 10, {
       storage: diskStorage({
         destination: './uploads',
         filename: editFilename,
@@ -52,7 +52,7 @@ export class ProductsController {
   )
   createProduct(
     @Body() createProductDto: CreateProductDto,
-    @UploadedFiles() files: Array<Express.Multer.File>,
+    @UploadedFiles() images: Array<Express.Multer.File>,
     @Req() req,
   ): Promise<CreateApiResponse<Product>> {
     if (req[UNSUPPORTED_FILE]) {
@@ -60,7 +60,7 @@ export class ProductsController {
         `Accepted file extensions are: jpg, jpeg, webp, png`,
       );
     } else {
-      return this.productsService.createProduct(createProductDto, files);
+      return this.productsService.createProduct(createProductDto, images);
     }
   }
 
@@ -70,6 +70,8 @@ export class ProductsController {
   }
 
   @Get()
+  @UseGuards(JwtAuthGuard, RoleGuard)
+  @UserRole(Role.Admin)
   @UseInterceptors(ResponseInterceptor)
   getAllProducts(): Promise<ApiGetResponse<Product>> {
     return this.productsService.getAllProducts();
@@ -82,12 +84,16 @@ export class ProductsController {
   }
 
   @Delete('/:id')
+  @UseGuards(JwtAuthGuard, RoleGuard)
+  @UserRole(Role.Admin)
   @UseInterceptors(ResponseInterceptor)
   deleteProductById(@Param('id') id: string): Promise<ApiDeleteResponse> {
     return this.productsService.deleteProductById(id);
   }
 
   @Patch('/:id')
+  @UseGuards(JwtAuthGuard, RoleGuard)
+  @UserRole(Role.Admin)
   @UseInterceptors(
     FilesInterceptor('files', 10, {
       storage: diskStorage({
