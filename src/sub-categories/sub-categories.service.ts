@@ -7,7 +7,6 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { SubCategory } from 'src/entity/SubCategory';
 import { Repository } from 'typeorm';
 import { SubCategoryDto } from './dto/sub-category.dto';
-import { Categories } from 'src/entity/Categories';
 import { CreateApiResponse } from 'src/common/create-response.interface';
 import { ApiGetResponse } from 'src/common/get-response.interface';
 import { ApiDeleteResponse } from 'src/common/delete-response.interface';
@@ -17,8 +16,6 @@ export class SubCategoriesService {
   constructor(
     @InjectRepository(SubCategory)
     private subCategoriesRepository: Repository<SubCategory>,
-    @InjectRepository(Categories)
-    private categoriesRepository: Repository<Categories>,
   ) {}
 
   public async createSubCategory(
@@ -54,7 +51,6 @@ export class SubCategoriesService {
       await this.subCategoriesRepository.update(id, subCategoryDto);
       const subCategories = await this.subCategoriesRepository.findOne({
         where: { id },
-        relations: ['category'],
       });
       return {
         message: 'SubCategory updated successfully',

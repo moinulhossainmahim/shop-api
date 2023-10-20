@@ -11,28 +11,52 @@ import { UpdateProductDto } from './dto/update-product.dto';
 import { CreateApiResponse } from 'src/common/create-response.interface';
 import { ApiGetResponse } from 'src/common/get-response.interface';
 import { ApiDeleteResponse } from 'src/common/delete-response.interface';
+import { Categories } from 'src/entity/Categories';
+import { SubCategory } from 'src/entity/SubCategory';
 
 @Injectable()
 export class ProductsService {
   constructor(
     @InjectRepository(Product)
     private productsRepository: Repository<Product>,
+    @InjectRepository(Categories)
+    private categoriesRepository: Repository<Categories>,
+    @InjectRepository(SubCategory)
+    private subCategoriesRepository: Repository<SubCategory>,
   ) {}
 
   async createProduct(
     createProductDto: CreateProductDto,
-    files: Array<Express.Multer.File>,
+    images: Array<Express.Multer.File>,
   ): Promise<CreateApiResponse<Product>> {
-    const product = this.productsRepository.create({
-      ...createProductDto,
+    const Promisecategories = createProductDto.categories.map(async (cat) => {
+      return await this.categoriesRepository.findOne({ where: { id: cat } });
     });
-
-    product.featuredImg = `http://localhost:3000/products/pictures/${files[0].filename}`;
-    product.galleryImg = files
+    const PromisesubCategories = createProductDto.subCategories.map(
+      async (subCat) => {
+        return await this.subCategoriesRepository.findOne({
+          where: { id: subCat },
+        });
+      },
+    );
+    const product = this.productsRepository.create({
+      salePrice: Number(createProductDto.salePrice),
+      quantity: Number(createProductDto.quantity),
+      price: Number(createProductDto.price),
+      slug: createProductDto.slug,
+      name: createProductDto.name,
+      desc: createProductDto.desc,
+      sku: createProductDto.sku,
+      status: createProductDto.status,
+      unit: createProductDto.unit,
+    });
+    product.categories = await Promise.all(Promisecategories);
+    product.subcategories = await Promise.all(PromisesubCategories);
+    console.log(product.categories);
+    product.featuredImg = `http://localhost:3000/products/pictures/${images[0].filename}`;
+    product.galleryImg = images
       .slice(1)
-      .map(
-        (file) => `http://localhost:3000/products/pictures/${file.filename}`,
-      );
+      .map((img) => `http://localhost:3000/products/pictures/${img.filename}`);
     try {
       await this.productsRepository.save(product);
       return {
@@ -51,7 +75,9 @@ export class ProductsService {
 
   async getAllProducts(): Promise<ApiGetResponse<Product>> {
     try {
-      const products = await this.productsRepository.find();
+      const products = await this.productsRepository.find({
+        relations: ['categories', 'subcategories'],
+      });
       return {
         success: true,
         message: 'Fetch products successfully',
@@ -82,6 +108,18 @@ export class ProductsService {
     files?: Array<Express.Multer.File>,
   ): Promise<CreateApiResponse<Product>> {
     const { data: product } = await this.getProductById(id);
+    const Promisecategories = createProductDto.categories.map(async (cat) => {
+      return await this.categoriesRepository.findOne({ where: { id: cat } });
+    });
+    const PromisesubCategories = createProductDto.subCategories.map(
+      async (subCat) => {
+        return await this.subCategoriesRepository.findOne({
+          where: { id: subCat },
+        });
+      },
+    );
+    product.categories = await Promise.all(Promisecategories);
+    product.subcategories = await Promise.all(PromisesubCategories);
     if (product) {
       if (files.length) {
         product.featuredImg = `http://localhost:3000/products/pictures/${files[0].filename}`;
@@ -92,7 +130,11 @@ export class ProductsService {
               `http://localhost:3000/products/pictures/${file.filename}`,
           );
       }
-      Object.assign(product, createProductDto);
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+      const { categories, subCategories, ...newCreateProductDto } =
+        createProductDto;
+      Object.assign(product, newCreateProductDto);
+      console.log('product', product);
       try {
         await this.productsRepository.save(product);
         return {

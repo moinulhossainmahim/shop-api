@@ -9,5 +9,6 @@ import { Categories } from 'src/entity/Categories';
   imports: [TypeOrmModule.forFeature([SubCategory, Categories])],
   controllers: [SubCategoriesController],
   providers: [SubCategoriesService],
+  exports: [SubCategoriesService],
 })
 export class SubCategoriesModule {}

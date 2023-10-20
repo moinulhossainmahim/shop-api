@@ -40,10 +40,7 @@ export class User {
   @Column({ default: UserStatus.Active })
   status: UserStatus;
 
-  @OneToMany(() => Address, (address) => address.user, {
-    onDelete: 'CASCADE',
-    eager: true,
-  })
+  @OneToMany(() => Address, (address) => address.user)
   address: Address[];
 
   @OneToMany(() => Wishlist, (wishlist) => wishlist.user)
