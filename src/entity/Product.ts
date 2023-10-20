@@ -1,6 +1,7 @@
 import {
   Column,
   Entity,
+  JoinTable,
   ManyToMany,
   OneToMany,
   PrimaryGeneratedColumn,
@@ -55,9 +56,19 @@ export class Product {
   @OneToMany(() => OrderItem, (orderItem) => orderItem.product)
   orderItems: OrderItem[];
 
-  @ManyToMany(() => Categories, (category) => category.products)
+  @ManyToMany(() => Categories, (category) => category.products, {
+    onDelete: 'CASCADE',
+    onUpdate: 'CASCADE',
+    cascade: true,
+  })
+  @JoinTable()
   categories: Categories[];
 
-  @ManyToMany(() => SubCategory, (subCategory) => subCategory.products)
+  @ManyToMany(() => SubCategory, (subCategory) => subCategory.products, {
+    onDelete: 'CASCADE',
+    onUpdate: 'CASCADE',
+    cascade: true,
+  })
+  @JoinTable()
   subcategories: SubCategory[];
 }

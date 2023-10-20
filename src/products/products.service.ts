@@ -11,25 +11,47 @@ import { UpdateProductDto } from './dto/update-product.dto';
 import { CreateApiResponse } from 'src/common/create-response.interface';
 import { ApiGetResponse } from 'src/common/get-response.interface';
 import { ApiDeleteResponse } from 'src/common/delete-response.interface';
+import { Categories } from 'src/entity/Categories';
+import { SubCategory } from 'src/entity/SubCategory';
 
 @Injectable()
 export class ProductsService {
   constructor(
     @InjectRepository(Product)
     private productsRepository: Repository<Product>,
+    @InjectRepository(Categories)
+    private categoriesRepository: Repository<Categories>,
+    @InjectRepository(SubCategory)
+    private subCategoriesRepository: Repository<SubCategory>,
   ) {}
 
   async createProduct(
     createProductDto: CreateProductDto,
     images: Array<Express.Multer.File>,
   ): Promise<CreateApiResponse<Product>> {
-    const product = this.productsRepository.create({
-      ...createProductDto,
-      salePrice: Number(createProductDto.salePrice),
-      price: Number(createProductDto.price),
-      quantity: Number(createProductDto.quantity),
+    const Promisecategories = createProductDto.categories.map(async (cat) => {
+      return await this.categoriesRepository.findOne({ where: { id: cat } });
     });
-
+    const PromisesubCategories = createProductDto.subCategories.map(
+      async (subCat) => {
+        return await this.subCategoriesRepository.findOne({
+          where: { id: subCat },
+        });
+      },
+    );
+    const product = this.productsRepository.create({
+      salePrice: Number(createProductDto.salePrice),
+      quantity: Number(createProductDto.quantity),
+      price: Number(createProductDto.price),
+      slug: createProductDto.slug,
+      name: createProductDto.name,
+      desc: createProductDto.desc,
+      sku: createProductDto.sku,
+      status: createProductDto.status,
+      unit: createProductDto.unit,
+    });
+    product.categories = await Promise.all(Promisecategories);
+    product.subcategories = await Promise.all(PromisesubCategories);
     product.featuredImg = `http://localhost:3000/products/pictures/${images[0].filename}`;
     product.galleryImg = images
       .slice(1)
@@ -52,7 +74,9 @@ export class ProductsService {
 
   async getAllProducts(): Promise<ApiGetResponse<Product>> {
     try {
-      const products = await this.productsRepository.find();
+      const products = await this.productsRepository.find({
+        relations: ['categories', 'subcategories'],
+      });
       return {
         success: true,
         message: 'Fetch products successfully',
