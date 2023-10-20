@@ -88,6 +88,7 @@ export class ProductsController {
   @UserRole(Role.Admin)
   @UseInterceptors(ResponseInterceptor)
   deleteProductById(@Param('id') id: string): Promise<ApiDeleteResponse> {
+    console.log(id);
     return this.productsService.deleteProductById(id);
   }
 
@@ -95,7 +96,7 @@ export class ProductsController {
   @UseGuards(JwtAuthGuard, RoleGuard)
   @UserRole(Role.Admin)
   @UseInterceptors(
-    FilesInterceptor('files', 10, {
+    FilesInterceptor('images', 10, {
       storage: diskStorage({
         destination: './uploads',
         filename: editFilename,
@@ -108,14 +109,16 @@ export class ProductsController {
     @Body() updateProductDto: Partial<UpdateProductDto>,
     @Param('id') id: string,
     @Req() req,
-    @UploadedFiles() files?: Array<Express.Multer.File>,
+    @UploadedFiles() images?: Array<Express.Multer.File>,
   ): Promise<CreateApiResponse<Product>> {
     if (req[UNSUPPORTED_FILE]) {
       throw new BadRequestException(
         `Accepted file extensions are: jpg, jpeg, webp, png`,
       );
     } else {
-      return this.productsService.updateProduct(updateProductDto, id, files);
+      console.log(updateProductDto);
+      console.log(images);
+      return this.productsService.updateProduct(updateProductDto, id, images);
     }
   }
 }

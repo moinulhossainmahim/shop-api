@@ -52,6 +52,7 @@ export class ProductsService {
     });
     product.categories = await Promise.all(Promisecategories);
     product.subcategories = await Promise.all(PromisesubCategories);
+    console.log(product.categories);
     product.featuredImg = `http://localhost:3000/products/pictures/${images[0].filename}`;
     product.galleryImg = images
       .slice(1)
@@ -107,6 +108,18 @@ export class ProductsService {
     files?: Array<Express.Multer.File>,
   ): Promise<CreateApiResponse<Product>> {
     const { data: product } = await this.getProductById(id);
+    const Promisecategories = createProductDto.categories.map(async (cat) => {
+      return await this.categoriesRepository.findOne({ where: { id: cat } });
+    });
+    const PromisesubCategories = createProductDto.subCategories.map(
+      async (subCat) => {
+        return await this.subCategoriesRepository.findOne({
+          where: { id: subCat },
+        });
+      },
+    );
+    product.categories = await Promise.all(Promisecategories);
+    product.subcategories = await Promise.all(PromisesubCategories);
     if (product) {
       if (files.length) {
         product.featuredImg = `http://localhost:3000/products/pictures/${files[0].filename}`;
@@ -117,7 +130,11 @@ export class ProductsService {
               `http://localhost:3000/products/pictures/${file.filename}`,
           );
       }
-      Object.assign(product, createProductDto);
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+      const { categories, subCategories, ...newCreateProductDto } =
+        createProductDto;
+      Object.assign(product, newCreateProductDto);
+      console.log('product', product);
       try {
         await this.productsRepository.save(product);
         return {
