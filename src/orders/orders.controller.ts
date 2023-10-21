@@ -4,6 +4,7 @@ import {
   Delete,
   Get,
   Param,
+  Patch,
   Post,
   UseGuards,
   UseInterceptors,
@@ -41,5 +42,20 @@ export class OrdersController {
   @Delete('/:id')
   async deleteOrderById(@Param('id') id: string): Promise<ApiDeleteResponse> {
     return this.ordersService.deleteOrderById(id);
+  }
+
+  @Patch('/:id')
+  async updateOrderById(
+    @Param('id') id: string,
+    @Body() updateOrderDto: Partial<CreateOrderDto>,
+  ): Promise<CreateApiResponse<Order>> {
+    return this.ordersService.updateOrderById(id, updateOrderDto);
+  }
+
+  @Get('/:id')
+  async getOrderById(
+    @Param('id') id: string,
+  ): Promise<CreateApiResponse<Order>> {
+    return this.ordersService.findOrderById(id);
   }
 }

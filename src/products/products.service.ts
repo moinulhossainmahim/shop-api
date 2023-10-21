@@ -134,7 +134,6 @@ export class ProductsService {
       const { categories, subCategories, ...newCreateProductDto } =
         createProductDto;
       Object.assign(product, newCreateProductDto);
-      console.log('product', product);
       try {
         await this.productsRepository.save(product);
         return {

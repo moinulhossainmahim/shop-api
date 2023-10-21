@@ -91,4 +91,37 @@ export class OrdersService {
       success: true,
     };
   }
+
+  async findOrderById(id: string): Promise<CreateApiResponse<Order>> {
+    const order = await this.ordersRepository.findOne({
+      where: { id },
+      relations: ['orderItems', 'shippingAddress', 'billingAddress'],
+    });
+    const orderItems = await Promise.all(
+      order.orderItems.map(
+        async (item) => await this.orderItemsService.getOrderItemById(item.id),
+      ),
+    );
+    order.orderItems = orderItems;
+    return {
+      message: 'Fetched order successfully',
+      data: order,
+      success: true,
+    };
+  }
+
+  async updateOrderById(
+    id: string,
+    updateOrderDto: Partial<CreateOrderDto>,
+  ): Promise<CreateApiResponse<Order>> {
+    const result = await this.ordersRepository.update(id, updateOrderDto);
+    if (result.affected !== 0) {
+      const updateOrder = this.findOrderById(id);
+      return {
+        message: 'Order updated successfully',
+        data: (await updateOrder).data,
+        success: true,
+      };
+    }
+  }
 }
