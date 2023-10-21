@@ -1,14 +1,9 @@
-import {
-  IsArray,
-  IsEnum,
-  IsNotEmpty,
-  IsOptional,
-  IsString,
-} from 'class-validator';
+import { IsArray, IsEnum, IsNotEmpty, IsOptional } from 'class-validator';
 import { OrderStatus } from '../enums/order-status.enum';
 import { PaymentStatus } from '../enums/payment-status.enum';
-import { Product } from 'src/entity/Product';
 import { PaymentMethod } from '../enums/payment-method.enum';
+import { Address } from 'src/entity/Address';
+import { CreateOrderItemDto } from 'src/order-items/dto/create-order-item.dto';
 
 export class CreateOrderDto {
   @IsOptional()
@@ -19,28 +14,26 @@ export class CreateOrderDto {
   delivery_fee: number;
 
   @IsNotEmpty()
-  total: number;
+  amount: number;
 
   @IsNotEmpty()
-  tax: number;
+  total: number;
 
   @IsNotEmpty()
   @IsEnum(PaymentStatus)
   payment_status: PaymentStatus;
 
   @IsNotEmpty()
-  @IsString()
-  shipping_address: string;
-
-  @IsNotEmpty()
   @IsEnum(PaymentMethod)
   payment_method: PaymentMethod;
 
   @IsNotEmpty()
-  @IsString()
-  billing_address: string;
+  billingAddress: Address;
+
+  @IsNotEmpty()
+  shippingAddress: Address;
 
   @IsNotEmpty()
   @IsArray()
-  orderItems: Pick<Product, 'quantity' | 'salePrice' | 'id'>[];
+  orderItems: CreateOrderItemDto[];
 }

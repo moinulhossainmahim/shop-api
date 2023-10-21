@@ -5,7 +5,6 @@ import { Repository } from 'typeorm';
 import { CreateOrderDto } from './dto/create-order.dto';
 import { User } from 'src/entity/User';
 import { OrderItemsService } from 'src/order-items/order-items.service';
-import { generateTrackingNo } from 'src/utils/generate-tracking-no';
 import { ApiGetResponse } from 'src/common/get-response.interface';
 import { ApiDeleteResponse } from 'src/common/delete-response.interface';
 import { CreateApiResponse } from 'src/common/create-response.interface';
@@ -14,36 +13,31 @@ import { CreateApiResponse } from 'src/common/create-response.interface';
 export class OrdersService {
   constructor(
     @InjectRepository(Order)
-    private OrdersRepository: Repository<Order>,
+    private ordersRepository: Repository<Order>,
     private orderItemsService: OrderItemsService,
   ) {}
 
   async createOrder(
     user: User,
     createOrderDto: CreateOrderDto,
-  ): Promise<CreateApiResponse<Order>> {
-    const { orderItems, ...newCreateOrderDto } = createOrderDto;
-    const order = this.OrdersRepository.create({
+  ): Promise<CreateApiResponse<Omit<Order, 'user'>>> {
+    const orderItems = await Promise.all(
+      createOrderDto.orderItems.map((orderItem) =>
+        this.orderItemsService.createOrderItem(orderItem),
+      ),
+    );
+    const order = {
+      ...createOrderDto,
+      orderItems,
       user,
-      ...newCreateOrderDto,
-      tracking_no: generateTrackingNo(),
-    });
+    };
+    const neworder = this.ordersRepository.create(order);
     try {
-      const orderedItem = await this.OrdersRepository.save(order);
-      for (const product of orderItems) {
-        await this.orderItemsService.createOrderItem({
-          productId: product.id,
-          quantity: product.quantity,
-          unit_price: product.salePrice,
-          orderId: orderedItem.id,
-        });
-      }
-      const orders = await this.OrdersRepository.findOne({
-        where: { id: orderedItem.id },
-        relations: ['orderItems'],
-      });
+      const savedOrder = await this.ordersRepository.save(neworder);
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+      const { user, ...newSavedOrder } = savedOrder;
       return {
-        data: orders,
+        data: newSavedOrder,
         message: 'Order placed successfully',
         success: true,
       };
@@ -52,14 +46,28 @@ export class OrdersService {
     }
   }
 
-  async getAllOrdersOfAUser(user: User): Promise<ApiGetResponse<Order>> {
-    const orders = await this.OrdersRepository.find({
+  async getAllOrdersOfAUser(user: User): Promise<ApiGetResponse<any>> {
+    const orders = await this.ordersRepository.find({
       where: { user: { id: user.id } },
-      relations: ['orderItems'],
+      relations: ['orderItems', 'shippingAddress', 'billingAddress'],
     });
+    const newOrders = await Promise.all(
+      orders.map(async (order) => {
+        const items = await Promise.all(
+          order.orderItems.map(
+            async (item) =>
+              await this.orderItemsService.getOrderItemById(item.id),
+          ),
+        );
+        return {
+          ...order,
+          orderItems: items,
+        };
+      }),
+    );
     return {
       success: true,
-      data: orders,
+      data: newOrders,
       meta: {
         page: 1,
         take: 0,
@@ -73,7 +81,7 @@ export class OrdersService {
   }
 
   async deleteOrderById(id: string): Promise<ApiDeleteResponse> {
-    const result = await this.OrdersRepository.delete(id);
+    const result = await this.ordersRepository.delete(id);
     if (result.affected === 0) {
       throw new NotFoundException(`Order with ID ${id} not found!`);
     }

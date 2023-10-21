@@ -29,7 +29,7 @@ export class OrdersController {
   async createOrder(
     @Body() createOrderDto: CreateOrderDto,
     @GetUser() user: User,
-  ): Promise<CreateApiResponse<Order>> {
+  ): Promise<CreateApiResponse<Omit<Order, 'user'>>> {
     return this.ordersService.createOrder(user, createOrderDto);
   }
 
