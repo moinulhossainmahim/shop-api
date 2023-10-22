@@ -1,7 +1,8 @@
 export enum OrderStatus {
-  Pending = 'pending',
   Processing = 'processing',
-  Local = 'local',
-  Delivery = 'delivery',
-  Complete = 'complete',
+  Completed = 'completed',
+  Canceled = 'canceled',
+  Pending = 'pending',
+  AtLocalFacility = 'atLocalFacility',
+  OutForDelivery = 'outForDelivery',
 }

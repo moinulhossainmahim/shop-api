@@ -9,13 +9,16 @@ import { OrderItem } from './OrderItem';
 import { User } from './User';
 import { OrderStatus } from 'src/orders/enums/order-status.enum';
 import { PaymentMethod } from 'src/orders/enums/payment-method.enum';
+import { Address } from './Address';
+import { generateTrackingNo } from 'src/utils/generate-tracking-no';
+import { PaymentStatus } from 'src/orders/enums/payment-status.enum';
 
 @Entity()
 export class Order {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
-  @Column()
+  @Column({ default: generateTrackingNo() })
   tracking_no: string;
 
   @Column({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
@@ -31,21 +34,23 @@ export class Order {
   total: number;
 
   @Column({ type: 'decimal', precision: 10, scale: 2 })
-  tax: number;
+  amount: number;
 
   @Column()
-  payment_status: string;
+  payment_status: PaymentStatus;
 
   @Column()
   payment_method: PaymentMethod;
 
-  @Column('text')
-  shipping_address: string;
+  @ManyToOne(() => Address, (address) => address.id)
+  shippingAddress: Address;
 
-  @Column('text')
-  billing_address: string;
+  @ManyToOne(() => Address, (address) => address.id)
+  billingAddress: Address;
 
-  @OneToMany(() => OrderItem, (orderItem) => orderItem.order)
+  @OneToMany(() => OrderItem, (orderItem) => orderItem.order, {
+    onDelete: 'CASCADE',
+  })
   orderItems: OrderItem[];
 
   @ManyToOne(() => User, (user) => user.orders)

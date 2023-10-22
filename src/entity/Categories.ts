@@ -25,7 +25,9 @@ export class Categories {
   @Column()
   icon: string;
 
-  @OneToMany(() => SubCategory, (subCategory) => subCategory.category)
+  @OneToMany(() => SubCategory, (subCategory) => subCategory.category, {
+    cascade: true,
+  })
   subCategories: SubCategory[];
 
   @ManyToMany(() => Product, (product) => product.categories)

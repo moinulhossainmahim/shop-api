@@ -23,7 +23,7 @@ export class SubCategory {
   slug: string;
 
   @ManyToOne(() => Categories, (category) => category.subCategories, {
-    onDelete: 'SET NULL',
+    onDelete: 'CASCADE',
     onUpdate: 'CASCADE',
   })
   category: Categories;
