@@ -28,16 +28,6 @@ export class WishlistsService {
     const product = await this.productsRepository.findOne({
       where: { id: productId },
     });
-    const alreadyAddedProduct = await this.wishlistsRepository.findOne({
-      where: { product: { id: productId } },
-    });
-
-    if (alreadyAddedProduct) {
-      throw new NotAcceptableException(
-        'This product already added to your wishlist',
-      );
-    }
-
     const wishlistItem = this.wishlistsRepository.create({
       product,
       user,
@@ -69,21 +59,10 @@ export class WishlistsService {
     };
   }
 
-  async removeFromWishlist(
-    id: string,
-    user: User,
-  ): Promise<CreateApiResponse<any>> {
+  async removeFromWishlist(id: string): Promise<CreateApiResponse<any>> {
     const wishlist = await this.wishlistsRepository.findOne({ where: { id } });
     if (!wishlist) {
       throw new NotFoundException(`Wishlist with ID ${id} not found`);
-    }
-    const isAuthenticateUser = await this.wishlistsRepository.findOne({
-      where: { user: { id: user.id } },
-    });
-    if (!isAuthenticateUser) {
-      throw new UnauthorizedException(
-        'This user has no access to delete this wishlist',
-      );
     }
     const result = await this.wishlistsRepository.delete(id);
     if (result.affected === 0) {
