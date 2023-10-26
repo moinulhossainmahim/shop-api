@@ -28,4 +28,6 @@ export class UpdateUserDto {
 
   @IsEnum(Role)
   userType: Role;
+
+  avatar: string;
 }

@@ -1,10 +1,10 @@
 import { MigrationInterface, QueryRunner } from "typeorm";
 
-export class CreateAllTables1697896100655 implements MigrationInterface {
-    name = 'CreateAllTables1697896100655'
+export class CreateAllInitialTables1698310688281 implements MigrationInterface {
+    name = 'CreateAllInitialTables1698310688281'
 
     public async up(queryRunner: QueryRunner): Promise<void> {
-        await queryRunner.query(`CREATE TABLE \`order\` (\`id\` varchar(36) NOT NULL, \`tracking_no\` varchar(255) NOT NULL DEFAULT '20231021ae96', \`order_date\` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP, \`order_status\` varchar(255) NOT NULL DEFAULT 'pending', \`delivery_fee\` decimal(10,2) NOT NULL, \`total\` decimal(10,2) NOT NULL, \`amount\` decimal(10,2) NOT NULL, \`payment_status\` varchar(255) NOT NULL, \`payment_method\` varchar(255) NOT NULL, \`shippingAddressId\` varchar(36) NULL, \`billingAddressId\` varchar(36) NULL, \`userId\` varchar(36) NULL, PRIMARY KEY (\`id\`)) ENGINE=InnoDB`);
+        await queryRunner.query(`CREATE TABLE \`order\` (\`id\` varchar(36) NOT NULL, \`tracking_no\` varchar(255) NOT NULL DEFAULT '202310267bc6', \`order_date\` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP, \`order_status\` varchar(255) NOT NULL DEFAULT 'pending', \`delivery_fee\` decimal(10,2) NOT NULL, \`total\` decimal(10,2) NOT NULL, \`amount\` decimal(10,2) NOT NULL, \`payment_status\` varchar(255) NOT NULL, \`payment_method\` varchar(255) NOT NULL, \`shippingAddressId\` varchar(36) NULL, \`billingAddressId\` varchar(36) NULL, \`userId\` varchar(36) NULL, PRIMARY KEY (\`id\`)) ENGINE=InnoDB`);
         await queryRunner.query(`CREATE TABLE \`order_item\` (\`id\` varchar(36) NOT NULL, \`quantity\` int NOT NULL, \`unit_price\` decimal(10,2) NOT NULL, \`subtotal\` decimal(10,2) NOT NULL, \`productId\` varchar(36) NULL, \`orderId\` varchar(36) NULL, PRIMARY KEY (\`id\`)) ENGINE=InnoDB`);
         await queryRunner.query(`CREATE TABLE \`sub_category\` (\`id\` varchar(36) NOT NULL, \`name\` varchar(255) NOT NULL, \`description\` varchar(255) NOT NULL, \`slug\` varchar(255) NOT NULL, \`categoryId\` varchar(36) NULL, UNIQUE INDEX \`IDX_7745a7cea2687ee7b048f828c7\` (\`name\`), PRIMARY KEY (\`id\`)) ENGINE=InnoDB`);
         await queryRunner.query(`CREATE TABLE \`categories\` (\`id\` varchar(36) NOT NULL, \`name\` varchar(255) NOT NULL, \`slug\` varchar(255) NOT NULL, \`description\` varchar(255) NOT NULL, \`icon\` varchar(255) NOT NULL, UNIQUE INDEX \`IDX_8b0be371d28245da6e4f4b6187\` (\`name\`), PRIMARY KEY (\`id\`)) ENGINE=InnoDB`);

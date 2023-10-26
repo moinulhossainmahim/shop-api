@@ -9,4 +9,6 @@ export class UpdateCategoryDto {
 
   @IsString()
   slug: string;
+
+  icon: string;
 }

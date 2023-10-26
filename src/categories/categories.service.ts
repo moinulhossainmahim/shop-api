@@ -91,16 +91,11 @@ export class CategoriesService {
   async updateCategory(
     id: string,
     updateCategoryDto: Partial<UpdateCategoryDto>,
-    file?: Express.Multer.File,
   ): Promise<CreateApiResponse<Categories>> {
     const { data: category } = await this.getCategoryById(id);
     if (category) {
-      if (file?.filename) {
-        category.icon = `http://localhost:3000/categories/pictures/${file.filename}`;
-      }
-      Object.assign(category, updateCategoryDto);
       try {
-        await this.categoriesRepository.update(id, category);
+        await this.categoriesRepository.update(id, updateCategoryDto);
         return {
           success: true,
           message: 'Category updated successfully',

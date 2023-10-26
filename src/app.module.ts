@@ -17,11 +17,11 @@ import { OrderItemsModule } from './order-items/order-items.module';
   imports: [
     ConfigModule.forRoot(),
     TypeOrmConfig,
+    UsersModule,
+    AuthModule,
     ProductsModule,
     CategoriesModule,
     SubCategoriesModule,
-    AuthModule,
-    UsersModule,
     ShippingModule,
     WishlistsModule,
     OrdersModule,

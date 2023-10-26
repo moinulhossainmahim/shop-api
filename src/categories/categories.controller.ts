@@ -39,7 +39,7 @@ export class CategoriesController {
 
   @Post()
   @UseGuards(JwtAuthGuard, RoleGuard)
-  @UserRole(Role.Admin)
+  @UserRole([Role.Admin])
   @UseInterceptors(
     FileInterceptor('file', {
       storage: diskStorage({
@@ -70,8 +70,6 @@ export class CategoriesController {
   }
 
   @Get()
-  @UseGuards(JwtAuthGuard, RoleGuard)
-  @UserRole(Role.Admin)
   @UseInterceptors(ResponseInterceptor)
   async getAllCategories(): Promise<ApiGetResponse<Categories>> {
     return this.categoriesService.getAllCategories();
@@ -79,7 +77,7 @@ export class CategoriesController {
 
   @Get('/:id')
   @UseGuards(JwtAuthGuard, RoleGuard)
-  @UserRole(Role.Admin)
+  @UserRole([Role.Admin])
   @UseInterceptors(ResponseInterceptor)
   async getCategoryById(
     @Param('id') id: string,
@@ -89,7 +87,7 @@ export class CategoriesController {
 
   @Delete('/:id')
   @UseGuards(JwtAuthGuard, RoleGuard)
-  @UserRole(Role.Admin)
+  @UserRole([Role.Admin])
   @UseInterceptors(ResponseInterceptor)
   async deleteCategoryById(
     @Param('id') id: string,
@@ -99,7 +97,7 @@ export class CategoriesController {
 
   @Patch('/:id')
   @UseGuards(JwtAuthGuard, RoleGuard)
-  @UserRole(Role.Admin)
+  @UserRole([Role.Admin])
   @UseInterceptors(
     FileInterceptor('icon', {
       storage: diskStorage({
@@ -121,7 +119,10 @@ export class CategoriesController {
         `Accepted file extensions are: jpg, jpeg, webp, png`,
       );
     } else {
-      return this.categoriesService.updateCategory(id, updateCategoryDto, icon);
+      if (icon) {
+        updateCategoryDto.icon = `http://localhost:3000/categories/pictures/${icon.filename}`;
+      }
+      return this.categoriesService.updateCategory(id, updateCategoryDto);
     }
   }
 }

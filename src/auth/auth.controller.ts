@@ -10,7 +10,7 @@ import { ResponseInterceptor } from 'src/interceptors/response.interceptor';
 @UseInterceptors(ResponseInterceptor)
 @ApiTags('authentication')
 export class AuthController {
-  constructor(private readonly authService: AuthService) {}
+  constructor(private authService: AuthService) {}
 
   @Post('/signup')
   async signUp(
