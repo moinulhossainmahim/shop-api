@@ -24,7 +24,7 @@ import { ApiDeleteResponse } from 'src/common/delete-response.interface';
 
 @Controller('sub-categories')
 @UseGuards(JwtAuthGuard, RoleGuard)
-@UserRole(Role.Admin)
+@UserRole([Role.Admin])
 @UseInterceptors(ResponseInterceptor)
 @ApiTags('sub-categories')
 export class SubCategoriesController {

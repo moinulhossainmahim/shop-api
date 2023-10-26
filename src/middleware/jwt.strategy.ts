@@ -19,7 +19,7 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
     payload: JwtPayload,
   ): Promise<Omit<User, 'password' | 'salt' | 'validatePassword'>> {
     const { userId } = payload;
-    const tempUser = await this.usersService.getUserById(userId);
+    const { data: tempUser } = await this.usersService.getUserById(userId);
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const { password, validatePassword, salt, ...user } = tempUser;
 

@@ -39,7 +39,7 @@ export class ProductsController {
 
   @Post()
   @UseGuards(JwtAuthGuard, RoleGuard)
-  @UserRole(Role.Admin)
+  @UserRole([Role.Admin])
   @UseInterceptors(
     FilesInterceptor('images', 10, {
       storage: diskStorage({
@@ -70,8 +70,6 @@ export class ProductsController {
   }
 
   @Get()
-  @UseGuards(JwtAuthGuard, RoleGuard)
-  @UserRole(Role.Admin)
   @UseInterceptors(ResponseInterceptor)
   getAllProducts(): Promise<ApiGetResponse<Product>> {
     return this.productsService.getAllProducts();
@@ -85,7 +83,7 @@ export class ProductsController {
 
   @Delete('/:id')
   @UseGuards(JwtAuthGuard, RoleGuard)
-  @UserRole(Role.Admin)
+  @UserRole([Role.Admin])
   @UseInterceptors(ResponseInterceptor)
   deleteProductById(@Param('id') id: string): Promise<ApiDeleteResponse> {
     console.log(id);
@@ -94,7 +92,7 @@ export class ProductsController {
 
   @Patch('/:id')
   @UseGuards(JwtAuthGuard, RoleGuard)
-  @UserRole(Role.Admin)
+  @UserRole([Role.Admin])
   @UseInterceptors(
     FilesInterceptor('images', 10, {
       storage: diskStorage({

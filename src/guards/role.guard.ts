@@ -5,7 +5,7 @@ import {
   UnauthorizedException,
 } from '@nestjs/common';
 import { Reflector } from '@nestjs/core';
-import { ROLE_KEY } from '../decorators/role.decorator';
+import { ROLES_KEY } from '../decorators/role.decorator';
 import { Role } from 'src/users/enums/role.enum';
 
 @Injectable()
@@ -13,19 +13,20 @@ export class RoleGuard implements CanActivate {
   constructor(private reflector: Reflector) {}
 
   canActivate(context: ExecutionContext): boolean {
-    const requiredRole = this.reflector.getAllAndOverride<Role>(ROLE_KEY, [
+    const requiredRoles = this.reflector.getAllAndOverride<Role[]>(ROLES_KEY, [
       context.getHandler(),
       context.getClass(),
     ]);
-    if (!requiredRole) {
+    if (!requiredRoles) {
       return true;
     }
     const { user } = context.switchToHttp().getRequest();
-    if (requiredRole !== user.userType) {
+    if (requiredRoles.some((role) => user.userType.includes(role))) {
+      return true;
+    } else {
       throw new UnauthorizedException(
-        'Only administrative user can access this resource',
+        'This user is not a valid user for this resource',
       );
     }
-    return true;
   }
 }
