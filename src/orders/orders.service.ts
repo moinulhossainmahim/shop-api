@@ -124,4 +124,37 @@ export class OrdersService {
       };
     }
   }
+
+  async getAllUsersOrders(): Promise<ApiGetResponse<any>> {
+    const orders = await this.ordersRepository.find({
+      relations: ['orderItems', 'shippingAddress', 'billingAddress'],
+    });
+    const newOrders = await Promise.all(
+      orders.map(async (order) => {
+        const items = await Promise.all(
+          order.orderItems.map(
+            async (item) =>
+              await this.orderItemsService.getOrderItemById(item.id),
+          ),
+        );
+        return {
+          ...order,
+          orderItems: items,
+        };
+      }),
+    );
+    return {
+      success: true,
+      data: newOrders,
+      meta: {
+        page: 1,
+        take: 0,
+        itemCount: 0,
+        pageCount: 0,
+        hasPreviousPage: false,
+        hasNextPage: false,
+      },
+      message: 'Orders fetched successfully',
+    };
+  }
 }
