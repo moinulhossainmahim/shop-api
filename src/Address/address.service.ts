@@ -63,7 +63,9 @@ export class AddressService {
 
   async getAllAddress(user: User): Promise<ApiGetResponse<Address>> {
     const query = this.addressRepository.createQueryBuilder('address');
-    query.where('address.userId = :userId', { userId: user.id });
+    query
+      .where('address.userId = :userId', { userId: user.id })
+      .andWhere('address.isActive = :isActive', { isActive: true });
     const allAddress = await query.getMany();
     return {
       message: 'Fetched addresses successfully',
@@ -94,9 +96,8 @@ export class AddressService {
 
   async deleteAddress(user: User, id: string): Promise<ApiDeleteResponse> {
     const address = await this.getAddressById(user, id);
-    const result = await this.addressRepository.delete(address.id);
-    if (result.affected === 0) {
-      throw new NotFoundException(`Category with ID ${id} is not found`);
+    if (address) {
+      await this.addressRepository.update(id, { isActive: false });
     }
     return {
       success: true,
