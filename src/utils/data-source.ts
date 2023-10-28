@@ -7,7 +7,7 @@ export const dataSourceOptions: DataSourceOptions = {
   entities: ['dist/entity/*.js'],
   migrations: ['dist/migration/*.js'],
   type: 'mysql',
-  url: process.env.MYSQL_URL,
+  url: process.env.MYSQL_PRIVATE_URL,
   synchronize: false,
 };
 
