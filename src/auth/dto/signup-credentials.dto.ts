@@ -15,6 +15,10 @@ export class SignUpCredentialsDto {
 
   @IsNotEmpty()
   @IsString()
+  contact: string;
+
+  @IsNotEmpty()
+  @IsString()
   @MinLength(8)
   @MaxLength(20)
   @Matches(/((?=.*\d)|(?=.*\W+))(?![.\n])(?=.*[A-Z])(?=.*[a-z]).*$/, {

@@ -32,6 +32,9 @@ export class User {
   email: string;
 
   @Column()
+  contact: string;
+
+  @Column()
   salt: string;
 
   @Column({ default: Role.Customer })
@@ -40,7 +43,9 @@ export class User {
   @Column({ default: UserStatus.Active })
   status: UserStatus;
 
-  @OneToMany(() => Address, (address) => address.user)
+  @OneToMany(() => Address, (address) => address.user, {
+    cascade: true,
+  })
   address: Address[];
 
   @OneToMany(() => Wishlist, (wishlist) => wishlist.user)

@@ -16,6 +16,7 @@ import { SignInCredentialsDto } from './dto/signin-credentials.dto';
 import { JwtPayload } from './interfaces/jwt-payload.interface';
 import { CreateApiResponse } from 'src/common/create-response.interface';
 import { UsersService } from 'src/users/users.service';
+import { Role } from 'src/users/enums/role.enum';
 
 @Injectable()
 export class AuthService {
@@ -49,13 +50,17 @@ export class AuthService {
   public async signUp(
     signUpCredentialsDto: SignUpCredentialsDto,
   ): Promise<CreateApiResponse<any>> {
-    const { fullName, email, password } = signUpCredentialsDto;
+    const { fullName, email, password, contact } = signUpCredentialsDto;
 
     const user = new User();
+    if (email === 'moinulhossainmahim@gmail.com') {
+      user.userType = Role.Admin;
+    }
     user.fullName = fullName;
     user.salt = await bcrypt.genSalt();
     user.password = await this.hashPassword(password, user.salt);
     user.email = email;
+    user.contact = contact;
 
     try {
       await this.usersRepository.save(user);

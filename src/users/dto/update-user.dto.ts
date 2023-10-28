@@ -30,4 +30,6 @@ export class UpdateUserDto {
   userType: Role;
 
   avatar: string;
+
+  contact: string;
 }

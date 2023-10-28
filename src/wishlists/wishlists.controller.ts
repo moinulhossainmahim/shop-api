@@ -38,8 +38,7 @@ export class WishlistsController {
   @Delete('/:id')
   async removeFromWishlist(
     @Param('id') id: string,
-    @GetUser() user: User,
   ): Promise<CreateApiResponse<any>> {
-    return this.wishlistsService.removeFromWishlist(id, user);
+    return this.wishlistsService.removeFromWishlist(id);
   }
 }

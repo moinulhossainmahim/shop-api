@@ -40,7 +40,15 @@ export class UsersService {
   async getUserById(id: string): Promise<CreateApiResponse<User>> {
     const user = await this.usersRepository.findOne({
       where: { id },
-      select: ['id', 'avatar', 'email', 'fullName', 'status', 'userType'],
+      select: [
+        'id',
+        'avatar',
+        'email',
+        'fullName',
+        'status',
+        'userType',
+        'contact',
+      ],
       relations: ['address'],
     });
     if (!user) {
@@ -85,7 +93,15 @@ export class UsersService {
       await this.usersRepository.update(id, updateUserDto);
       const result = await this.usersRepository.findOne({
         where: { id },
-        select: ['id', 'avatar', 'email', 'fullName', 'status', 'userType'],
+        select: [
+          'id',
+          'avatar',
+          'email',
+          'fullName',
+          'status',
+          'userType',
+          'contact',
+        ],
         relations: ['address'],
       });
       return {
