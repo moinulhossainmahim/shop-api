@@ -1,11 +1,14 @@
-import { v4 as uuid4 } from 'uuid';
-
 export function generateTrackingNo() {
-  const currentDate = new Date();
-  const year = currentDate.getFullYear();
-  const month = (currentDate.getMonth() + 1).toString().padStart(2, '0'); // Month is 0-indexed, so add 1
-  const day = currentDate.getDate().toString().padStart(2, '0');
-  const uuid = uuid4().substring(4, 8);
-  const trackingNumber = `${year}${month}${day}${uuid}`;
+  const randomDigits = Math.floor(Math.random() * 10000)
+    .toString()
+    .padStart(4, '0');
+  const now = new Date();
+  const year = now.getFullYear();
+  const month = (now.getMonth() + 1).toString().padStart(2, '0');
+  const day = now.getDate().toString().padStart(2, '0');
+  const hours = now.getHours().toString().padStart(2, '0');
+  const minutes = now.getMinutes().toString().padStart(2, '0');
+  const seconds = now.getSeconds().toString().padStart(2, '0');
+  const trackingNumber = `${year}${month}${day}${hours}${minutes}${seconds}-${randomDigits}`;
   return trackingNumber;
 }
