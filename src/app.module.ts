@@ -8,7 +8,7 @@ import { TypeOrmConfig } from './utils/typeorm.config';
 import { SubCategoriesModule } from './sub-categories/sub-categories.module';
 import { AuthModule } from './auth/auth.module';
 import { UsersModule } from './users/users.module';
-import { ShippingModule } from './address/address.module';
+import { AddressModule } from './address/address.module';
 import { WishlistsModule } from './wishlists/wishlists.module';
 import { OrdersModule } from './orders/orders.module';
 import { OrderItemsModule } from './order-items/order-items.module';
@@ -22,7 +22,7 @@ import { OrderItemsModule } from './order-items/order-items.module';
     ProductsModule,
     CategoriesModule,
     SubCategoriesModule,
-    ShippingModule,
+    AddressModule,
     WishlistsModule,
     OrdersModule,
     OrderItemsModule,
