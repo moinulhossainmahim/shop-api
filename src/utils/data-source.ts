@@ -4,11 +4,15 @@ import { DataSource, DataSourceOptions } from 'typeorm';
 const config = new ConfigService();
 
 export const dataSourceOptions: DataSourceOptions = {
+  database: config.get('DB_NAME'),
   entities: ['dist/entity/*.js'],
+  host: config.get('DB_HOST'),
   migrations: ['dist/migration/*.js'],
+  password: config.get('DB_PASSWORD'),
+  port: config.get('DB_PORT'),
   type: 'mysql',
   synchronize: false,
-  url: 'mysql://root:f6GG65hae4Ehad1H5A44ChGE1B3cFbHb@roundhouse.proxy.rlwy.net:46860/railway',
+  username: config.get('DB_USERNAME'),
 };
 
 const dataSource = new DataSource(dataSourceOptions);
