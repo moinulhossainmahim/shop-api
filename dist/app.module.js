@@ -33,7 +33,7 @@ exports.AppModule = AppModule = __decorate([
             products_module_1.ProductsModule,
             categories_module_1.CategoriesModule,
             sub_categories_module_1.SubCategoriesModule,
-            address_module_1.ShippingModule,
+            address_module_1.AddressModule,
             wishlists_module_1.WishlistsModule,
             orders_module_1.OrdersModule,
             order_items_module_1.OrderItemsModule,

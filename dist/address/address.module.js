@@ -6,19 +6,19 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.ShippingModule = void 0;
+exports.AddressModule = void 0;
 const common_1 = require("@nestjs/common");
 const address_controller_1 = require("./address.controller");
 const address_service_1 = require("./address.service");
 const typeorm_1 = require("@nestjs/typeorm");
 const Address_1 = require("../entity/Address");
-let ShippingModule = exports.ShippingModule = class ShippingModule {
+let AddressModule = exports.AddressModule = class AddressModule {
 };
-exports.ShippingModule = ShippingModule = __decorate([
+exports.AddressModule = AddressModule = __decorate([
     (0, common_1.Module)({
         imports: [typeorm_1.TypeOrmModule.forFeature([Address_1.Address])],
         controllers: [address_controller_1.AddressController],
         providers: [address_service_1.AddressService],
     })
-], ShippingModule);
+], AddressModule);
 //# sourceMappingURL=address.module.js.map
