@@ -10,6 +10,7 @@ export const dataSourceOptions: DataSourceOptions = {
   password: config.get('DB_PASSWORD'),
   port: config.get('DB_PORT'),
   type: 'mysql',
+  synchronize: true,
   username: config.get('DB_USERNAME'),
 };
 
