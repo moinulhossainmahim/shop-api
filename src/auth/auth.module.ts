@@ -7,6 +7,9 @@ import { JwtModule } from '@nestjs/jwt';
 import { JwtStrategy } from '../middleware/jwt.strategy';
 import { PassportModule } from '@nestjs/passport';
 import { UsersModule } from 'src/users/users.module';
+import { ConfigService } from '@nestjs/config';
+
+const config = new ConfigService();
 
 @Module({
   imports: [
@@ -14,7 +17,7 @@ import { UsersModule } from 'src/users/users.module';
     forwardRef(() => UsersModule),
     PassportModule,
     JwtModule.register({
-      secret: process.env.JWT_SECRET,
+      secret: config.get('JWT_SECRET'),
       signOptions: { expiresIn: 3600 },
     }),
   ],
