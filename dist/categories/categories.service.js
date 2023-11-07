@@ -30,6 +30,7 @@ let CategoriesService = exports.CategoriesService = class CategoriesService {
             throw new common_1.BadRequestException('Category image can not be empty');
         }
         category.icon = `${constants_1.uploadFileUrl}/categories/pictures/${file.filename}`;
+        console.log(constants_1.uploadFileUrl);
         try {
             await this.categoriesRepository.save(category);
             return {
