@@ -36,7 +36,7 @@ export class UsersController {
 
   @Get()
   @UseGuards(JwtAuthGuard, RoleGuard)
-  @UserRole([Role.Admin])
+  @UserRole([Role.Admin, Role.Customer])
   @UseInterceptors(ResponseInterceptor)
   async getAllUsers(): Promise<ApiGetResponse<User>> {
     return this.usersService.getAllUsers();
