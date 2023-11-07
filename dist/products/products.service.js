@@ -19,6 +19,7 @@ const Product_1 = require("../entity/Product");
 const typeorm_2 = require("typeorm");
 const Categories_1 = require("../entity/Categories");
 const SubCategory_1 = require("../entity/SubCategory");
+const constants_1 = require("../utils/constants");
 let ProductsService = exports.ProductsService = class ProductsService {
     constructor(productsRepository, categoriesRepository, subCategoriesRepository) {
         this.productsRepository = productsRepository;
@@ -48,10 +49,10 @@ let ProductsService = exports.ProductsService = class ProductsService {
         product.categories = await Promise.all(Promisecategories);
         product.subcategories = await Promise.all(PromisesubCategories);
         console.log(product.categories);
-        product.featuredImg = `http://localhost:3000/products/pictures/${images[0].filename}`;
+        product.featuredImg = `${constants_1.uploadFileUrl}/products/pictures/${images[0].filename}`;
         product.galleryImg = images
             .slice(1)
-            .map((img) => `http://localhost:3000/products/pictures/${img.filename}`);
+            .map((img) => `${constants_1.uploadFileUrl}/products/pictures/${img.filename}`);
         try {
             await this.productsRepository.save(product);
             return {
@@ -112,10 +113,10 @@ let ProductsService = exports.ProductsService = class ProductsService {
         product.subcategories = await Promise.all(PromisesubCategories);
         if (product) {
             if (files.length) {
-                product.featuredImg = `http://localhost:3000/products/pictures/${files[0].filename}`;
+                product.featuredImg = `${constants_1.uploadFileUrl}/products/pictures/${files[0].filename}`;
                 product.galleryImg = files
                     .slice(1)
-                    .map((file) => `http://localhost:3000/products/pictures/${file.filename}`);
+                    .map((file) => `${constants_1.uploadFileUrl}/products/pictures/${file.filename}`);
             }
             const { categories, subCategories, ...newCreateProductDto } = createProductDto;
             Object.assign(product, newCreateProductDto);

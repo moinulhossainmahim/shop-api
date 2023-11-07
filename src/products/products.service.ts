@@ -13,6 +13,7 @@ import { ApiGetResponse } from 'src/common/get-response.interface';
 import { ApiDeleteResponse } from 'src/common/delete-response.interface';
 import { Categories } from 'src/entity/Categories';
 import { SubCategory } from 'src/entity/SubCategory';
+import { uploadFileUrl } from 'src/utils/constants';
 
 @Injectable()
 export class ProductsService {
@@ -53,10 +54,10 @@ export class ProductsService {
     product.categories = await Promise.all(Promisecategories);
     product.subcategories = await Promise.all(PromisesubCategories);
     console.log(product.categories);
-    product.featuredImg = `http://localhost:3000/products/pictures/${images[0].filename}`;
+    product.featuredImg = `${uploadFileUrl}/products/pictures/${images[0].filename}`;
     product.galleryImg = images
       .slice(1)
-      .map((img) => `http://localhost:3000/products/pictures/${img.filename}`);
+      .map((img) => `${uploadFileUrl}/products/pictures/${img.filename}`);
     try {
       await this.productsRepository.save(product);
       return {
@@ -122,13 +123,10 @@ export class ProductsService {
     product.subcategories = await Promise.all(PromisesubCategories);
     if (product) {
       if (files.length) {
-        product.featuredImg = `http://localhost:3000/products/pictures/${files[0].filename}`;
+        product.featuredImg = `${uploadFileUrl}/products/pictures/${files[0].filename}`;
         product.galleryImg = files
           .slice(1)
-          .map(
-            (file) =>
-              `http://localhost:3000/products/pictures/${file.filename}`,
-          );
+          .map((file) => `${uploadFileUrl}/products/pictures/${file.filename}`);
       }
       // eslint-disable-next-line @typescript-eslint/no-unused-vars
       const { categories, subCategories, ...newCreateProductDto } =
