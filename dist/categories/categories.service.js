@@ -17,6 +17,7 @@ const common_1 = require("@nestjs/common");
 const typeorm_1 = require("@nestjs/typeorm");
 const Categories_1 = require("../entity/Categories");
 const typeorm_2 = require("typeorm");
+const constants_1 = require("../utils/constants");
 let CategoriesService = exports.CategoriesService = class CategoriesService {
     constructor(categoriesRepository) {
         this.categoriesRepository = categoriesRepository;
@@ -28,7 +29,7 @@ let CategoriesService = exports.CategoriesService = class CategoriesService {
         if (!file.filename) {
             throw new common_1.BadRequestException('Category image can not be empty');
         }
-        category.icon = `http://localhost:3000/categories/pictures/${file.filename}`;
+        category.icon = `${constants_1.uploadFileUrl}/categories/pictures/${file.filename}`;
         try {
             await this.categoriesRepository.save(category);
             return {

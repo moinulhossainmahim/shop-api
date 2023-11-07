@@ -56,7 +56,7 @@ let CategoriesController = exports.CategoriesController = class CategoriesContro
         }
         else {
             if (icon) {
-                updateCategoryDto.icon = `http://localhost:3000/categories/pictures/${icon.filename}`;
+                updateCategoryDto.icon = `${constants_1.uploadFileUrl}/categories/pictures/${icon.filename}`;
             }
             return this.categoriesService.updateCategory(id, updateCategoryDto);
         }

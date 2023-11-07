@@ -56,7 +56,7 @@ let UsersController = exports.UsersController = class UsersController {
 __decorate([
     (0, common_1.Get)(),
     (0, common_1.UseGuards)(jwt_auth_guard_1.JwtAuthGuard, role_guard_1.RoleGuard),
-    (0, role_decorator_1.UserRole)([role_enum_1.Role.Admin]),
+    (0, role_decorator_1.UserRole)([role_enum_1.Role.Admin, role_enum_1.Role.Customer]),
     (0, common_1.UseInterceptors)(response_interceptor_1.ResponseInterceptor),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", []),
