@@ -11,6 +11,7 @@ import { UpdateCategoryDto } from './dto/update-category.dto';
 import { CreateApiResponse } from 'src/common/create-response.interface';
 import { ApiGetResponse } from 'src/common/get-response.interface';
 import { ApiDeleteResponse } from 'src/common/delete-response.interface';
+import { uploadFileUrl } from 'src/utils/constants';
 
 @Injectable()
 export class CategoriesService {
@@ -29,7 +30,7 @@ export class CategoriesService {
     if (!file.filename) {
       throw new BadRequestException('Category image can not be empty');
     }
-    category.icon = `http://localhost:3000/categories/pictures/${file.filename}`;
+    category.icon = `${uploadFileUrl}/categories/pictures/${file.filename}`;
     try {
       await this.categoriesRepository.save(category);
       return {

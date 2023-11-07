@@ -26,7 +26,7 @@ import { JwtAuthGuard } from 'src/guards/jwt-auth.guard';
 import { RoleGuard } from 'src/guards/role.guard';
 import { UserRole } from 'src/decorators/role.decorator';
 import { Role } from 'src/users/enums/role.enum';
-import { UNSUPPORTED_FILE } from 'src/utils/constants';
+import { UNSUPPORTED_FILE, uploadFileUrl } from 'src/utils/constants';
 import { CreateApiResponse } from 'src/common/create-response.interface';
 import { ResponseInterceptor } from 'src/interceptors/response.interceptor';
 import { ApiGetResponse } from 'src/common/get-response.interface';
@@ -120,7 +120,7 @@ export class CategoriesController {
       );
     } else {
       if (icon) {
-        updateCategoryDto.icon = `http://localhost:3000/categories/pictures/${icon.filename}`;
+        updateCategoryDto.icon = `${uploadFileUrl}/categories/pictures/${icon.filename}`;
       }
       return this.categoriesService.updateCategory(id, updateCategoryDto);
     }
