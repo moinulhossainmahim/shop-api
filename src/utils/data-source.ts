@@ -9,9 +9,11 @@ export const dataSourceOptions: DataSourceOptions = {
   host: config.get('DB_HOST'),
   password: config.get('DB_PASSWORD'),
   port: config.get('DB_PORT'),
+  migrations: ['dist/migration/*.js'],
   type: 'mysql',
-  synchronize: true,
+  synchronize: false,
   username: config.get('DB_USERNAME'),
+  migrationsRun: config.get('MIGRATION_RUN'),
 };
 
 const dataSource = new DataSource(dataSourceOptions);
