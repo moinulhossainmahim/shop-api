@@ -27,6 +27,7 @@ const role_guard_1 = require("../guards/role.guard");
 const role_decorator_1 = require("../decorators/role.decorator");
 const role_enum_1 = require("./enums/role.enum");
 const update_password_dto_1 = require("./dto/update-password.dto");
+const constants_1 = require("../utils/constants");
 let UsersController = exports.UsersController = class UsersController {
     constructor(usersService) {
         this.usersService = usersService;
@@ -48,7 +49,7 @@ let UsersController = exports.UsersController = class UsersController {
     }
     updateUser(updateUserDto, id, avatar) {
         if (avatar) {
-            updateUserDto.avatar = `http://localhost:3000/users/pictures/${avatar.filename}`;
+            updateUserDto.avatar = `${constants_1.uploadFileUrl}/users/pictures/${avatar.filename}`;
         }
         return this.usersService.updateUser(id, updateUserDto);
     }

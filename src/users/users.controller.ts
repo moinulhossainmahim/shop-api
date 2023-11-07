@@ -28,6 +28,7 @@ import { UserRole } from 'src/decorators/role.decorator';
 import { Role } from './enums/role.enum';
 import { ApiDeleteResponse } from 'src/common/delete-response.interface';
 import { UpdatePasswordDto } from './dto/update-password.dto';
+import { uploadFileUrl } from 'src/utils/constants';
 
 @Controller('users')
 @ApiTags('users')
@@ -92,7 +93,7 @@ export class UsersController {
     @UploadedFile() avatar?: Express.Multer.File,
   ): Promise<CreateApiResponse<Partial<User>>> {
     if (avatar) {
-      updateUserDto.avatar = `http://localhost:3000/users/pictures/${avatar.filename}`;
+      updateUserDto.avatar = `${uploadFileUrl}/users/pictures/${avatar.filename}`;
     }
     return this.usersService.updateUser(id, updateUserDto);
   }
