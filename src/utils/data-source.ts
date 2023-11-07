@@ -13,7 +13,7 @@ export const dataSourceOptions: DataSourceOptions = {
   type: 'mysql',
   synchronize: false,
   username: config.get('DB_USERNAME'),
-  migrationsRun: config.get('MIGRATION_RUN'),
+  migrationsRun: Boolean(config.get('MIGRATION_RUN')),
 };
 
 const dataSource = new DataSource(dataSourceOptions);
