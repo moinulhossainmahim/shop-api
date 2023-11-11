@@ -6,7 +6,11 @@ const typeorm_1 = require("typeorm");
 const config = new config_1.ConfigService();
 exports.dataSourceOptions = {
     entities: ['dist/entity/*.js'],
-    url: 'mysql://root:f6GG65hae4Ehad1H5A44ChGE1B3cFbHb@roundhouse.proxy.rlwy.net:46860/railway',
+    database: config.get('DB_NAME'),
+    host: config.get('DB_HOST'),
+    password: config.get('DB_PASSWORD'),
+    port: config.get('DB_PORT'),
+    username: config.get('DB_USERNAME'),
     migrations: ['dist/migration/*.js'],
     type: 'mysql',
     synchronize: false,
