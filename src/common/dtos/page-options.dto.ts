@@ -9,6 +9,10 @@ export class PageOptionsDto {
   @IsOptional()
   readonly order?: Order = Order.ASC;
 
+  @ApiPropertyOptional()
+  @IsOptional()
+  readonly category?: string;
+
   @ApiPropertyOptional({
     minimum: 1,
     default: 1,
