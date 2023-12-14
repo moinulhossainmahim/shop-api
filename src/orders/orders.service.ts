@@ -128,9 +128,13 @@ export class OrdersService {
     }
   }
 
-  async getAllUsersOrders(): Promise<ApiGetResponse<any>> {
+  async getAllUsersOrders(
+    pageOptionsDto: PageOptionsDto,
+  ): Promise<ApiGetResponse<any>> {
     const orders = await this.ordersRepository.find({
       relations: ['orderItems', 'shippingAddress', 'billingAddress'],
+      take: pageOptionsDto.take,
+      skip: pageOptionsDto.skip,
     });
     const newOrders = await Promise.all(
       orders.map(async (order) => {
@@ -146,17 +150,12 @@ export class OrdersService {
         };
       }),
     );
+    const itemCount = newOrders.length;
+    const meta = new PageMetaDto({ itemCount, pageOptionsDto });
     return {
       success: true,
       data: newOrders,
-      meta: {
-        page: 1,
-        take: 0,
-        itemCount: 0,
-        pageCount: 0,
-        hasPreviousPage: false,
-        hasNextPage: false,
-      },
+      meta: meta,
       message: 'Orders fetched successfully',
     };
   }

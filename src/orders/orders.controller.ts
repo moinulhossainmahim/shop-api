@@ -56,8 +56,10 @@ export class OrdersController {
   @Get('/all')
   @UseGuards(JwtAuthGuard, RoleGuard)
   @UserRole([Role.Admin])
-  async getAllUserOrders(): Promise<ApiGetResponse<Order>> {
-    return this.ordersService.getAllUsersOrders();
+  async getAllUserOrders(
+    @Query() pageOptionsDto: PageOptionsDto,
+  ): Promise<ApiGetResponse<Order>> {
+    return this.ordersService.getAllUsersOrders(pageOptionsDto);
   }
 
   @Delete('/:id')
