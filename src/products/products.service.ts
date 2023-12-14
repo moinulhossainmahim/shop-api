@@ -16,7 +16,7 @@ import {
   ApiGetResponse,
   ApiDeleteResponse,
 } from 'src/common/interfaces';
-import { PageMetaDto, PageOptionsDto } from 'src/common/dtos';
+import { FilterOptionsDto, PageMetaDto, PageOptionsDto } from 'src/common/dtos';
 
 @Injectable()
 export class ProductsService {
@@ -79,18 +79,42 @@ export class ProductsService {
 
   async getAllProducts(
     pageOptionsDto: PageOptionsDto,
+    filterOptionsDto: FilterOptionsDto,
   ): Promise<ApiGetResponse<Product>> {
     try {
-      const products = await this.productsRepository.find({
-        relations: ['categories', 'subcategories'],
-        order: {
-          createdAt: pageOptionsDto.order,
-        },
-        take: pageOptionsDto.take,
-        skip: pageOptionsDto.skip,
-      });
-      const itemCount = await this.productsRepository.count();
+      let queryBuilder = this.productsRepository
+        .createQueryBuilder('product')
+        .leftJoinAndSelect('product.categories', 'categories')
+        .leftJoinAndSelect('product.subcategories', 'subcategories')
+        .orderBy('product.createdAt', pageOptionsDto.order)
+        .take(pageOptionsDto.take)
+        .skip(pageOptionsDto.skip);
+
+      if (filterOptionsDto.category) {
+        queryBuilder = queryBuilder.andWhere(
+          'categories.slug = :categorySlug',
+          { categorySlug: filterOptionsDto.category },
+        );
+      }
+
+      if (filterOptionsDto.subCategory) {
+        queryBuilder = queryBuilder.andWhere(
+          'subcategories.slug = :subcategorySlug',
+          { subcategorySlug: filterOptionsDto.subCategory },
+        );
+      }
+
+      if (filterOptionsDto.search) {
+        queryBuilder = queryBuilder.andWhere(
+          '(LOWER(product.name) LIKE LOWER(:search))',
+          { search: `%${filterOptionsDto.search}%` },
+        );
+      }
+
+      const products = await queryBuilder.getMany();
+      const itemCount = products.length;
       const meta = new PageMetaDto({ itemCount, pageOptionsDto });
+
       return {
         success: true,
         message: 'Fetch products successfully',
