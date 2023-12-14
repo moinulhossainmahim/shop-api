@@ -83,6 +83,9 @@ export class ProductsService {
     try {
       const products = await this.productsRepository.find({
         relations: ['categories', 'subcategories'],
+        order: {
+          createdAt: pageOptionsDto.order,
+        },
         take: pageOptionsDto.take,
         skip: pageOptionsDto.skip,
       });
