@@ -1,9 +1,8 @@
+/dist
 /node_modules
 /env
 .env
 # Logs
-./uploads
-
 logs
 *.log
 npm-debug.log*

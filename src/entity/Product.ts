@@ -1,5 +1,6 @@
 import {
   Column,
+  CreateDateColumn,
   Entity,
   JoinTable,
   ManyToMany,
@@ -16,6 +17,9 @@ import { SubCategory } from './SubCategory';
 export class Product {
   @PrimaryGeneratedColumn('uuid')
   id: string;
+
+  @CreateDateColumn({ name: 'created_at' })
+  createdAt: Date;
 
   @Column({ unique: true })
   name: string;

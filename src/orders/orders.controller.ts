@@ -6,6 +6,7 @@ import {
   Param,
   Patch,
   Post,
+  Query,
   UseGuards,
   UseInterceptors,
 } from '@nestjs/common';
@@ -16,12 +17,15 @@ import { User } from 'src/entity/User';
 import { JwtAuthGuard } from 'src/guards/jwt-auth.guard';
 import { Order } from 'src/entity/Order';
 import { ResponseInterceptor } from 'src/interceptors/response.interceptor';
-import { ApiGetResponse } from 'src/common/get-response.interface';
-import { ApiDeleteResponse } from 'src/common/delete-response.interface';
-import { CreateApiResponse } from 'src/common/create-response.interface';
 import { RoleGuard } from 'src/guards/role.guard';
 import { UserRole } from 'src/decorators/role.decorator';
 import { Role } from 'src/users/enums/role.enum';
+import {
+  CreateApiResponse,
+  ApiGetResponse,
+  ApiDeleteResponse,
+} from 'src/common/interfaces';
+import { PageOptionsDto } from 'src/common/dtos';
 
 @UseGuards(JwtAuthGuard)
 @UseInterceptors(ResponseInterceptor)
@@ -42,15 +46,20 @@ export class OrdersController {
   @Get()
   @UseGuards(JwtAuthGuard, RoleGuard)
   @UserRole([Role.Customer, Role.Admin])
-  async getAllOrders(@GetUser() user: User): Promise<ApiGetResponse<Order>> {
-    return this.ordersService.getAllOrdersOfAUser(user);
+  async getAllOrders(
+    @GetUser() user: User,
+    @Query() pageOptionsDto?: PageOptionsDto,
+  ): Promise<ApiGetResponse<Order>> {
+    return this.ordersService.getAllOrdersOfAUser(user, pageOptionsDto);
   }
 
   @Get('/all')
   @UseGuards(JwtAuthGuard, RoleGuard)
   @UserRole([Role.Admin])
-  async getAllUserOrders(): Promise<ApiGetResponse<Order>> {
-    return this.ordersService.getAllUsersOrders();
+  async getAllUserOrders(
+    @Query() pageOptionsDto: PageOptionsDto,
+  ): Promise<ApiGetResponse<Order>> {
+    return this.ordersService.getAllUsersOrders(pageOptionsDto);
   }
 
   @Delete('/:id')

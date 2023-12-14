@@ -16,9 +16,11 @@ import { GetUser } from 'src/decorators/get-user.decorator';
 import { User } from 'src/entity/User';
 import { Address } from 'src/entity/Address';
 import { ResponseInterceptor } from 'src/interceptors/response.interceptor';
-import { CreateApiResponse } from 'src/common/create-response.interface';
-import { ApiGetResponse } from 'src/common/get-response.interface';
-import { ApiDeleteResponse } from 'src/common/delete-response.interface';
+import {
+  CreateApiResponse,
+  ApiGetResponse,
+  ApiDeleteResponse,
+} from 'src/common/interfaces';
 
 @UseGuards(JwtAuthGuard)
 @UseInterceptors(ResponseInterceptor)

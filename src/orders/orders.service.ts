@@ -5,9 +5,12 @@ import { Repository } from 'typeorm';
 import { CreateOrderDto } from './dto/create-order.dto';
 import { User } from 'src/entity/User';
 import { OrderItemsService } from 'src/order-items/order-items.service';
-import { ApiGetResponse } from 'src/common/get-response.interface';
-import { ApiDeleteResponse } from 'src/common/delete-response.interface';
-import { CreateApiResponse } from 'src/common/create-response.interface';
+import {
+  CreateApiResponse,
+  ApiGetResponse,
+  ApiDeleteResponse,
+} from 'src/common/interfaces';
+import { PageMetaDto, PageOptionsDto } from 'src/common/dtos';
 
 @Injectable()
 export class OrdersService {
@@ -46,10 +49,15 @@ export class OrdersService {
     }
   }
 
-  async getAllOrdersOfAUser(user: User): Promise<ApiGetResponse<any>> {
+  async getAllOrdersOfAUser(
+    user: User,
+    pageOptionsDto: PageOptionsDto,
+  ): Promise<ApiGetResponse<any>> {
     const orders = await this.ordersRepository.find({
-      where: { user: { id: user.id } },
       relations: ['orderItems', 'shippingAddress', 'billingAddress'],
+      where: { user: { id: user.id } },
+      take: pageOptionsDto.take,
+      skip: pageOptionsDto.skip,
     });
     const newOrders = await Promise.all(
       orders.map(async (order) => {
@@ -65,17 +73,12 @@ export class OrdersService {
         };
       }),
     );
+    const itemCount = newOrders.length;
+    const meta = new PageMetaDto({ itemCount, pageOptionsDto });
     return {
       success: true,
       data: newOrders,
-      meta: {
-        page: 1,
-        take: 0,
-        itemCount: 0,
-        pageCount: 0,
-        hasPreviousPage: false,
-        hasNextPage: false,
-      },
+      meta: meta,
       message: 'Orders fetched successfully',
     };
   }
@@ -125,9 +128,13 @@ export class OrdersService {
     }
   }
 
-  async getAllUsersOrders(): Promise<ApiGetResponse<any>> {
+  async getAllUsersOrders(
+    pageOptionsDto: PageOptionsDto,
+  ): Promise<ApiGetResponse<any>> {
     const orders = await this.ordersRepository.find({
       relations: ['orderItems', 'shippingAddress', 'billingAddress'],
+      take: pageOptionsDto.take,
+      skip: pageOptionsDto.skip,
     });
     const newOrders = await Promise.all(
       orders.map(async (order) => {
@@ -143,17 +150,12 @@ export class OrdersService {
         };
       }),
     );
+    const itemCount = newOrders.length;
+    const meta = new PageMetaDto({ itemCount, pageOptionsDto });
     return {
       success: true,
       data: newOrders,
-      meta: {
-        page: 1,
-        take: 0,
-        itemCount: 0,
-        pageCount: 0,
-        hasPreviousPage: false,
-        hasNextPage: false,
-      },
+      meta: meta,
       message: 'Orders fetched successfully',
     };
   }

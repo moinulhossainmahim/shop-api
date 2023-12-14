@@ -1,12 +1,7 @@
-import {
-  Injectable,
-  NotAcceptableException,
-  NotFoundException,
-  UnauthorizedException,
-} from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { CreateApiResponse } from 'src/common/create-response.interface';
-import { ApiGetResponse } from 'src/common/get-response.interface';
+import { PageMetaDto, PageOptionsDto } from 'src/common/dtos';
+import { CreateApiResponse, ApiGetResponse } from 'src/common/interfaces';
 import { Product } from 'src/entity/Product';
 import { User } from 'src/entity/User';
 import { Wishlist } from 'src/entity/Wishlist';
@@ -46,16 +41,23 @@ export class WishlistsService {
     }
   }
 
-  async getAllWishlist(user: User): Promise<ApiGetResponse<Wishlist>> {
+  async getAllWishlist(
+    user: User,
+    pageOptionsDto: PageOptionsDto,
+  ): Promise<ApiGetResponse<Wishlist>> {
     const wishlists = await this.wishlistsRepository.find({
       where: { user: { id: user.id } },
       relations: ['product'],
+      skip: pageOptionsDto.skip,
+      take: pageOptionsDto.take,
     });
+    const itemCount = wishlists.length;
+    const meta = new PageMetaDto({ itemCount, pageOptionsDto });
     return {
       success: true,
       data: wishlists,
+      meta,
       message: 'Fetched wishlists successfully',
-      meta: {},
     };
   }
 

@@ -27,10 +27,12 @@ import { RoleGuard } from 'src/guards/role.guard';
 import { UserRole } from 'src/decorators/role.decorator';
 import { Role } from 'src/users/enums/role.enum';
 import { UNSUPPORTED_FILE, uploadFileUrl } from 'src/utils/constants';
-import { CreateApiResponse } from 'src/common/create-response.interface';
 import { ResponseInterceptor } from 'src/interceptors/response.interceptor';
-import { ApiGetResponse } from 'src/common/get-response.interface';
-import { ApiDeleteResponse } from 'src/common/delete-response.interface';
+import {
+  CreateApiResponse,
+  ApiGetResponse,
+  ApiDeleteResponse,
+} from 'src/common/interfaces';
 
 @Controller('categories')
 @ApiTags('Categories')

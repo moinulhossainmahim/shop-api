@@ -8,7 +8,7 @@ async function bootstrap() {
   dotenv.config();
   const app = await NestFactory.create(AppModule);
   app.enableCors();
-  app.useGlobalPipes(new ValidationPipe());
+  app.useGlobalPipes(new ValidationPipe({ transform: true }));
   const config = new DocumentBuilder()
     .setTitle('Shop API')
     .setDescription('Shop API is a project for an e-commerce application')
