@@ -11,4 +11,9 @@ export class FilterOptionsDto {
   @IsString()
   @IsOptional()
   readonly subCategory?: string;
+
+  @ApiPropertyOptional()
+  @IsOptional()
+  @IsString()
+  search?: string;
 }

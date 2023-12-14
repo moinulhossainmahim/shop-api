@@ -104,6 +104,13 @@ export class ProductsService {
         );
       }
 
+      if (filterOptionsDto.search) {
+        queryBuilder = queryBuilder.andWhere(
+          '(LOWER(product.name) LIKE LOWER(:search))',
+          { search: `%${filterOptionsDto.search}%` },
+        );
+      }
+
       const products = await queryBuilder.getMany();
       const itemCount = products.length;
       const meta = new PageMetaDto({ itemCount, pageOptionsDto });
