@@ -34,7 +34,7 @@ import {
   ApiGetResponse,
   ApiDeleteResponse,
 } from 'src/common/interfaces';
-import { PageOptionsDto } from 'src/common/dtos';
+import { FilterOptionsDto, PageOptionsDto } from 'src/common/dtos';
 
 @Controller('products')
 @ApiTags('Products')
@@ -77,8 +77,12 @@ export class ProductsController {
   @UseInterceptors(ResponseInterceptor)
   getAllProducts(
     @Query() pageOptionsDto: PageOptionsDto,
+    @Query() filterOptionsDto: FilterOptionsDto,
   ): Promise<ApiGetResponse<Product>> {
-    return this.productsService.getAllProducts(pageOptionsDto);
+    return this.productsService.getAllProducts(
+      pageOptionsDto,
+      filterOptionsDto,
+    );
   }
 
   @Get('/:id')
