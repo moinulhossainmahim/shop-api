@@ -26,6 +26,7 @@ const role_decorator_1 = require("../decorators/role.decorator");
 const role_enum_1 = require("../users/enums/role.enum");
 const response_interceptor_1 = require("../interceptors/response.interceptor");
 const constants_1 = require("../utils/constants");
+const dtos_1 = require("../common/dtos");
 let ProductsController = exports.ProductsController = class ProductsController {
     constructor(productsService) {
         this.productsService = productsService;
@@ -41,8 +42,8 @@ let ProductsController = exports.ProductsController = class ProductsController {
     async getPicture(filename, res) {
         res.sendFile(filename, { root: './uploads' });
     }
-    getAllProducts() {
-        return this.productsService.getAllProducts();
+    getAllProducts(pageOptionsDto) {
+        return this.productsService.getAllProducts(pageOptionsDto);
     }
     getProductById(id) {
         return this.productsService.getProductById(id);
@@ -92,8 +93,9 @@ __decorate([
 __decorate([
     (0, common_1.Get)(),
     (0, common_1.UseInterceptors)(response_interceptor_1.ResponseInterceptor),
+    __param(0, (0, common_1.Query)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", []),
+    __metadata("design:paramtypes", [dtos_1.PageOptionsDto]),
     __metadata("design:returntype", Promise)
 ], ProductsController.prototype, "getAllProducts", null);
 __decorate([

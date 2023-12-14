@@ -7,6 +7,7 @@ import {
   Param,
   Patch,
   Post,
+  Query,
   Req,
   Res,
   UploadedFiles,
@@ -27,10 +28,13 @@ import { RoleGuard } from 'src/guards/role.guard';
 import { UserRole } from 'src/decorators/role.decorator';
 import { Role } from 'src/users/enums/role.enum';
 import { ResponseInterceptor } from 'src/interceptors/response.interceptor';
-import { CreateApiResponse } from 'src/common/create-response.interface';
-import { ApiGetResponse } from 'src/common/get-response.interface';
-import { ApiDeleteResponse } from 'src/common/delete-response.interface';
 import { UNSUPPORTED_FILE } from 'src/utils/constants';
+import {
+  CreateApiResponse,
+  ApiGetResponse,
+  ApiDeleteResponse,
+} from 'src/common/interfaces';
+import { PageOptionsDto } from 'src/common/dtos';
 
 @Controller('products')
 @ApiTags('Products')
@@ -71,8 +75,10 @@ export class ProductsController {
 
   @Get()
   @UseInterceptors(ResponseInterceptor)
-  getAllProducts(): Promise<ApiGetResponse<Product>> {
-    return this.productsService.getAllProducts();
+  getAllProducts(
+    @Query() pageOptionsDto: PageOptionsDto,
+  ): Promise<ApiGetResponse<Product>> {
+    return this.productsService.getAllProducts(pageOptionsDto);
   }
 
   @Get('/:id')

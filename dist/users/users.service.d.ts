@@ -1,11 +1,9 @@
 import { User } from 'src/entity/User';
 import { Repository } from 'typeorm';
 import { UpdateUserDto } from './dto/update-user.dto';
-import { ApiGetResponse } from 'src/common/get-response.interface';
-import { CreateApiResponse } from 'src/common/create-response.interface';
-import { ApiDeleteResponse } from 'src/common/delete-response.interface';
 import { UpdatePasswordDto } from './dto/update-password.dto';
 import { AuthService } from 'src/auth/auth.service';
+import { CreateApiResponse, ApiGetResponse, ApiDeleteResponse } from 'src/common/interfaces';
 export declare class UsersService {
     private usersRepository;
     private authService;

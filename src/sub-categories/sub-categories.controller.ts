@@ -17,10 +17,12 @@ import { UserRole } from 'src/decorators/role.decorator';
 import { JwtAuthGuard } from 'src/guards/jwt-auth.guard';
 import { RoleGuard } from 'src/guards/role.guard';
 import { Role } from 'src/users/enums/role.enum';
-import { CreateApiResponse } from 'src/common/create-response.interface';
 import { ResponseInterceptor } from 'src/interceptors/response.interceptor';
-import { ApiGetResponse } from 'src/common/get-response.interface';
-import { ApiDeleteResponse } from 'src/common/delete-response.interface';
+import {
+  CreateApiResponse,
+  ApiGetResponse,
+  ApiDeleteResponse,
+} from 'src/common/interfaces';
 
 @Controller('sub-categories')
 @UseGuards(JwtAuthGuard, RoleGuard)

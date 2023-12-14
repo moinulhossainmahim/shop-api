@@ -4,9 +4,7 @@ import { CreateCategoryDto } from './dto/create-category.dto';
 import { Categories } from '../entity/Categories';
 import { Response } from 'express';
 import { UpdateCategoryDto } from './dto/update-category.dto';
-import { CreateApiResponse } from 'src/common/create-response.interface';
-import { ApiGetResponse } from 'src/common/get-response.interface';
-import { ApiDeleteResponse } from 'src/common/delete-response.interface';
+import { CreateApiResponse, ApiGetResponse, ApiDeleteResponse } from 'src/common/interfaces';
 export declare class CategoriesController {
     private readonly categoriesService;
     constructor(categoriesService: CategoriesService);

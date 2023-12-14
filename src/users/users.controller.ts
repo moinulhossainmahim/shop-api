@@ -19,16 +19,18 @@ import { editFilename, imageFileFilter } from 'src/products/file-upload.utils';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { ApiTags } from '@nestjs/swagger';
 import { ResponseInterceptor } from 'src/interceptors/response.interceptor';
-import { ApiGetResponse } from 'src/common/get-response.interface';
-import { CreateApiResponse } from 'src/common/create-response.interface';
 import { GetUser } from 'src/decorators/get-user.decorator';
 import { JwtAuthGuard } from 'src/guards/jwt-auth.guard';
 import { RoleGuard } from 'src/guards/role.guard';
 import { UserRole } from 'src/decorators/role.decorator';
 import { Role } from './enums/role.enum';
-import { ApiDeleteResponse } from 'src/common/delete-response.interface';
 import { UpdatePasswordDto } from './dto/update-password.dto';
 import { uploadFileUrl } from 'src/utils/constants';
+import {
+  CreateApiResponse,
+  ApiGetResponse,
+  ApiDeleteResponse,
+} from 'src/common/interfaces';
 
 @Controller('users')
 @ApiTags('users')

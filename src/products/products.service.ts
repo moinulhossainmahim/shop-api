@@ -8,12 +8,15 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Product } from 'src/entity/Product';
 import { Repository } from 'typeorm';
 import { UpdateProductDto } from './dto/update-product.dto';
-import { CreateApiResponse } from 'src/common/create-response.interface';
-import { ApiGetResponse } from 'src/common/get-response.interface';
-import { ApiDeleteResponse } from 'src/common/delete-response.interface';
 import { Categories } from 'src/entity/Categories';
 import { SubCategory } from 'src/entity/SubCategory';
 import { uploadFileUrl } from 'src/utils/constants';
+import {
+  CreateApiResponse,
+  ApiGetResponse,
+  ApiDeleteResponse,
+} from 'src/common/interfaces';
+import { PageMetaDto, PageOptionsDto } from 'src/common/dtos';
 
 @Injectable()
 export class ProductsService {
@@ -74,16 +77,22 @@ export class ProductsService {
     }
   }
 
-  async getAllProducts(): Promise<ApiGetResponse<Product>> {
+  async getAllProducts(
+    pageOptionsDto: PageOptionsDto,
+  ): Promise<ApiGetResponse<Product>> {
     try {
       const products = await this.productsRepository.find({
         relations: ['categories', 'subcategories'],
+        take: pageOptionsDto.take,
+        skip: pageOptionsDto.skip,
       });
+      const itemCount = await this.productsRepository.count();
+      const meta = new PageMetaDto({ itemCount, pageOptionsDto });
       return {
         success: true,
         message: 'Fetch products successfully',
         data: products,
-        meta: {},
+        meta: meta,
       };
     } catch (error) {
       console.log(error.message);

@@ -9,7 +9,7 @@ async function bootstrap() {
     dotenv.config();
     const app = await core_1.NestFactory.create(app_module_1.AppModule);
     app.enableCors();
-    app.useGlobalPipes(new common_1.ValidationPipe());
+    app.useGlobalPipes(new common_1.ValidationPipe({ transform: true }));
     const config = new swagger_1.DocumentBuilder()
         .setTitle('Shop API')
         .setDescription('Shop API is a project for an e-commerce application')

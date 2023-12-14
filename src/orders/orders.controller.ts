@@ -16,12 +16,14 @@ import { User } from 'src/entity/User';
 import { JwtAuthGuard } from 'src/guards/jwt-auth.guard';
 import { Order } from 'src/entity/Order';
 import { ResponseInterceptor } from 'src/interceptors/response.interceptor';
-import { ApiGetResponse } from 'src/common/get-response.interface';
-import { ApiDeleteResponse } from 'src/common/delete-response.interface';
-import { CreateApiResponse } from 'src/common/create-response.interface';
 import { RoleGuard } from 'src/guards/role.guard';
 import { UserRole } from 'src/decorators/role.decorator';
 import { Role } from 'src/users/enums/role.enum';
+import {
+  CreateApiResponse,
+  ApiGetResponse,
+  ApiDeleteResponse,
+} from 'src/common/interfaces';
 
 @UseGuards(JwtAuthGuard)
 @UseInterceptors(ResponseInterceptor)

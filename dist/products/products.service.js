@@ -20,6 +20,7 @@ const typeorm_2 = require("typeorm");
 const Categories_1 = require("../entity/Categories");
 const SubCategory_1 = require("../entity/SubCategory");
 const constants_1 = require("../utils/constants");
+const dtos_1 = require("../common/dtos");
 let ProductsService = exports.ProductsService = class ProductsService {
     constructor(productsRepository, categoriesRepository, subCategoriesRepository) {
         this.productsRepository = productsRepository;
@@ -70,16 +71,20 @@ let ProductsService = exports.ProductsService = class ProductsService {
             }
         }
     }
-    async getAllProducts() {
+    async getAllProducts(pageOptionsDto) {
         try {
             const products = await this.productsRepository.find({
                 relations: ['categories', 'subcategories'],
+                take: pageOptionsDto.take,
+                skip: pageOptionsDto.skip,
             });
+            const itemCount = await this.productsRepository.count();
+            const meta = new dtos_1.PageMetaDto({ itemCount, pageOptionsDto });
             return {
                 success: true,
                 message: 'Fetch products successfully',
                 data: products,
-                meta: {},
+                meta: meta,
             };
         }
         catch (error) {

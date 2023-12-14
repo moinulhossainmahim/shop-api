@@ -13,8 +13,7 @@ import { GetUser } from 'src/decorators/get-user.decorator';
 import { User } from 'src/entity/User';
 import { Wishlist } from 'src/entity/Wishlist';
 import { ResponseInterceptor } from 'src/interceptors/response.interceptor';
-import { CreateApiResponse } from 'src/common/create-response.interface';
-import { ApiGetResponse } from 'src/common/get-response.interface';
+import { CreateApiResponse, ApiGetResponse } from 'src/common/interfaces';
 
 @UseGuards(JwtAuthGuard)
 @UseInterceptors(ResponseInterceptor)

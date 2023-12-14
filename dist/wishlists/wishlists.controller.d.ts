@@ -1,8 +1,7 @@
 import { WishlistsService } from './wishlists.service';
 import { User } from 'src/entity/User';
 import { Wishlist } from 'src/entity/Wishlist';
-import { CreateApiResponse } from 'src/common/create-response.interface';
-import { ApiGetResponse } from 'src/common/get-response.interface';
+import { CreateApiResponse, ApiGetResponse } from 'src/common/interfaces';
 export declare class WishlistsController {
     private readonly wishlistsService;
     constructor(wishlistsService: WishlistsService);

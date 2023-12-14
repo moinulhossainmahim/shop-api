@@ -2,9 +2,7 @@ import { OrdersService } from './orders.service';
 import { CreateOrderDto } from './dto/create-order.dto';
 import { User } from 'src/entity/User';
 import { Order } from 'src/entity/Order';
-import { ApiGetResponse } from 'src/common/get-response.interface';
-import { ApiDeleteResponse } from 'src/common/delete-response.interface';
-import { CreateApiResponse } from 'src/common/create-response.interface';
+import { CreateApiResponse, ApiGetResponse, ApiDeleteResponse } from 'src/common/interfaces';
 export declare class OrdersController {
     private readonly ordersService;
     constructor(ordersService: OrdersService);

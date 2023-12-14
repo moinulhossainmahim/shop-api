@@ -14,7 +14,7 @@ import { JwtService } from '@nestjs/jwt';
 import { SignUpCredentialsDto } from './dto/signup-credentials.dto';
 import { SignInCredentialsDto } from './dto/signin-credentials.dto';
 import { JwtPayload } from './interfaces/jwt-payload.interface';
-import { CreateApiResponse } from 'src/common/create-response.interface';
+import { CreateApiResponse } from 'src/common/interfaces';
 import { UsersService } from 'src/users/users.service';
 import { Role } from 'src/users/enums/role.enum';
 

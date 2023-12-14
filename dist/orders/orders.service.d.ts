@@ -3,9 +3,7 @@ import { Repository } from 'typeorm';
 import { CreateOrderDto } from './dto/create-order.dto';
 import { User } from 'src/entity/User';
 import { OrderItemsService } from 'src/order-items/order-items.service';
-import { ApiGetResponse } from 'src/common/get-response.interface';
-import { ApiDeleteResponse } from 'src/common/delete-response.interface';
-import { CreateApiResponse } from 'src/common/create-response.interface';
+import { CreateApiResponse, ApiGetResponse, ApiDeleteResponse } from 'src/common/interfaces';
 export declare class OrdersService {
     private ordersRepository;
     private orderItemsService;

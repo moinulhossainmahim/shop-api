@@ -1,5 +1,4 @@
-import { CreateApiResponse } from 'src/common/create-response.interface';
-import { ApiGetResponse } from 'src/common/get-response.interface';
+import { CreateApiResponse, ApiGetResponse } from 'src/common/interfaces';
 import { Product } from 'src/entity/Product';
 import { User } from 'src/entity/User';
 import { Wishlist } from 'src/entity/Wishlist';

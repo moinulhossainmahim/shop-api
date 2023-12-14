@@ -2,9 +2,7 @@ import { AddressService } from './address.service';
 import { CreateAddressDto } from './dto/create-address.dto';
 import { User } from 'src/entity/User';
 import { Address } from 'src/entity/Address';
-import { CreateApiResponse } from 'src/common/create-response.interface';
-import { ApiGetResponse } from 'src/common/get-response.interface';
-import { ApiDeleteResponse } from 'src/common/delete-response.interface';
+import { CreateApiResponse, ApiGetResponse, ApiDeleteResponse } from 'src/common/interfaces';
 export declare class AddressController {
     private readonly addressService;
     constructor(addressService: AddressService);
