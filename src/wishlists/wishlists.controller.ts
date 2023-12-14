@@ -4,6 +4,7 @@ import {
   Get,
   Param,
   Post,
+  Query,
   UseGuards,
   UseInterceptors,
 } from '@nestjs/common';
@@ -14,6 +15,7 @@ import { User } from 'src/entity/User';
 import { Wishlist } from 'src/entity/Wishlist';
 import { ResponseInterceptor } from 'src/interceptors/response.interceptor';
 import { CreateApiResponse, ApiGetResponse } from 'src/common/interfaces';
+import { PageOptionsDto } from 'src/common/dtos';
 
 @UseGuards(JwtAuthGuard)
 @UseInterceptors(ResponseInterceptor)
@@ -30,8 +32,11 @@ export class WishlistsController {
   }
 
   @Get()
-  async getWishlist(@GetUser() user: User): Promise<ApiGetResponse<Wishlist>> {
-    return this.wishlistsService.getAllWishlist(user);
+  async getWishlist(
+    @GetUser() user: User,
+    @Query() pageOptionsDto: PageOptionsDto,
+  ): Promise<ApiGetResponse<Wishlist>> {
+    return this.wishlistsService.getAllWishlist(user, pageOptionsDto);
   }
 
   @Delete('/:id')
