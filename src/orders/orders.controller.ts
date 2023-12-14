@@ -6,6 +6,7 @@ import {
   Param,
   Patch,
   Post,
+  Query,
   UseGuards,
   UseInterceptors,
 } from '@nestjs/common';
@@ -24,6 +25,7 @@ import {
   ApiGetResponse,
   ApiDeleteResponse,
 } from 'src/common/interfaces';
+import { PageOptionsDto } from 'src/common/dtos';
 
 @UseGuards(JwtAuthGuard)
 @UseInterceptors(ResponseInterceptor)
@@ -44,8 +46,11 @@ export class OrdersController {
   @Get()
   @UseGuards(JwtAuthGuard, RoleGuard)
   @UserRole([Role.Customer, Role.Admin])
-  async getAllOrders(@GetUser() user: User): Promise<ApiGetResponse<Order>> {
-    return this.ordersService.getAllOrdersOfAUser(user);
+  async getAllOrders(
+    @GetUser() user: User,
+    @Query() pageOptionsDto?: PageOptionsDto,
+  ): Promise<ApiGetResponse<Order>> {
+    return this.ordersService.getAllOrdersOfAUser(user, pageOptionsDto);
   }
 
   @Get('/all')
