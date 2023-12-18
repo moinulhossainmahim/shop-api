@@ -90,7 +90,7 @@ let ProductsService = exports.ProductsService = class ProductsService {
                 queryBuilder = queryBuilder.andWhere('(LOWER(product.name) LIKE LOWER(:search))', { search: `%${filterOptionsDto.search}%` });
             }
             const products = await queryBuilder.getMany();
-            const itemCount = products.length;
+            const itemCount = await this.productsRepository.count();
             const meta = new dtos_1.PageMetaDto({ itemCount, pageOptionsDto });
             return {
                 success: true,

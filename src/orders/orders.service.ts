@@ -56,8 +56,8 @@ export class OrdersService {
     const orders = await this.ordersRepository.find({
       relations: ['orderItems', 'shippingAddress', 'billingAddress'],
       where: { user: { id: user.id } },
-      take: pageOptionsDto.take,
       skip: pageOptionsDto.skip,
+      take: pageOptionsDto.take,
     });
     const newOrders = await Promise.all(
       orders.map(async (order) => {
@@ -73,7 +73,9 @@ export class OrdersService {
         };
       }),
     );
-    const itemCount = newOrders.length;
+    const [_foundOrders, itemCount] = await this.ordersRepository.findAndCount({
+      where: { user: { id: user.id } },
+    });
     const meta = new PageMetaDto({ itemCount, pageOptionsDto });
     return {
       success: true,
@@ -150,7 +152,7 @@ export class OrdersService {
         };
       }),
     );
-    const itemCount = newOrders.length;
+    const itemCount = await this.ordersRepository.count();
     const meta = new PageMetaDto({ itemCount, pageOptionsDto });
     return {
       success: true,

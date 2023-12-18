@@ -18,7 +18,7 @@ class PageOptionsDto {
     constructor() {
         this.order = order_enum_1.Order.ASC;
         this.page = 1;
-        this.take = 20;
+        this.take = 5;
     }
     get skip() {
         return (this.page - 1) * this.take;
@@ -46,7 +46,7 @@ __decorate([
     (0, swagger_1.ApiPropertyOptional)({
         minimum: 1,
         maximum: 50,
-        default: 10,
+        default: 5,
     }),
     (0, class_transformer_1.Type)(() => Number),
     (0, class_validator_1.IsInt)(),
