@@ -51,7 +51,12 @@ export class WishlistsService {
       skip: pageOptionsDto.skip,
       take: pageOptionsDto.take,
     });
-    const itemCount = wishlists.length;
+
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    const [_wishlist, itemCount] = await this.wishlistsRepository.findAndCount({
+      where: { user: { id: user.id } },
+    });
+
     const meta = new PageMetaDto({ itemCount, pageOptionsDto });
     return {
       success: true,

@@ -112,7 +112,7 @@ export class ProductsService {
       }
 
       const products = await queryBuilder.getMany();
-      const itemCount = products.length;
+      const itemCount = await this.productsRepository.count();
       const meta = new PageMetaDto({ itemCount, pageOptionsDto });
 
       return {

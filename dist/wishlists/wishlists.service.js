@@ -53,7 +53,9 @@ let WishlistsService = exports.WishlistsService = class WishlistsService {
             skip: pageOptionsDto.skip,
             take: pageOptionsDto.take,
         });
-        const itemCount = wishlists.length;
+        const [_wishlist, itemCount] = await this.wishlistsRepository.findAndCount({
+            where: { user: { id: user.id } },
+        });
         const meta = new dtos_1.PageMetaDto({ itemCount, pageOptionsDto });
         return {
             success: true,
