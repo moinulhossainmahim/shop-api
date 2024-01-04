@@ -12,6 +12,7 @@ import { Wishlist } from './Wishlist';
 import { OrderItem } from './OrderItem';
 import { Categories } from './Categories';
 import { SubCategory } from './SubCategory';
+import { CartItem } from './CartItem';
 
 @Entity()
 export class Product {
@@ -75,4 +76,7 @@ export class Product {
   })
   @JoinTable()
   subcategories: SubCategory[];
+
+  @OneToMany(() => CartItem, (item) => item.product)
+  cartItems: CartItem[];
 }
