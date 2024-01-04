@@ -22,14 +22,14 @@ export class PageOptionsDto {
   @ApiPropertyOptional({
     minimum: 1,
     maximum: 50,
-    default: 5,
+    default: 10,
   })
   @Type(() => Number)
   @IsInt()
   @Min(1)
   @Max(30)
   @IsOptional()
-  readonly take?: number = 5;
+  readonly take?: number = 10;
 
   get skip(): number {
     return (this.page - 1) * this.take;
