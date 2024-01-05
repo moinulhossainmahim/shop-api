@@ -3,6 +3,7 @@ import { Role } from 'src/users/enums/role.enum';
 import {
   Column,
   Entity,
+  JoinColumn,
   OneToMany,
   PrimaryGeneratedColumn,
   Unique,
@@ -11,6 +12,7 @@ import * as bcrypt from 'bcrypt';
 import { Address } from './Address';
 import { Wishlist } from './Wishlist';
 import { Order } from './Order';
+import { Cart } from './Cart';
 
 @Entity()
 @Unique(['email'])
@@ -53,6 +55,10 @@ export class User {
 
   @OneToMany(() => Order, (order) => order.user)
   orders: Order[];
+
+  @OneToMany(() => Cart, (cart) => cart.user)
+  @JoinColumn()
+  cart: Cart[];
 
   async validatePassword(password: string): Promise<boolean> {
     const hash = await bcrypt.hash(password, this.salt);
