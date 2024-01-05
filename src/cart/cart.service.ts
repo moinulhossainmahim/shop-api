@@ -1,8 +1,4 @@
-import {
-  BadRequestException,
-  Injectable,
-  NotFoundException,
-} from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Cart } from 'src/entity/Cart';
 import { Product } from 'src/entity/Product';
@@ -20,6 +16,17 @@ export class CartService {
     @InjectRepository(Product)
     private readonly productRepository: Repository<Product>,
   ) {}
+
+  async findCartById(id: string, user: User) {
+    const found = await this.cartRepository.findOne({
+      where: { id, user: { id: user.id } },
+      relations: ['item'],
+    });
+    if (!found) {
+      throw new NotFoundException(`Cart with ID ${id} not found`);
+    }
+    return found;
+  }
 
   async addToCart(addToCartDto: AddToCartDto, user: User): Promise<any> {
     const { productId, quantity } = addToCartDto;
@@ -41,35 +48,33 @@ export class CartService {
     );
     if (cart.length < 1) {
       const newItem = this.cartRepository.create({
-        total: Number(product.price) * Number(quantity),
+        total: Number(product.salePrice) * Number(quantity),
         quantity,
       });
       newItem.user = authUser;
       newItem.item = product;
-      await this.cartRepository.save(newItem);
-
       const cartItem = await this.cartRepository.save(newItem);
       // eslint-disable-next-line @typescript-eslint/no-unused-vars
       const { user, ...cart } = cartItem;
       return cart;
-    } else {
-      const total = Number(cart[0].item.price) * Number(quantity);
-      const result = await this.cartRepository.update(cart[0].id, {
+    }
+  }
+
+  async updateCart(user: User, id: string, quantity: number) {
+    const found = await this.findCartById(id, user);
+    if (found) {
+      const total = Number(found.item.salePrice) * quantity;
+      // console.log(total);
+      // const result = await this.cartRepository.update(found.id, {
+      //   quantity: Number(quantity),
+      //   total,
+      // });
+      const result = await this.cartRepository.update(id, {
         quantity,
         total,
       });
-
-      if (result.affected == 1) {
-        const cart = await this.cartRepository.find({
-          where: { user: { id: user.id } },
-          relations: ['item'],
-        });
-        const newCart = cart.map((item) => {
-          // eslint-disable-next-line @typescript-eslint/no-unused-vars
-          const { user, ...cartItems } = item;
-          return cartItems;
-        });
-        return newCart;
+      if (result.affected === 1) {
+        console.log('updated');
       }
     }
   }
@@ -84,19 +89,6 @@ export class CartService {
 
   async getAllCarts() {
     return await this.cartRepository.find({ relations: ['item'] });
-  }
-
-  async findCartById(id: string, user: User) {
-    const found = await this.cartRepository.findOne({
-      where: { id, user: { id: user.id } },
-    });
-    if (found.user.id !== user.id) {
-      throw new BadRequestException('Invalid user');
-    }
-    if (!found) {
-      throw new NotFoundException(`Cart with ID ${id} not found`);
-    }
-    return found;
   }
 
   async deleteCartById(id: string, user: User) {

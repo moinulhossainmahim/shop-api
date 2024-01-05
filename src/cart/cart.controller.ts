@@ -4,7 +4,10 @@ import {
   Delete,
   Get,
   Param,
+  ParseIntPipe,
   Post,
+  Put,
+  Query,
   UseGuards,
 } from '@nestjs/common';
 import { CartService } from './cart.service';
@@ -33,6 +36,16 @@ export class CartController {
   @UseGuards(JwtAuthGuard)
   async getAllCarts() {
     return this.cartService.getAllCarts();
+  }
+
+  @Put('/:id')
+  @UseGuards(JwtAuthGuard)
+  async updateCart(
+    @Param('id') id: string,
+    @GetUser() user: User,
+    @Query('quantity', ParseIntPipe) quantity: number,
+  ) {
+    return this.cartService.updateCart(user, id, quantity);
   }
 
   @Delete('/:id')
