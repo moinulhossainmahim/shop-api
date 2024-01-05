@@ -2,6 +2,7 @@ import {
   Column,
   CreateDateColumn,
   Entity,
+  JoinColumn,
   JoinTable,
   ManyToMany,
   OneToMany,
@@ -12,6 +13,7 @@ import { Wishlist } from './Wishlist';
 import { OrderItem } from './OrderItem';
 import { Categories } from './Categories';
 import { SubCategory } from './SubCategory';
+import { Cart } from './Cart';
 
 @Entity()
 export class Product {
@@ -75,4 +77,8 @@ export class Product {
   })
   @JoinTable()
   subcategories: SubCategory[];
+
+  @OneToMany(() => Cart, (cart) => cart.item)
+  @JoinColumn()
+  cart: Cart[];
 }
