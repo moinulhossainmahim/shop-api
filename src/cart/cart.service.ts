@@ -64,11 +64,6 @@ export class CartService {
     const found = await this.findCartById(id, user);
     if (found) {
       const total = Number(found.item.salePrice) * quantity;
-      // console.log(total);
-      // const result = await this.cartRepository.update(found.id, {
-      //   quantity: Number(quantity),
-      //   total,
-      // });
       const result = await this.cartRepository.update(id, {
         quantity,
         total,
@@ -87,8 +82,20 @@ export class CartService {
     return cart;
   }
 
-  async getAllCarts() {
-    return await this.cartRepository.find({ relations: ['item'] });
+  async deleteAllCartOfAUser(user: User) {
+    let isSuccess = true;
+    const carts = await this.getCartOfAUser(user);
+    carts.forEach(async (cart) => {
+      const result = await this.cartRepository.delete(cart.id);
+      if (result.affected === 0) isSuccess = false;
+    });
+    if (isSuccess) {
+      return {
+        message: 'Cart removed successfully',
+        success: true,
+        data: [],
+      };
+    }
   }
 
   async deleteCartById(id: string, user: User) {

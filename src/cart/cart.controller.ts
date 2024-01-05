@@ -32,12 +32,6 @@ export class CartController {
     return this.cartService.getCartOfAUser(user);
   }
 
-  @Get('/all')
-  @UseGuards(JwtAuthGuard)
-  async getAllCarts() {
-    return this.cartService.getAllCarts();
-  }
-
   @Put('/:id')
   @UseGuards(JwtAuthGuard)
   async updateCart(
@@ -46,6 +40,12 @@ export class CartController {
     @Query('quantity', ParseIntPipe) quantity: number,
   ) {
     return this.cartService.updateCart(user, id, quantity);
+  }
+
+  @Delete('/all')
+  @UseGuards(JwtAuthGuard)
+  async deleteAllCartOfAUser(@GetUser() user: User) {
+    return this.cartService.deleteAllCartOfAUser(user);
   }
 
   @Delete('/:id')
