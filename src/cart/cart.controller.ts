@@ -17,7 +17,11 @@ import { AddToCartDto } from './dto/addToCart-dto';
 import { GetUser } from 'src/decorators/get-user.decorator';
 import { User } from 'src/entity/User';
 import { ResponseInterceptor } from 'src/interceptors/response.interceptor';
-import { CreateApiResponse } from 'src/common/interfaces';
+import {
+  ApiDeleteResponse,
+  ApiGetResponse,
+  CreateApiResponse,
+} from 'src/common/interfaces';
 import { Cart } from 'src/entity/Cart';
 
 @Controller('cart')
@@ -36,32 +40,38 @@ export class CartController {
 
   @Get()
   @UseGuards(JwtAuthGuard)
-  async getCartOfAUser(@GetUser() user: User) {
+  @UseInterceptors(ResponseInterceptor)
+  async getCartOfAUser(@GetUser() user: User): Promise<ApiGetResponse<Cart>> {
     return this.cartService.getCartOfAUser(user);
   }
 
   @Put('/:productId')
   @UseGuards(JwtAuthGuard)
+  @UseInterceptors(ResponseInterceptor)
   async updateCart(
     @Param('productId') productId: string,
     @GetUser() user: User,
     @Query('quantity', ParseIntPipe) quantity: number,
-  ) {
+  ): Promise<CreateApiResponse<Cart>> {
     return this.cartService.updateCart(user, productId, quantity);
   }
 
   @Delete('/all')
   @UseGuards(JwtAuthGuard)
-  async deleteAllCartOfAUser(@GetUser() user: User) {
+  @UseInterceptors(ResponseInterceptor)
+  async deleteAllCartOfAUser(
+    @GetUser() user: User,
+  ): Promise<ApiDeleteResponse> {
     return this.cartService.deleteAllCartOfAUser(user);
   }
 
   @Delete('/:productId')
   @UseGuards(JwtAuthGuard)
+  @UseInterceptors(ResponseInterceptor)
   async deleteCartByProductId(
     @Param('productId') productId: string,
     @GetUser() user: User,
-  ) {
+  ): Promise<ApiDeleteResponse> {
     return this.cartService.deleteCartByProductId(productId, user);
   }
 }

@@ -5,7 +5,11 @@ import { Product } from 'src/entity/Product';
 import { User } from 'src/entity/User';
 import { Repository } from 'typeorm';
 import { AddToCartDto } from './dto/addToCart-dto';
-import { CreateApiResponse } from 'src/common/interfaces';
+import {
+  ApiDeleteResponse,
+  ApiGetResponse,
+  CreateApiResponse,
+} from 'src/common/interfaces';
 
 @Injectable()
 export class CartService {
@@ -58,59 +62,106 @@ export class CartService {
     }
   }
 
-  async updateCart(user: User, productId: string, quantity: number) {
+  async updateCart(
+    user: User,
+    productId: string,
+    quantity: number,
+  ): Promise<CreateApiResponse<Cart>> {
     const found = await this.cartRepository.findOne({
       where: { productId, user: { id: user.id } },
       relations: ['product'],
     });
     if (found) {
       const total = Number(found.product.salePrice) * quantity;
-      const result = await this.cartRepository.update(
-        { productId },
-        {
-          quantity,
-          total,
-        },
-      );
-      if (result.affected === 1) {
-        console.log('updated');
+      try {
+        const result = await this.cartRepository.update(
+          { productId },
+          {
+            quantity,
+            total,
+          },
+        );
+        if (result.affected === 1) {
+          const cart = await this.cartRepository.findOne({
+            where: { productId },
+            relations: ['product'],
+          });
+          return {
+            message: 'Cart updated successfully',
+            data: cart,
+            success: true,
+          };
+        }
+      } catch (error) {
+        console.log(error);
       }
     }
   }
 
-  async getCartOfAUser(user: User) {
+  async getCartOfAUser(user: User): Promise<ApiGetResponse<Cart>> {
     const cart = await this.cartRepository.find({
       relations: ['product'],
       where: { user: { id: user.id } },
     });
-    return cart;
+    return {
+      message: 'Fetched cart successfully',
+      success: true,
+      data: cart,
+    };
   }
 
-  async deleteAllCartOfAUser(user: User) {
+  async deleteAllCartOfAUser(user: User): Promise<ApiDeleteResponse> {
     let isSuccess = true;
     const carts = await this.getCartOfAUser(user);
-    carts.forEach(async (cart) => {
-      const result = await this.cartRepository.delete(cart.id);
-      if (result.affected === 0) isSuccess = false;
-    });
-    if (isSuccess) {
+    if (carts.data.length) {
+      carts.data.forEach(async (cart) => {
+        const result = await this.cartRepository.delete(cart.id);
+        if (result.affected === 0) isSuccess = false;
+      });
+      if (isSuccess) {
+        return {
+          message: 'Cart removed successfully',
+          success: true,
+          data: [],
+        };
+      }
+    } else {
       return {
-        message: 'Cart removed successfully',
-        success: true,
+        message: 'Empty cart list',
+        success: false,
         data: [],
       };
     }
   }
 
-  async deleteCartByProductId(productId: string, user: User) {
+  async deleteCartByProductId(
+    productId: string,
+    user: User,
+  ): Promise<ApiDeleteResponse> {
     const found = await this.cartRepository.findOne({
       where: { productId, user: { id: user.id } },
     });
     if (found) {
       const result = await this.cartRepository.delete({ productId });
       if (result.affected === 1) {
-        return 'Cart item deleted successfully';
+        return {
+          message: 'Removed product from cart successfully',
+          data: [],
+          success: true,
+        };
+      } else {
+        return {
+          message: `Product with ID - ${productId} not found`,
+          data: [],
+          success: false,
+        };
       }
+    } else {
+      return {
+        message: `Cart item with product ID - ${productId} and the user not found`,
+        data: [],
+        success: false,
+      };
     }
   }
 }
