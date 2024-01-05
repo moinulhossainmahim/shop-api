@@ -5,6 +5,7 @@ import { Product } from 'src/entity/Product';
 import { User } from 'src/entity/User';
 import { Repository } from 'typeorm';
 import { AddToCartDto } from './dto/addToCart-dto';
+import { CreateApiResponse } from 'src/common/interfaces';
 
 @Injectable()
 export class CartService {
@@ -17,7 +18,10 @@ export class CartService {
     private readonly productRepository: Repository<Product>,
   ) {}
 
-  async addToCart(addToCartDto: AddToCartDto, user: User): Promise<any> {
+  async addToCart(
+    addToCartDto: AddToCartDto,
+    user: User,
+  ): Promise<CreateApiResponse<Omit<Cart, 'user'>>> {
     const { productId, quantity } = addToCartDto;
     const cartItems = await this.cartRepository.find({
       relations: ['product', 'user'],
@@ -46,7 +50,11 @@ export class CartService {
       const cartItem = await this.cartRepository.save(newItem);
       // eslint-disable-next-line @typescript-eslint/no-unused-vars
       const { user, ...cart } = cartItem;
-      return cart;
+      return {
+        message: 'Add product to cart successfully',
+        success: true,
+        data: cart,
+      };
     }
   }
 

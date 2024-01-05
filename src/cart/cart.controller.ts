@@ -9,12 +9,16 @@ import {
   Put,
   Query,
   UseGuards,
+  UseInterceptors,
 } from '@nestjs/common';
 import { CartService } from './cart.service';
 import { JwtAuthGuard } from 'src/guards/jwt-auth.guard';
 import { AddToCartDto } from './dto/addToCart-dto';
 import { GetUser } from 'src/decorators/get-user.decorator';
 import { User } from 'src/entity/User';
+import { ResponseInterceptor } from 'src/interceptors/response.interceptor';
+import { CreateApiResponse } from 'src/common/interfaces';
+import { Cart } from 'src/entity/Cart';
 
 @Controller('cart')
 export class CartController {
@@ -22,7 +26,11 @@ export class CartController {
 
   @Post()
   @UseGuards(JwtAuthGuard)
-  async addToCart(@Body() addToCartDto: AddToCartDto, @GetUser() user: User) {
+  @UseInterceptors(ResponseInterceptor)
+  async addToCart(
+    @Body() addToCartDto: AddToCartDto,
+    @GetUser() user: User,
+  ): Promise<CreateApiResponse<Omit<Cart, 'user'>>> {
     return await this.cartService.addToCart(addToCartDto, user);
   }
 
