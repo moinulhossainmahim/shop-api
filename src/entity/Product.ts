@@ -78,7 +78,7 @@ export class Product {
   @JoinTable()
   subcategories: SubCategory[];
 
-  @OneToMany(() => Cart, (cart) => cart.item)
+  @OneToMany(() => Cart, (cart) => cart.product)
   @JoinColumn()
   cart: Cart[];
 }

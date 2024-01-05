@@ -17,21 +17,10 @@ export class CartService {
     private readonly productRepository: Repository<Product>,
   ) {}
 
-  async findCartById(id: string, user: User) {
-    const found = await this.cartRepository.findOne({
-      where: { id, user: { id: user.id } },
-      relations: ['item'],
-    });
-    if (!found) {
-      throw new NotFoundException(`Cart with ID ${id} not found`);
-    }
-    return found;
-  }
-
   async addToCart(addToCartDto: AddToCartDto, user: User): Promise<any> {
     const { productId, quantity } = addToCartDto;
     const cartItems = await this.cartRepository.find({
-      relations: ['item', 'user'],
+      relations: ['product', 'user'],
     });
     const product = await this.productRepository.findOne({
       where: { id: productId },
@@ -44,7 +33,7 @@ export class CartService {
       throw new NotFoundException('Product item not found');
     }
     const cart = cartItems.filter(
-      (item) => item.item.id === productId && item.user.id === user.id,
+      (item) => item.product.id === productId && item.user.id === user.id,
     );
     if (cart.length < 1) {
       const newItem = this.cartRepository.create({
@@ -52,7 +41,8 @@ export class CartService {
         quantity,
       });
       newItem.user = authUser;
-      newItem.item = product;
+      newItem.product = product;
+      newItem.productId = productId;
       const cartItem = await this.cartRepository.save(newItem);
       // eslint-disable-next-line @typescript-eslint/no-unused-vars
       const { user, ...cart } = cartItem;
@@ -60,14 +50,20 @@ export class CartService {
     }
   }
 
-  async updateCart(user: User, id: string, quantity: number) {
-    const found = await this.findCartById(id, user);
+  async updateCart(user: User, productId: string, quantity: number) {
+    const found = await this.cartRepository.findOne({
+      where: { productId, user: { id: user.id } },
+      relations: ['product'],
+    });
     if (found) {
-      const total = Number(found.item.salePrice) * quantity;
-      const result = await this.cartRepository.update(id, {
-        quantity,
-        total,
-      });
+      const total = Number(found.product.salePrice) * quantity;
+      const result = await this.cartRepository.update(
+        { productId },
+        {
+          quantity,
+          total,
+        },
+      );
       if (result.affected === 1) {
         console.log('updated');
       }
@@ -76,7 +72,7 @@ export class CartService {
 
   async getCartOfAUser(user: User) {
     const cart = await this.cartRepository.find({
-      relations: ['item'],
+      relations: ['product'],
       where: { user: { id: user.id } },
     });
     return cart;
@@ -98,10 +94,12 @@ export class CartService {
     }
   }
 
-  async deleteCartById(id: string, user: User) {
-    const found = await this.findCartById(id, user);
+  async deleteCartByProductId(productId: string, user: User) {
+    const found = await this.cartRepository.findOne({
+      where: { productId, user: { id: user.id } },
+    });
     if (found) {
-      const result = await this.cartRepository.delete({ id });
+      const result = await this.cartRepository.delete({ productId });
       if (result.affected === 1) {
         return 'Cart item deleted successfully';
       }

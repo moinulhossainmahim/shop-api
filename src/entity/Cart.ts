@@ -19,9 +19,12 @@ export class Cart {
   @Column()
   quantity: number;
 
+  @Column()
+  productId: string;
+
   @ManyToOne(() => Product, (product) => product.cart)
   @JoinColumn()
-  item: Product;
+  product: Product;
 
   @ManyToOne(() => User, (user) => user.cart)
   @JoinColumn()

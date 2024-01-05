@@ -32,14 +32,14 @@ export class CartController {
     return this.cartService.getCartOfAUser(user);
   }
 
-  @Put('/:id')
+  @Put('/:productId')
   @UseGuards(JwtAuthGuard)
   async updateCart(
-    @Param('id') id: string,
+    @Param('productId') productId: string,
     @GetUser() user: User,
     @Query('quantity', ParseIntPipe) quantity: number,
   ) {
-    return this.cartService.updateCart(user, id, quantity);
+    return this.cartService.updateCart(user, productId, quantity);
   }
 
   @Delete('/all')
@@ -48,9 +48,12 @@ export class CartController {
     return this.cartService.deleteAllCartOfAUser(user);
   }
 
-  @Delete('/:id')
+  @Delete('/:productId')
   @UseGuards(JwtAuthGuard)
-  async deleteCartById(@Param('id') id: string, @GetUser() user: User) {
-    return this.cartService.deleteCartById(id, user);
+  async deleteCartByProductId(
+    @Param('productId') productId: string,
+    @GetUser() user: User,
+  ) {
+    return this.cartService.deleteCartByProductId(productId, user);
   }
 }
