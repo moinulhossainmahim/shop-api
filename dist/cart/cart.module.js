@@ -11,7 +11,7 @@ const common_1 = require("@nestjs/common");
 const cart_controller_1 = require("./cart.controller");
 const cart_service_1 = require("./cart.service");
 const typeorm_1 = require("@nestjs/typeorm");
-const Cart_1 = require("src/entity/Cart");
+const Cart_1 = require("../entity/Cart");
 const Product_1 = require("../entity/Product");
 const User_1 = require("../entity/User");
 let CartModule = exports.CartModule = class CartModule {
