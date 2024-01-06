@@ -19,6 +19,8 @@ import { StripeService } from 'src/stripe/stripe.service';
 import Stripe from 'stripe';
 import { PaymentIntentEvent } from 'src/common/enums/payment-intent-event.enum';
 import { PaymentStatus } from './enums/payment-status.enum';
+import { ProductsService } from 'src/products/products.service';
+import { CheckAvailabilityDto } from './dto/check-availability.dto';
 
 @Injectable()
 export class OrdersService {
@@ -27,6 +29,7 @@ export class OrdersService {
     private readonly ordersRepository: Repository<Order>,
     private readonly orderItemsService: OrderItemsService,
     private readonly stripeService: StripeService,
+    private readonly productsService: ProductsService,
   ) {}
 
   async createOrder(
@@ -175,6 +178,28 @@ export class OrdersService {
       meta: meta,
       message: 'Orders fetched successfully',
     };
+  }
+
+  async checkAvailability(
+    checkAvailabilityDto: CheckAvailabilityDto,
+  ): Promise<CreateApiResponse<any>> {
+    const result = await this.productsService.checkIfProductsExist(
+      checkAvailabilityDto,
+    );
+    console.log(result);
+    if (result) {
+      return {
+        message: 'Customer can continue the process',
+        success: true,
+        data: [],
+      };
+    } else {
+      return {
+        message: 'Product with the given quantity not available',
+        success: false,
+        data: [],
+      };
+    }
   }
 
   async updatePaymentStatus(event: Stripe.Event): Promise<string> {

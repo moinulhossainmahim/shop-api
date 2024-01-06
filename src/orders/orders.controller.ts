@@ -28,6 +28,7 @@ import {
 import { PageOptionsDto } from 'src/common/dtos';
 import Stripe from 'stripe';
 import { StripeSignatureGuard } from 'src/guards/stripe-signature.guard';
+import { CheckAvailabilityDto } from './dto/check-availability.dto';
 
 @UseGuards(JwtAuthGuard)
 @UseInterceptors(ResponseInterceptor)
@@ -95,5 +96,13 @@ export class OrdersController {
   async webhook(@Body() event: Stripe.Event): Promise<object> {
     await this.ordersService.updatePaymentStatus(event);
     return { message: 'success' };
+  }
+
+  @Post('/check-availability')
+  @UseGuards(JwtAuthGuard)
+  async checkAvailability(
+    @Body() checkAvailabilityDto: CheckAvailabilityDto,
+  ): Promise<CreateApiResponse<any>> {
+    return this.ordersService.checkAvailability(checkAvailabilityDto);
   }
 }
