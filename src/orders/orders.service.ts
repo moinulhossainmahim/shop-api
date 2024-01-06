@@ -1,4 +1,8 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import {
+  Injectable,
+  NotFoundException,
+  UnprocessableEntityException,
+} from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Order } from 'src/entity/Order';
 import { Repository } from 'typeorm';
@@ -12,6 +16,9 @@ import {
 } from 'src/common/interfaces';
 import { PageMetaDto, PageOptionsDto } from 'src/common/dtos';
 import { StripeService } from 'src/stripe/stripe.service';
+import Stripe from 'stripe';
+import { PaymentIntentEvent } from 'src/common/enums/payment-intent-event.enum';
+import { PaymentStatus } from './enums/payment-status.enum';
 
 @Injectable()
 export class OrdersService {
@@ -168,5 +175,49 @@ export class OrdersService {
       meta: meta,
       message: 'Orders fetched successfully',
     };
+  }
+
+  async updatePaymentStatus(event: Stripe.Event): Promise<string> {
+    // Fetch the orderId from the webhook metadata
+    const orderId = event.data.object['metadata'].orderId;
+
+    // Lookup the order
+    const order = await this.findOrderById(orderId);
+
+    // Check the event type
+    switch (event.type) {
+      // If the event type is a succeeded, update the payment status to succeeded
+      case PaymentIntentEvent.Succeeded:
+        order.data.payment_status = PaymentStatus.Succeeded;
+        break;
+
+      case PaymentIntentEvent.Processing:
+        // If the event type is processing, update the payment status to processing
+        order.data.payment_status = PaymentStatus.Processing;
+        break;
+
+      case PaymentIntentEvent.Failed:
+        // If the event type is payment_failed, update the payment status to payment_failed
+        order.data.payment_status = PaymentStatus.Failed;
+        break;
+
+      default:
+        // else, by default the payment status should remain as created
+        order.data.payment_status = PaymentStatus.Created;
+        break;
+    }
+
+    const updateResult = await this.ordersRepository.update(
+      orderId,
+      order.data,
+    );
+
+    if (updateResult.affected === 1) {
+      return `Record successfully updated with Payment Status ${order.data.payment_status}`;
+    } else {
+      throw new UnprocessableEntityException(
+        'The payment was not successfully updated',
+      );
+    }
   }
 }
