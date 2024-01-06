@@ -13,6 +13,7 @@ import { WishlistsModule } from './wishlists/wishlists.module';
 import { OrdersModule } from './orders/orders.module';
 import { OrderItemsModule } from './order-items/order-items.module';
 import { CartModule } from './cart/cart.module';
+import { StripeModule } from './stripe/stripe.module';
 
 @Module({
   imports: [
@@ -28,6 +29,7 @@ import { CartModule } from './cart/cart.module';
     OrdersModule,
     OrderItemsModule,
     CartModule,
+    StripeModule,
   ],
   controllers: [AppController],
   providers: [AppService],
