@@ -17,6 +17,7 @@ import {
   ApiDeleteResponse,
 } from 'src/common/interfaces';
 import { FilterOptionsDto, PageMetaDto, PageOptionsDto } from 'src/common/dtos';
+import { CheckAvailabilityDto } from 'src/orders/dto/check-availability.dto';
 
 @Injectable()
 export class ProductsService {
@@ -193,7 +194,23 @@ export class ProductsService {
     };
   }
 
-  async checkIfProductsExist(productIds: string[]): Promise<Product[]> {
-    return await this.productsRepository.findBy({ id: In(productIds) });
+  async checkIfProductsExist(checkAvailabilityDto: CheckAvailabilityDto) {
+    let isTrue = true;
+    try {
+      await Promise.all(
+        checkAvailabilityDto.items.map(async (item) => {
+          const product = await this.productsRepository.findOne({
+            where: { id: item.productId },
+          });
+          if (Number(item.quantity) > Number(product.quantity)) {
+            isTrue = false;
+          }
+        }),
+      );
+      return isTrue;
+    } catch (error) {
+      console.error(error.message);
+      return false;
+    }
   }
 }
