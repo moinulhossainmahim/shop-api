@@ -6,7 +6,7 @@ import {
 import { CreateProductDto } from './dto/create-product.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Product } from 'src/entity/Product';
-import { Repository } from 'typeorm';
+import { In, Repository } from 'typeorm';
 import { UpdateProductDto } from './dto/update-product.dto';
 import { Categories } from 'src/entity/Categories';
 import { SubCategory } from 'src/entity/SubCategory';
@@ -191,5 +191,9 @@ export class ProductsService {
       success: true,
       message: 'Successfully deleted the product',
     };
+  }
+
+  async checkIfProductsExist(productIds: string[]): Promise<Product[]> {
+    return await this.productsRepository.findBy({ id: In(productIds) });
   }
 }
