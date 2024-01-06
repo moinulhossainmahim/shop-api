@@ -26,6 +26,8 @@ import {
   ApiDeleteResponse,
 } from 'src/common/interfaces';
 import { PageOptionsDto } from 'src/common/dtos';
+import Stripe from 'stripe';
+import { StripeSignatureGuard } from 'src/guards/stripe-signature.guard';
 
 @UseGuards(JwtAuthGuard)
 @UseInterceptors(ResponseInterceptor)
@@ -86,5 +88,12 @@ export class OrdersController {
     @Param('id') id: string,
   ): Promise<CreateApiResponse<Order>> {
     return this.ordersService.findOrderById(id);
+  }
+
+  @Post('stripe_webhook')
+  @UseGuards(StripeSignatureGuard)
+  async webhook(@Body() event: Stripe.Event): Promise<object> {
+    await this.ordersService.updatePaymentStatus(event);
+    return { message: 'success' };
   }
 }
