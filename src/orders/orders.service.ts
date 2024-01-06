@@ -11,13 +11,15 @@ import {
   ApiDeleteResponse,
 } from 'src/common/interfaces';
 import { PageMetaDto, PageOptionsDto } from 'src/common/dtos';
+import { StripeService } from 'src/stripe/stripe.service';
 
 @Injectable()
 export class OrdersService {
   constructor(
     @InjectRepository(Order)
-    private ordersRepository: Repository<Order>,
-    private orderItemsService: OrderItemsService,
+    private readonly ordersRepository: Repository<Order>,
+    private readonly orderItemsService: OrderItemsService,
+    private readonly stripeService: StripeService,
   ) {}
 
   async createOrder(
@@ -37,10 +39,16 @@ export class OrdersService {
     const neworder = this.ordersRepository.create(order);
     try {
       const savedOrder = await this.ordersRepository.save(neworder);
+      const paymentIntent = await this.stripeService.createPaymentIntent(
+        savedOrder.id,
+        savedOrder.total,
+      );
+      const clientSecret = paymentIntent.client_secret;
       // eslint-disable-next-line @typescript-eslint/no-unused-vars
       const { user, ...newSavedOrder } = savedOrder;
+      const orderData = { ...newSavedOrder, clientSecret };
       return {
-        data: newSavedOrder,
+        data: orderData,
         message: 'Order placed successfully',
         success: true,
       };
@@ -54,8 +62,8 @@ export class OrdersService {
     pageOptionsDto: PageOptionsDto,
   ): Promise<ApiGetResponse<any>> {
     const orders = await this.ordersRepository.find({
-      relations: ['orderItems', 'shippingAddress', 'billingAddress'],
       where: { user: { id: user.id } },
+      relations: ['orderItems', 'shippingAddress', 'billingAddress'],
       skip: pageOptionsDto.skip,
       take: pageOptionsDto.take,
     });
