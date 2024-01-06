@@ -49,14 +49,20 @@ export class OrdersService {
     const neworder = this.ordersRepository.create(order);
     try {
       const savedOrder = await this.ordersRepository.save(neworder);
-      const paymentIntent = await this.stripeService.createPaymentIntent(
-        savedOrder.id,
-        savedOrder.total,
-      );
-      const clientSecret = paymentIntent.client_secret;
-      // eslint-disable-next-line @typescript-eslint/no-unused-vars
-      const { user, ...newSavedOrder } = savedOrder;
-      const orderData = { ...newSavedOrder, clientSecret };
+      let orderData;
+      if (createOrderDto.payment_method !== 'cashon') {
+        const paymentIntent = await this.stripeService.createPaymentIntent(
+          savedOrder.id,
+          savedOrder.total,
+        );
+        const clientSecret = paymentIntent.client_secret;
+        const { user, ...newSavedOrder } = savedOrder;
+        orderData = { ...newSavedOrder, clientSecret };
+      } else {
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
+        const { user, ...newSavedOrder } = savedOrder;
+        orderData = { ...newSavedOrder };
+      }
       return {
         data: orderData,
         message: 'Order placed successfully',
@@ -213,22 +219,22 @@ export class OrdersService {
     switch (event.type) {
       // If the event type is a succeeded, update the payment status to succeeded
       case PaymentIntentEvent.Succeeded:
-        order.data.payment_status = PaymentStatus.Succeeded;
+        order.data.payment_status = PaymentStatus.Received;
         break;
 
       case PaymentIntentEvent.Processing:
         // If the event type is processing, update the payment status to processing
-        order.data.payment_status = PaymentStatus.Processing;
+        order.data.payment_status = PaymentStatus.Pending;
         break;
 
       case PaymentIntentEvent.Failed:
         // If the event type is payment_failed, update the payment status to payment_failed
-        order.data.payment_status = PaymentStatus.Failed;
+        order.data.payment_status = PaymentStatus.Pending;
         break;
 
       default:
         // else, by default the payment status should remain as created
-        order.data.payment_status = PaymentStatus.Created;
+        order.data.payment_status = PaymentStatus.Pending;
         break;
     }
 
