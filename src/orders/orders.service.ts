@@ -1,8 +1,4 @@
-import {
-  Injectable,
-  NotFoundException,
-  UnprocessableEntityException,
-} from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Order } from 'src/entity/Order';
 import { Repository } from 'typeorm';
@@ -16,9 +12,6 @@ import {
 } from 'src/common/interfaces';
 import { PageMetaDto, PageOptionsDto } from 'src/common/dtos';
 import { StripeService } from 'src/stripe/stripe.service';
-import Stripe from 'stripe';
-import { PaymentIntentEvent } from 'src/common/enums/payment-intent-event.enum';
-import { PaymentStatus } from './enums/payment-status.enum';
 import { ProductsService } from 'src/products/products.service';
 import { CheckAvailabilityDto } from './dto/check-availability.dto';
 
@@ -49,22 +42,10 @@ export class OrdersService {
     const neworder = this.ordersRepository.create(order);
     try {
       const savedOrder = await this.ordersRepository.save(neworder);
-      let orderData;
-      if (createOrderDto.payment_method !== 'cashon') {
-        const paymentIntent = await this.stripeService.createPaymentIntent(
-          savedOrder.id,
-          savedOrder.total,
-        );
-        const clientSecret = paymentIntent.client_secret;
-        const { user, ...newSavedOrder } = savedOrder;
-        orderData = { ...newSavedOrder, clientSecret };
-      } else {
-        // eslint-disable-next-line @typescript-eslint/no-unused-vars
-        const { user, ...newSavedOrder } = savedOrder;
-        orderData = { ...newSavedOrder };
-      }
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+      const { user, ...newSavedOrder } = savedOrder;
       return {
-        data: orderData,
+        data: newSavedOrder,
         message: 'Order placed successfully',
         success: true,
       };
@@ -205,50 +186,6 @@ export class OrdersService {
         success: false,
         data: [],
       };
-    }
-  }
-
-  async updatePaymentStatus(event: Stripe.Event): Promise<string> {
-    // Fetch the orderId from the webhook metadata
-    const orderId = event.data.object['metadata'].orderId;
-
-    // Lookup the order
-    const order = await this.findOrderById(orderId);
-
-    // Check the event type
-    switch (event.type) {
-      // If the event type is a succeeded, update the payment status to succeeded
-      case PaymentIntentEvent.Succeeded:
-        order.data.payment_status = PaymentStatus.Received;
-        break;
-
-      case PaymentIntentEvent.Processing:
-        // If the event type is processing, update the payment status to processing
-        order.data.payment_status = PaymentStatus.Pending;
-        break;
-
-      case PaymentIntentEvent.Failed:
-        // If the event type is payment_failed, update the payment status to payment_failed
-        order.data.payment_status = PaymentStatus.Pending;
-        break;
-
-      default:
-        // else, by default the payment status should remain as created
-        order.data.payment_status = PaymentStatus.Pending;
-        break;
-    }
-
-    const updateResult = await this.ordersRepository.update(
-      orderId,
-      order.data,
-    );
-
-    if (updateResult.affected === 1) {
-      return `Record successfully updated with Payment Status ${order.data.payment_status}`;
-    } else {
-      throw new UnprocessableEntityException(
-        'The payment was not successfully updated',
-      );
     }
   }
 }
