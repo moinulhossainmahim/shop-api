@@ -90,7 +90,6 @@
   - Replace `env.example` file to `.env`
   - Create Account in stripe and save stripe keys.
   - Update env environment variables
-
     ```bash
       MYSQL_ROOT_PASSWORD = "YOUR MYSQL DATABASE ROOT PASSWORD" 
       MYSQL_DATABASE = "YOUR MYSQL DATABASE" 
@@ -112,7 +111,6 @@
     ```
 
   # Finally Run the application
-  
     ```bash
       npm run start:dev
     ```
