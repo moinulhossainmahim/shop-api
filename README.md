@@ -63,3 +63,8 @@
 - **ESLint (Code Linter):**: A linting tool for identifying and fixing common programming errors and stylistic issues.
 - **Prettier**: A code formatting tool to maintain consistent and readable code across the project.
 
+## Requirements
+
+- [Node](https://nodejs.org/en) (Version 18.18.0 or higher)
+- [NPM](https://www.npmjs.com/) (The Node.js package manager. Installed with Node.js)
+- [Mysql](https://www.mysql.com): (latest)
