@@ -127,6 +127,6 @@
     ```bash
     docker-compose up
     ```
-  - **If everyting setup correctly and your containers are running then you will get the application running in localhost:3000**
+  - **If everyting setup correctly and your containers are running then you will get the application running in (http://localhost:3000)[localhost:3000]**
 
   - **Update port mappings in `docker-compose.yml` file if you want to run in different port**
