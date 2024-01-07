@@ -111,6 +111,7 @@
     ```
 
   ## Finally Run the application
-  ```bash
-    npm run start:dev
-  ```
+  - 
+    ```bash
+      npm run start:dev
+    ```
