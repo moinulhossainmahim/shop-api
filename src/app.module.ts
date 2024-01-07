@@ -14,6 +14,7 @@ import { OrdersModule } from './orders/orders.module';
 import { OrderItemsModule } from './order-items/order-items.module';
 import { CartModule } from './cart/cart.module';
 import { StripeModule } from './stripe/stripe.module';
+import { PaymentModule } from './payment/payment.module';
 
 @Module({
   imports: [
@@ -30,6 +31,7 @@ import { StripeModule } from './stripe/stripe.module';
     OrderItemsModule,
     CartModule,
     StripeModule,
+    PaymentModule,
   ],
   controllers: [AppController],
   providers: [AppService],
