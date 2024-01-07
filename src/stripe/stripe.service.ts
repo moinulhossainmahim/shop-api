@@ -49,13 +49,15 @@ export class StripeService {
         payment_method_types: ['card'],
         mode: 'payment',
         line_items: await this.getLineItems(createCheckoutSessionDto),
+        success_url: 'http://localhost:3002/orders',
+        cancel_url: 'http://localhost:3002/orders',
       });
       return {
         url: session.url,
         payment_status: session.payment_status,
       };
     } catch (error) {
-      console.log('error');
+      console.log(error);
     }
   }
 }
