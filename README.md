@@ -71,23 +71,26 @@
 
 ## How to run the project
 
-  ## Manually
+  # Manually
   
-  # Clone the repository
+  ## Clone the repository
   - Clone this repository and cd into the project directory:
-        git clone https://github.com/moinulhossainmahim/shop-api.git
-        cd shop-api
+    ```bash
+    git clone https://github.com/moinulhossainmahim/shop-api.git
+    cd shop-api
+    ```
 
-  # Install Dependencies
+  ## Install Dependencies
   - Run `npm install` inside the main project folder to install all dependencies from NPM.
 
-  # Create a MySql Database
+  ## Create a MySql Database
   - Create A Mysql Database and save database connection information.
       
-  # Update Environment Variables
+  ## Update Environment Variables
   - Replace `env.example` file to `.env`
   - Create Account in stripe and save stripe keys.
   - Update env environment variables
+
     ```bash
       MYSQL_ROOT_PASSWORD = "YOUR MYSQL DATABASE ROOT PASSWORD" 
       MYSQL_DATABASE = "YOUR MYSQL DATABASE" 
@@ -101,11 +104,13 @@
       STRIPE_SECRET_KEY = "YOUR STRIPE SECRET KEY" 
       STRIPE_CURRENCY = "THE CURRENCY OF STRIPE PAYMENT"
     ```
+
   - For running migrations
     ```bash
       npm run migration:generate ./src/migration/[MIGRATION_TITLE]
       npm run migration:run
     ```
+
   # Finally Run the application
   
     ```bash
