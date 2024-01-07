@@ -30,3 +30,12 @@
 ### 6. Security
 
 - **JWT Tokenization**: Implement robust JSON Web Token mechanisms to fortify authentication.
+
+
+## Architecture
+  <p align="center">
+    <img width="40%" height="25%" src="https://github.com/moinulhossainmahim/shop-api/blob/main/screenshots/initial-er.png" />
+  </p>
+  <p align="center">
+  <b>ER Diagram of Database</b>
+  </p>
