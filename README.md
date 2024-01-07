@@ -46,3 +46,25 @@
   <p align="center">
   <b>ER Diagram</b>
   </p>
+
+## Built With 🛠
+- [NestJS](https://docs.nestjs.com) - A progressive Node.js framework for building scalable and efficient server-side applications.
+- [TypeScript](https://www.typescriptlang.org/docs) - A superset of JavaScript that brings static typing to the language, enhancing code maintainability and developer productivity.
+- [TypeORM (Object-Relational Mapping)](https://typeorm.io) - A powerful and flexible ORM that simplifies database interactions in TypeScript applications.
+- [MySQL](https://www.mysql.com) - A popular relational database management system used for efficient and structured data storage.
+- [Passport.js](https://www.passportjs.org) - A flexible authentication middleware for Node.js applications, facilitating user authentication strategies.
+- [JWT](https://jwt.io/) - A secure and compact method for token-based authentication, enhancing the security of user sessions.
+- [Bcrypt](https://bcrypt.online/) - A library for hashing passwords, enhancing security by securely storing user credentials.
+- [Swagger](https://swagger.io) - A tool for documenting and testing APIs, providing a user-friendly interface for developers to explore endpoints.
+- [Stripe](https://stripe.com) - A widely-used platform for handling online payments securely and efficiently.
+
+## Development Tools
+- **NestJS CLI**: Command-line tools for scaffolding and managing NestJS projects.
+- **ESLint (Code Linter):**: A linting tool for identifying and fixing common programming errors and stylistic issues.
+- **Prettier**: A code formatting tool to maintain consistent and readable code across the project.
+
+## Requirements
+
+- [Node](https://nodejs.org/en) (Version 18.18.0 or higher)
+- [NPM](https://www.npmjs.com/) (The Node.js package manager. Installed with Node.js)
+- [Mysql](https://www.mysql.com): (latest)
