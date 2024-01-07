@@ -11,13 +11,18 @@ import {
   ApiDeleteResponse,
 } from 'src/common/interfaces';
 import { PageMetaDto, PageOptionsDto } from 'src/common/dtos';
+import { StripeService } from 'src/stripe/stripe.service';
+import { ProductsService } from 'src/products/products.service';
+import { CheckAvailabilityDto } from './dto/check-availability.dto';
 
 @Injectable()
 export class OrdersService {
   constructor(
     @InjectRepository(Order)
-    private ordersRepository: Repository<Order>,
-    private orderItemsService: OrderItemsService,
+    private readonly ordersRepository: Repository<Order>,
+    private readonly orderItemsService: OrderItemsService,
+    private readonly stripeService: StripeService,
+    private readonly productsService: ProductsService,
   ) {}
 
   async createOrder(
@@ -54,8 +59,8 @@ export class OrdersService {
     pageOptionsDto: PageOptionsDto,
   ): Promise<ApiGetResponse<any>> {
     const orders = await this.ordersRepository.find({
-      relations: ['orderItems', 'shippingAddress', 'billingAddress'],
       where: { user: { id: user.id } },
+      relations: ['orderItems', 'shippingAddress', 'billingAddress'],
       skip: pageOptionsDto.skip,
       take: pageOptionsDto.take,
     });
@@ -160,5 +165,27 @@ export class OrdersService {
       meta: meta,
       message: 'Orders fetched successfully',
     };
+  }
+
+  async checkAvailability(
+    checkAvailabilityDto: CheckAvailabilityDto,
+  ): Promise<CreateApiResponse<any>> {
+    const result = await this.productsService.checkIfProductsExist(
+      checkAvailabilityDto,
+    );
+    console.log(result);
+    if (result) {
+      return {
+        message: 'Customer can continue the process',
+        success: true,
+        data: [],
+      };
+    } else {
+      return {
+        message: 'Product with the given quantity not available',
+        success: false,
+        data: [],
+      };
+    }
   }
 }

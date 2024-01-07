@@ -20,6 +20,7 @@ import { ResponseInterceptor } from 'src/interceptors/response.interceptor';
 import { RoleGuard } from 'src/guards/role.guard';
 import { UserRole } from 'src/decorators/role.decorator';
 import { Role } from 'src/users/enums/role.enum';
+import { CheckAvailabilityDto } from './dto/check-availability.dto';
 import {
   CreateApiResponse,
   ApiGetResponse,
@@ -27,13 +28,12 @@ import {
 } from 'src/common/interfaces';
 import { PageOptionsDto } from 'src/common/dtos';
 
-@UseGuards(JwtAuthGuard)
-@UseInterceptors(ResponseInterceptor)
 @Controller('orders')
 export class OrdersController {
   constructor(private readonly ordersService: OrdersService) {}
 
   @Post()
+  @UseInterceptors(ResponseInterceptor)
   @UseGuards(JwtAuthGuard, RoleGuard)
   @UserRole([Role.Customer, Role.Admin])
   async createOrder(
@@ -44,6 +44,7 @@ export class OrdersController {
   }
 
   @Get()
+  @UseInterceptors(ResponseInterceptor)
   @UseGuards(JwtAuthGuard, RoleGuard)
   @UserRole([Role.Customer, Role.Admin])
   async getAllOrders(
@@ -54,6 +55,7 @@ export class OrdersController {
   }
 
   @Get('/all')
+  @UseInterceptors(ResponseInterceptor)
   @UseGuards(JwtAuthGuard, RoleGuard)
   @UserRole([Role.Admin])
   async getAllUserOrders(
@@ -63,13 +65,15 @@ export class OrdersController {
   }
 
   @Delete('/:id')
+  @UseInterceptors(ResponseInterceptor)
   @UseGuards(JwtAuthGuard, RoleGuard)
-  @UserRole([Role.Admin])
+  // @UserRole([Role.Admin])
   async deleteOrderById(@Param('id') id: string): Promise<ApiDeleteResponse> {
     return this.ordersService.deleteOrderById(id);
   }
 
   @Patch('/:id')
+  @UseInterceptors(ResponseInterceptor)
   @UseGuards(JwtAuthGuard, RoleGuard)
   @UserRole([Role.Admin])
   async updateOrderById(
@@ -80,11 +84,21 @@ export class OrdersController {
   }
 
   @Get('/:id')
+  @UseInterceptors(ResponseInterceptor)
   @UseGuards(JwtAuthGuard, RoleGuard)
   @UserRole([Role.Admin, Role.Customer])
   async getOrderById(
     @Param('id') id: string,
   ): Promise<CreateApiResponse<Order>> {
     return this.ordersService.findOrderById(id);
+  }
+
+  @Post('/check-availability')
+  @UseInterceptors(ResponseInterceptor)
+  @UseGuards(JwtAuthGuard)
+  async checkAvailability(
+    @Body() checkAvailabilityDto: CheckAvailabilityDto,
+  ): Promise<CreateApiResponse<any>> {
+    return this.ordersService.checkAvailability(checkAvailabilityDto);
   }
 }
