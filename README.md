@@ -110,7 +110,7 @@
       npm run migration:run
     ```
 
-  # Finally Run the application
+  ## Finally Run the application
     ```bash
       npm run start:dev
     ```
