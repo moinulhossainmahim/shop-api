@@ -5,7 +5,7 @@ services:
     platform: linux/amd64
     image: 'mysql:5.7'
     env_file:
-      - ./env/mysql.env
+      - ./.env
     ports:
       - '3308:3306'
 
@@ -14,7 +14,7 @@ services:
     ports:
       - '3000:3000'
     env_file:
-      - ./env/backend.env
+      - ./.env
     volumes:
       - .:/app
       - /app/node_modules
