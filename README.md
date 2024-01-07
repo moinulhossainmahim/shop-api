@@ -101,7 +101,7 @@
   - Run `npm install` inside the main project folder to install all dependencies from NPM.
 
   ### Create a MySql Database
-  - Create A Mysql Database and save database connection information.
+  - Create A Mysql Database and replace database connection variables in `.env` file.
 
   ### Start the application
   - 
@@ -109,9 +109,21 @@
       npm run start:dev
     ```
   ### For running database migrations
+  -
     ```bash
       npm run migration:generate ./src/migration/[MIGRATION_TITLE]
       npm run migration:run
     ```
   ## Using Docker
-  - Install docker first
+  - **Install Docker First**
+  - Check the official [Docker](https://docs.docker.com/engine/install) documentation for information how to install Docker on your operating system. And then install Docker and supporting tools.
+  - Build the docker images
+    ```bash
+    docker-compose build
+    ```
+  - Start the containers
+    ```bash
+    docker-compose up
+    ```
+  - **If everyting setup correctly and your containers are running then you will get the application running in localhost:3000**
+  - ***Update port maping in `docker-compose.yml` file if you want to run in different port***
