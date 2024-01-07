@@ -34,8 +34,15 @@
 
 ## Architecture
   <p align="center">
+    <img width="40%" height="25%" src="https://github.com/moinulhossainmahim/shop-api/blob/main/screenshots/nest-architecture.png" />
+  </p>
+  <p align="center">
+  <b>NestJS Architecture</b>
+  </p>
+
+  <p align="center">
     <img width="40%" height="25%" src="https://github.com/moinulhossainmahim/shop-api/blob/main/screenshots/initial-er.png" />
   </p>
   <p align="center">
-  <b>ER Diagram of Database</b>
+  <b>ER Diagram</b>
   </p>
