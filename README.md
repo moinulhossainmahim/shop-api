@@ -1105,5 +1105,410 @@
 ```
 </details>
 
+### Orders
 
+<details>
+  
+<summary> <code>POST </code> <code>/orders</code></summary>
+
+### Curl
+
+    curl -X 'POST' \ 'http://localhost:3000/orders \ 
+    -H 'accept: application/json'
+    -H 'Content-Type: application/json'
+    -H 'Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoiTW9pbnVsIEhvc3NhaW4iLCJ1c2VySWQiOiJiNWM3OGQ0Zi1hMWQzLTQ5MDktOWEzYi03ZjM1NDk2YTU1M2YiLCJpYXQiOjE3MDQ3MTUzMTYsImV4cCI6MTcwNDcxODkxNn0.aEOVyViMFnlp0MZVjBMFiV9BiBN9yBj_-1JLmeh3bKk'
+    -d '{
+        "order_status": "pending",
+        "delivery_fee": 20,
+        "amount": 13,
+        "total": 33,
+        "payment_status": "pending",
+        "payment_method": "cashon",
+        "billingAddress":         {
+            "id": "40c1b9bf-e248-40b9-8a81-53971285b449",
+            "title": "test",
+            "country": "test country",
+            "city": "test city",
+            "state": "test state",
+            "zip": "test zip",
+            "streetAddress": "test streetAdress",
+            "addressType": "billing",
+            "isActive": true
+        },
+        "shippingAddress": {
+            "id": "ff30fb95-06a9-4924-a09e-b4cce2c93795",
+            "title": "test",
+            "country": "test country",
+            "city": "test city",
+            "state": "test state",
+            "zip": "test zip",
+            "streetAddress": "test streetAdress",
+            "addressType": "billing",
+            "isActive": true
+        },
+        "orderItems": [
+            {
+                "productId": "64eb19a5-9379-4c20-b18f-dcf1f193c230",
+                "subtotal": 13,
+                "quantity": 1,
+                "unit_price": 1.60
+            }
+        ]
+    }'
+
+### Request URL
+
+    http://localhost:3000/orders
+
+### Response
+```
+{
+   "success": true,
+   "content": {
+      "order_status": "pending",
+      "delivery_fee": 20,
+      "total": 33,
+      "amount": 13,
+      "payment_status": "pending",
+      "payment_method": "cashon",
+      "shippingAddress": {
+          "id": "ff30fb95-06a9-4924-a09e-b4cce2c93795",
+          "title": "test",
+          "country": "test country",
+          "city": "test city",
+          "state": "test state",
+          "zip": "test zip",
+          "streetAddress": "test streetAdress",
+          "addressType": "billing",
+          "isActive": true
+      },
+      "billingAddress": {
+          "id": "40c1b9bf-e248-40b9-8a81-53971285b449",
+          "title": "test",
+          "country": "test country",
+          "city": "test city",
+          "state": "test state",
+          "zip": "test zip",
+          "streetAddress": "test streetAdress",
+          "addressType": "billing",
+          "isActive": true
+      },
+      "orderItems": [
+          {
+              "id": "75813f1d-43e6-4270-a54b-f0e9c6471535",
+              "quantity": 1,
+              "unit_price": "1.60",
+              "subtotal": "13.00",
+              "product": {
+                  "id": "64eb19a5-9379-4c20-b18f-dcf1f193c230",
+                  "createdAt": "2024-01-08T17:24:37.485Z",
+                  "name": "Apples",
+                  "desc": "An apple is a sweet, edible fruit produced by an apple tree (Malus domestica). Apple trees are ... The skin of ripe apples is generally red, yellow, green, pink, or russetted, though many bi- or tri-colored cultivars may be found.",
+                  "status": "PUBLISHED",
+                  "featuredImg": "http://localhost:3000/products/pictures/apple-1_1704734677462.webp",
+                  "galleryImg": [
+                      "http://localhost:3000/products/pictures/apple-2_1704734677463.webp",
+                      "http://localhost:3000/products/pictures/apple_1704734677463.webp"
+                  ],
+                  "unit": "kg",
+                  "price": "2.00",
+                  "salePrice": "1.60",
+                  "quantity": 300,
+                  "sku": "20240108-P01",
+                  "slug": "apples"
+              }
+          }
+      ],
+      "id": "51851872-0ff0-44f0-bb0e-529d9bcbbb11",
+      "tracking_no": "20240105122035886-8317",
+      "order_date": "2024-01-08T18:43:18.000Z"
+  },
+  "message": "Order placed successfully"
+}
+```
+</details>
+
+<details>
+  
+<summary> <code>GET </code> <code>/orders</code></summary>
+
+### Curl
+
+    curl -X 'GET' \ 'http://localhost:3000/orders \ 
+    -H 'accept: application/json'
+    -H 'Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoiTW9pbnVsIEhvc3NhaW4iLCJ1c2VySWQiOiJiNWM3OGQ0Zi1hMWQzLTQ5MDktOWEzYi03ZjM1NDk2YTU1M2YiLCJpYXQiOjE3MDQ3MTUzMTYsImV4cCI6MTcwNDcxODkxNn0.aEOVyViMFnlp0MZVjBMFiV9BiBN9yBj_-1JLmeh3bKk'
+
+### Request URL
+
+    http://localhost:3000/orders
+
+### Response
+```
+{
+    "success": true,
+    "content": [
+        {
+            "id": "51851872-0ff0-44f0-bb0e-529d9bcbbb11",
+            "tracking_no": "20240105122035886-8317",
+            "order_date": "2024-01-08T18:43:18.000Z",
+            "order_status": "pending",
+            "delivery_fee": "20.00",
+            "total": "33.00",
+            "amount": "13.00",
+            "payment_status": "pending",
+            "payment_method": "cashon",
+            "orderItems": [
+                {
+                    "id": "75813f1d-43e6-4270-a54b-f0e9c6471535",
+                    "quantity": 1,
+                    "unit_price": "1.60",
+                    "subtotal": "13.00",
+                    "product": {
+                        "id": "64eb19a5-9379-4c20-b18f-dcf1f193c230",
+                        "createdAt": "2024-01-08T17:24:37.485Z",
+                        "name": "Apples",
+                        "desc": "An apple is a sweet, edible fruit produced by an apple tree (Malus domestica). Apple trees are ... The skin of ripe apples is generally red, yellow, green, pink, or russetted, though many bi- or tri-colored cultivars may be found.",
+                        "status": "PUBLISHED",
+                        "featuredImg": "http://localhost:3000/products/pictures/apple-1_1704734677462.webp",
+                        "galleryImg": [
+                            "http://localhost:3000/products/pictures/apple-2_1704734677463.webp",
+                            "http://localhost:3000/products/pictures/apple_1704734677463.webp"
+                        ],
+                        "unit": "kg",
+                        "price": "2.00",
+                        "salePrice": "1.60",
+                        "quantity": 300,
+                        "sku": "20240108-P01",
+                        "slug": "apples"
+                    }
+                }
+            ],
+            "shippingAddress": {
+                "id": "ff30fb95-06a9-4924-a09e-b4cce2c93795",
+                "title": "test",
+                "country": "test country",
+                "city": "test city",
+                "state": "test state",
+                "zip": "test zip",
+                "streetAddress": "test streetAdress",
+                "addressType": "billing",
+                "isActive": true
+            },
+            "billingAddress": {
+                "id": "40c1b9bf-e248-40b9-8a81-53971285b449",
+                "title": "test",
+                "country": "test country",
+                "city": "test city",
+                "state": "test state",
+                "zip": "test zip",
+                "streetAddress": "test streetAdress",
+                "addressType": "billing",
+                "isActive": true
+            }
+        }
+    ],
+    "meta": {
+        "page": 1,
+        "take": 10,
+        "itemCount": 1,
+        "pageCount": 1,
+        "hasPreviousPage": false,
+        "hasNextPage": false
+    },
+    "message": "Orders fetched successfully"
+}
+```
+</details>
+
+<details>
+  
+<summary> <code>GET </code> <code>/orders/{orderId}</code></summary>
+
+### Curl
+
+    curl -X 'GET' \ 'http://localhost:3000/orders/51851872-0ff0-44f0-bb0e-529d9bcbbb11 \ 
+    -H 'accept: application/json'
+    -H 'Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoiTW9pbnVsIEhvc3NhaW4iLCJ1c2VySWQiOiJiNWM3OGQ0Zi1hMWQzLTQ5MDktOWEzYi03ZjM1NDk2YTU1M2YiLCJpYXQiOjE3MDQ3MTUzMTYsImV4cCI6MTcwNDcxODkxNn0.aEOVyViMFnlp0MZVjBMFiV9BiBN9yBj_-1JLmeh3bKk'
+
+### Request URL
+
+    http://localhost:3000/orders/51851872-0ff0-44f0-bb0e-529d9bcbbb11
+
+### Response
+```
+{
+    "success": true,
+    "content": {
+        "id": "51851872-0ff0-44f0-bb0e-529d9bcbbb11",
+        "tracking_no": "20240105122035886-8317",
+        "order_date": "2024-01-08T18:43:18.000Z",
+        "order_status": "pending",
+        "delivery_fee": "20.00",
+        "total": "33.00",
+        "amount": "13.00",
+        "payment_status": "pending",
+        "payment_method": "cashon",
+        "orderItems": [
+            {
+                "id": "75813f1d-43e6-4270-a54b-f0e9c6471535",
+                "quantity": 1,
+                "unit_price": "1.60",
+                "subtotal": "13.00",
+                "product": {
+                    "id": "64eb19a5-9379-4c20-b18f-dcf1f193c230",
+                    "createdAt": "2024-01-08T17:24:37.485Z",
+                    "name": "Apples",
+                    "desc": "An apple is a sweet, edible fruit produced by an apple tree (Malus domestica). Apple trees are ... The skin of ripe apples is generally red, yellow, green, pink, or russetted, though many bi- or tri-colored cultivars may be found.",
+                    "status": "PUBLISHED",
+                    "featuredImg": "http://localhost:3000/products/pictures/apple-1_1704734677462.webp",
+                    "galleryImg": [
+                        "http://localhost:3000/products/pictures/apple-2_1704734677463.webp",
+                        "http://localhost:3000/products/pictures/apple_1704734677463.webp"
+                    ],
+                    "unit": "kg",
+                    "price": "2.00",
+                    "salePrice": "1.60",
+                    "quantity": 300,
+                    "sku": "20240108-P01",
+                    "slug": "apples"
+                }
+            }
+        ],
+        "shippingAddress": {
+            "id": "ff30fb95-06a9-4924-a09e-b4cce2c93795",
+            "title": "test",
+            "country": "test country",
+            "city": "test city",
+            "state": "test state",
+            "zip": "test zip",
+            "streetAddress": "test streetAdress",
+            "addressType": "billing",
+            "isActive": true
+        },
+        "billingAddress": {
+            "id": "40c1b9bf-e248-40b9-8a81-53971285b449",
+            "title": "test",
+            "country": "test country",
+            "city": "test city",
+            "state": "test state",
+            "zip": "test zip",
+            "streetAddress": "test streetAdress",
+            "addressType": "billing",
+            "isActive": true
+        }
+    },
+    "message": "Fetched order successfully"
+}
+```
+</details>
+
+<details>
+  
+<summary> <code>PATCH </code> <code>/orders/{orderId}</code></summary>
+
+### Curl
+
+    curl -X 'PATCH' \ 'http://localhost:3000/orders/51851872-0ff0-44f0-bb0e-529d9bcbbb11 \ 
+    -H 'accept: application/json'
+    -H 'Content-Type: application/json' \
+    -H 'Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoiTW9pbnVsIEhvc3NhaW4iLCJ1c2VySWQiOiJiNWM3OGQ0Zi1hMWQzLTQ5MDktOWEzYi03ZjM1NDk2YTU1M2YiLCJpYXQiOjE3MDQ3MTUzMTYsImV4cCI6MTcwNDcxODkxNn0.aEOVyViMFnlp0MZVjBMFiV9BiBN9yBj_-1JLmeh3bKk'
+    -d '{
+      "order_status": "outForDelivery"
+    }'
+
+### Request URL
+
+    http://localhost:3000/orders/51851872-0ff0-44f0-bb0e-529d9bcbbb11
+
+### Response
+```
+{
+    "success": true,
+    "content": {
+        "id": "51851872-0ff0-44f0-bb0e-529d9bcbbb11",
+        "tracking_no": "20240105122035886-8317",
+        "order_date": "2024-01-08T18:43:18.000Z",
+        "order_status": "outForDelivery",
+        "delivery_fee": "20.00",
+        "total": "33.00",
+        "amount": "13.00",
+        "payment_status": "pending",
+        "payment_method": "cashon",
+        "orderItems": [
+            {
+                "id": "75813f1d-43e6-4270-a54b-f0e9c6471535",
+                "quantity": 1,
+                "unit_price": "1.60",
+                "subtotal": "13.00",
+                "product": {
+                    "id": "64eb19a5-9379-4c20-b18f-dcf1f193c230",
+                    "createdAt": "2024-01-08T17:24:37.485Z",
+                    "name": "Apples",
+                    "desc": "An apple is a sweet, edible fruit produced by an apple tree (Malus domestica). Apple trees are ... The skin of ripe apples is generally red, yellow, green, pink, or russetted, though many bi- or tri-colored cultivars may be found.",
+                    "status": "PUBLISHED",
+                    "featuredImg": "http://localhost:3000/products/pictures/apple-1_1704734677462.webp",
+                    "galleryImg": [
+                        "http://localhost:3000/products/pictures/apple-2_1704734677463.webp",
+                        "http://localhost:3000/products/pictures/apple_1704734677463.webp"
+                    ],
+                    "unit": "kg",
+                    "price": "2.00",
+                    "salePrice": "1.60",
+                    "quantity": 300,
+                    "sku": "20240108-P01",
+                    "slug": "apples"
+                }
+            }
+        ],
+        "shippingAddress": {
+            "id": "ff30fb95-06a9-4924-a09e-b4cce2c93795",
+            "title": "test",
+            "country": "test country",
+            "city": "test city",
+            "state": "test state",
+            "zip": "test zip",
+            "streetAddress": "test streetAdress",
+            "addressType": "billing",
+            "isActive": true
+        },
+        "billingAddress": {
+            "id": "40c1b9bf-e248-40b9-8a81-53971285b449",
+            "title": "test",
+            "country": "test country",
+            "city": "test city",
+            "state": "test state",
+            "zip": "test zip",
+            "streetAddress": "test streetAdress",
+            "addressType": "billing",
+            "isActive": true
+        }
+    },
+    "message": "Order updated successfully"
+}
+```
+</details>
+
+<details>
+  
+<summary> <code>Delete </code> <code>/orders/{orderId}</code></summary>
+
+### Curl
+
+    curl -X 'DELETE' \ 'http://localhost:3000/orders/f67e8b81-90b4-45c0-96c6-44e54ced3124 \ 
+    -H 'accept: application/json'
+    -H 'Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoiTW9pbnVsIEhvc3NhaW4iLCJ1c2VySWQiOiJiNWM3OGQ0Zi1hMWQzLTQ5MDktOWEzYi03ZjM1NDk2YTU1M2YiLCJpYXQiOjE3MDQ3MTUzMTYsImV4cCI6MTcwNDcxODkxNn0.aEOVyViMFnlp0MZVjBMFiV9BiBN9yBj_-1JLmeh3bKk'
+
+### Request URL
+
+    http://localhost:3000/orders/f67e8b81-90b4-45c0-96c6-44e54ced3124
+
+### Response
+```
+{
+  "success": true,
+  "content": [],
+  "message": "Order deleted successfully"
+}
+```
+</details>
 
