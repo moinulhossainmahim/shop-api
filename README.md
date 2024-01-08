@@ -477,7 +477,7 @@
 
 <details>
   
-<summary> <code>Delete </code> <code>/categories/{categoryId}</code></summary>
+<summary> <code>DELETE </code> <code>/categories/{categoryId}</code></summary>
 
 ### Curl
 
@@ -615,7 +615,7 @@
 
 <details>
   
-<summary> <code>Delete </code> <code>/sub-categories/{categoryId}</code></summary>
+<summary> <code>DELETE </code> <code>/sub-categories/{categoryId}</code></summary>
 
 ### Curl
 
@@ -704,7 +704,7 @@
 
 <details>
   
-<summary> <code>Delete </code> <code>/wishlists/{wishlistId}</code></summary>
+<summary> <code>DELETE </code> <code>/wishlists/{wishlistId}</code></summary>
 
 ### Curl
 
@@ -849,7 +849,7 @@
 
 <details>
   
-<summary> <code>Delete </code> <code>/address/{addressId}</code></summary>
+<summary> <code>DELETE </code> <code>/address/{addressId}</code></summary>
 
 ### Curl
 
@@ -1083,7 +1083,7 @@
 
 <details>
   
-<summary> <code>Delete </code> <code>/products/{productId}</code></summary>
+<summary> <code>DELETE </code> <code>/products/{productId}</code></summary>
 
 ### Curl
 
@@ -1490,7 +1490,7 @@
 
 <details>
   
-<summary> <code>Delete </code> <code>/orders/{orderId}</code></summary>
+<summary> <code>DELETE </code> <code>/orders/{orderId}</code></summary>
 
 ### Curl
 
