@@ -1545,4 +1545,229 @@
 ```
 </details>
 
+### CART
 
+<details>
+  
+<summary> <code>POST</code> <code>/cart </code></summary>
+
+### Curl
+
+```
+curl -X 'POST' \
+  'http://localhost:3000/cart' \
+  -H 'accept: application/json' \
+  -H 'Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoiTW9pbnVsIEhvc3NhaW4iLCJ1c2VySWQiOiJiNWM3OGQ0Zi1hMWQzLTQ5MDktOWEzYi03ZjM1NDk2YTU1M2YiLCJpYXQiOjE3MDQ3MTUzMTYsImV4cCI6MTcwNDcxODkxNn0.aEOVyViMFnlp0MZVjBMFiV9BiBN9yBj_-1JLmeh3bKk'
+  -d '
+    {
+      "productId": "64eb19a5-9379-4c20-b18f-dcf1f193c230",
+      "quantity": 10
+    }
+  '
+``` 
+
+### Request URL
+
+```
+http://localhost:3000/cart
+``` 
+
+
+### Response
+```
+{
+    "success": true,
+    "content": {
+      "total": 16,
+      "quantity": 10,
+      "product": {
+          "id": "64eb19a5-9379-4c20-b18f-dcf1f193c230",
+          "createdAt": "2024-01-08T17:24:37.485Z",
+          "name": "Apples",
+          "desc": "An apple is a sweet, edible fruit produced by an apple tree (Malus domestica). Apple trees are ... The skin of ripe apples is generally red, yellow, green, pink, or russetted, though many bi- or tri-colored cultivars may be found.",
+          "status": "PUBLISHED",
+          "featuredImg": "http://localhost:3000/products/pictures/apple-1_1704734677462.webp",
+          "galleryImg": [
+              "http://localhost:3000/products/pictures/apple-2_1704734677463.webp",
+              "http://localhost:3000/products/pictures/apple_1704734677463.webp"
+          ],
+          "unit": "kg",
+          "price": "2.00",
+          "salePrice": "1.60",
+          "quantity": 300,
+          "sku": "20240108-P01",
+          "slug": "apples"
+      },
+      "productId": "64eb19a5-9379-4c20-b18f-dcf1f193c230",
+      "id": "95be3d0a-7719-499d-8178-37d416bfc2b7"
+    },
+    "message": "Add product to cart successfully"
+}
+```   
+</details>
+
+<details>
+  
+<summary> <code>GET </code> <code>/cart </code></summary>
+
+### Curl
+
+```
+curl -X 'GET' \
+  'http://localhost:3000/cart' \
+  -H 'accept: application/json' \
+  -H 'Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoiTW9pbnVsIEhvc3NhaW4iLCJ1c2VySWQiOiJiNWM3OGQ0Zi1hMWQzLTQ5MDktOWEzYi03ZjM1NDk2YTU1M2YiLCJpYXQiOjE3MDQ3MTUzMTYsImV4cCI6MTcwNDcxODkxNn0.aEOVyViMFnlp0MZVjBMFiV9BiBN9yBj_-1JLmeh3bKk'
+```
+
+### Request URL
+
+```
+http://localhost:3000/cart
+``` 
+
+
+### Response
+```
+{
+    "success": true,
+    "content": [
+        {
+            "id": "95be3d0a-7719-499d-8178-37d416bfc2b7",
+            "total": 16,
+            "quantity": 10,
+            "productId": "64eb19a5-9379-4c20-b18f-dcf1f193c230",
+            "product": {
+                "id": "64eb19a5-9379-4c20-b18f-dcf1f193c230",
+                "createdAt": "2024-01-08T17:24:37.485Z",
+                "name": "Apples",
+                "desc": "An apple is a sweet, edible fruit produced by an apple tree (Malus domestica). Apple trees are ... The skin of ripe apples is generally red, yellow, green, pink, or russetted, though many bi- or tri-colored cultivars may be found.",
+                "status": "PUBLISHED",
+                "featuredImg": "http://localhost:3000/products/pictures/apple-1_1704734677462.webp",
+                "galleryImg": [
+                    "http://localhost:3000/products/pictures/apple-2_1704734677463.webp",
+                    "http://localhost:3000/products/pictures/apple_1704734677463.webp"
+                ],
+                "unit": "kg",
+                "price": "2.00",
+                "salePrice": "1.60",
+                "quantity": 300,
+                "sku": "20240108-P01",
+                "slug": "apples"
+            }
+        }
+    ],
+    "message": "Fetched cart successfully"
+}
+```   
+</details>
+
+<details>
+  
+<summary> <code>PUT </code> <code>/cart/{productId} </code></summary>
+
+### Curl
+
+```
+curl -X 'PUT' \
+  'http://localhost:3000/cart/64eb19a5-9379-4c20-b18f-dcf1f193c230?quantity=15' \
+  -H 'accept: application/json' \
+  -H 'Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoiTW9pbnVsIEhvc3NhaW4iLCJ1c2VySWQiOiJiNWM3OGQ0Zi1hMWQzLTQ5MDktOWEzYi03ZjM1NDk2YTU1M2YiLCJpYXQiOjE3MDQ3MTUzMTYsImV4cCI6MTcwNDcxODkxNn0.aEOVyViMFnlp0MZVjBMFiV9BiBN9yBj_-1JLmeh3bKk'
+``` 
+
+### Request URL
+
+```
+http://localhost:3000/cart/64eb19a5-9379-4c20-b18f-dcf1f193c230?quantity=15
+``` 
+
+
+### Response
+```
+{
+    "success": true,
+    "content": {
+        "id": "95be3d0a-7719-499d-8178-37d416bfc2b7",
+        "total": 24,
+        "quantity": 15,
+        "productId": "64eb19a5-9379-4c20-b18f-dcf1f193c230",
+        "product": {
+            "id": "64eb19a5-9379-4c20-b18f-dcf1f193c230",
+            "createdAt": "2024-01-08T17:24:37.485Z",
+            "name": "Apples",
+            "desc": "An apple is a sweet, edible fruit produced by an apple tree (Malus domestica). Apple trees are ... The skin of ripe apples is generally red, yellow, green, pink, or russetted, though many bi- or tri-colored cultivars may be found.",
+            "status": "PUBLISHED",
+            "featuredImg": "http://localhost:3000/products/pictures/apple-1_1704734677462.webp",
+            "galleryImg": [
+                "http://localhost:3000/products/pictures/apple-2_1704734677463.webp",
+                "http://localhost:3000/products/pictures/apple_1704734677463.webp"
+            ],
+            "unit": "kg",
+            "price": "2.00",
+            "salePrice": "1.60",
+            "quantity": 300,
+            "sku": "20240108-P01",
+            "slug": "apples"
+        }
+    },
+    "message": "Cart updated successfully"
+}
+```   
+</details>
+
+<details>
+  
+<summary> <code>DELETE </code> <code>/cart/{productId} </code></summary>
+
+### Curl
+
+```
+curl -X 'DELETE' \
+  'http://localhost:3000/cart/64eb19a5-9379-4c20-b18f-dcf1f193c230' \
+  -H 'accept: application/json' \
+  -H 'Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoiTW9pbnVsIEhvc3NhaW4iLCJ1c2VySWQiOiJiNWM3OGQ0Zi1hMWQzLTQ5MDktOWEzYi03ZjM1NDk2YTU1M2YiLCJpYXQiOjE3MDQ3MTUzMTYsImV4cCI6MTcwNDcxODkxNn0.aEOVyViMFnlp0MZVjBMFiV9BiBN9yBj_-1JLmeh3bKk'
+``` 
+
+### Request URL
+
+```
+http://localhost:3000/cart/64eb19a5-9379-4c20-b18f-dcf1f193c230
+``` 
+
+### Response
+```
+{
+    "success": true,
+    "content": [],
+    "message": "Removed product from cart successfully"
+}
+```   
+</details>
+
+<details>
+  
+<summary> <code>DELETE </code> <code>/cart/all </code></summary>
+
+### Curl
+
+```
+curl -X 'DELETE' \
+  'http://localhost:3000/cart/all' \
+  -H 'accept: application/json' \
+  -H 'Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoiTW9pbnVsIEhvc3NhaW4iLCJ1c2VySWQiOiJiNWM3OGQ0Zi1hMWQzLTQ5MDktOWEzYi03ZjM1NDk2YTU1M2YiLCJpYXQiOjE3MDQ3MTUzMTYsImV4cCI6MTcwNDcxODkxNn0.aEOVyViMFnlp0MZVjBMFiV9BiBN9yBj_-1JLmeh3bKk'
+``` 
+
+### Request URL
+
+```
+http://localhost:3000/cart/all
+``` 
+
+### Response
+```
+{
+    "success": true,
+    "content": [],
+    "message": "Cart removed successfully"
+}
+```   
+</details>
