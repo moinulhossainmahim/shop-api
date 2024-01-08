@@ -130,3 +130,70 @@
   - **If everyting setup correctly and your containers are running then you will get the application running in [localhost:3000](http://localhost:3000)**
 
   - **Update port mappings in `docker-compose.yml` file if you want to run in different port**
+
+# API Documentation
+
+### Authentication
+<details>
+  
+<summary> <code>GET </code> <code>/auth/signin</code></summary>
+
+### Curl
+
+    curl -X 'GET' \ 'http://localhost:3000/auth/signin \ 
+    -H 'accept: application/json'
+    -H 'Content-Type: application/json' \
+    -d '{
+      "email": "moinulhossain@gmail.com",
+      "password": "Moinulpassword123",
+    }'
+### Request URL
+
+    http://localhost:3000/auth/signin
+
+### Response
+```
+{
+  "success": true,
+  "content": {
+    "accessToken": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoiTW9pbnVsIEhvc3NhaW4iLCJ1c2VySWQiOiJiNWM3OGQ0Zi1hMWQzLTQ5MDktOWEzYi03ZjM1NDk2YTU1M2YiLCJpYXQiOjE3MDQ3MTUzMTYsImV4cCI6MTcwNDcxODkxNn0.aEOVyViMFnlp0MZVjBMFiV9BiBN9yBj_-1JLmeh3bKk"
+  },
+  "message": "sign in successfully"
+}
+```   
+</details>
+
+<details>
+
+<summary> <code>POST</code> <code>/auth/signup</code></summary>
+
+### Curl
+
+```
+  curl -X 'POST' \
+  'http://localhost:3000/auth/signup' \
+  -H 'accept: application/json' \
+  -H 'Content-Type: application/json' \
+  -d '{
+     "fullName": "Moinul Hossain",
+    "password": "Mahim123@",
+    "email": "moinulhossainmahim@gmail.com",
+    "contact": "01732748262"
+  }'
+``` 
+
+### Request URL
+
+    http://localhost:3000/auth/signup
+
+
+### Response
+```
+{
+  "success": true,
+  "content": [],
+  "message": "sign up successfully"
+}
+
+```   
+</details>
