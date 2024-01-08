@@ -637,3 +637,96 @@
 ```
 </details>
 
+### Wishlist
+
+<details>
+  
+<summary> <code>POST </code> <code>/wishlists/{productId}</code></summary>
+
+### Curl
+
+    curl -X 'POST' \ 'http://localhost:3000/wishlists/365079f8-ae27-40da-9669-b0a5b956cc4d \ 
+    -H 'accept: application/json'
+    -H 'Authorization: Bearer  eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoiTW9pbnVsIEhvc3NhaW4iLCJ1c2VySWQiOiJiNWM3OGQ0Zi1hMWQzLTQ5MDktOWEzYi03ZjM1NDk2YTU1M2YiLCJpYXQiOjE3MDQ3MTUzMTYsImV4cCI6MTcwNDcxODkxNn0.aEOVyViMFnlp0MZVjBMFiV9BiBN9yBj_-1JLmeh3bKk'
+
+### Request URL
+
+    http://localhost:3000/wishlists/365079f8-ae27-40da-9669-b0a5b956cc4d
+
+### Response
+```
+{
+  "success": true,
+  "content": [],
+  "message": "Added to wishlist successfully"
+}
+```
+</details>
+
+<details>
+  
+<summary> <code>GET </code> <code>/wishlists</code></summary>
+
+### Curl
+
+    curl -X 'GET' \ 'http://localhost:3000/wishlists \ 
+    -H 'accept: application/json'
+    -H 'Authorization: Bearer  eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoiTW9pbnVsIEhvc3NhaW4iLCJ1c2VySWQiOiJiNWM3OGQ0Zi1hMWQzLTQ5MDktOWEzYi03ZjM1NDk2YTU1M2YiLCJpYXQiOjE3MDQ3MTUzMTYsImV4cCI6MTcwNDcxODkxNn0.aEOVyViMFnlp0MZVjBMFiV9BiBN9yBj_-1JLmeh3bKk'
+
+### Request URL
+
+    http://localhost:3000/wishlists
+
+### Response
+```
+{
+  "success": true,
+  "content": [
+    {
+      "id": "365079f8-ae27-40da-9669-b0a5b956cc4d",
+      "product": {
+        "id": "365079f8-ae27-40da-9669-b0a5b956cc4d",
+      }
+    }
+  ],
+  "meta": {
+      "page": 1,
+      "take": 10,
+      "itemCount": 1,
+      "pageCount": 1,
+      "hasPreviousPage": false,
+      "hasNextPage": false
+  },
+  "message": "Fetched wishlists successfully"
+}
+```
+</details>
+
+<details>
+  
+<summary> <code>Delete </code> <code>/wishlists/{wishlistId}</code></summary>
+
+### Curl
+
+    curl -X 'DELETE' \ 'http://localhost:3000/wishlists/42fc242a-b020-45d0-82e7-c5e37f3a759d \ 
+    -H 'accept: application/json'
+    -H 'Authorization: Bearer  eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoiTW9pbnVsIEhvc3NhaW4iLCJ1c2VySWQiOiJiNWM3OGQ0Zi1hMWQzLTQ5MDktOWEzYi03ZjM1NDk2YTU1M2YiLCJpYXQiOjE3MDQ3MTUzMTYsImV4cCI6MTcwNDcxODkxNn0.aEOVyViMFnlp0MZVjBMFiV9BiBN9yBj_-1JLmeh3bKk'
+
+### Request URL
+
+    http://localhost:3000/wishlists/42fc242a-b020-45d0-82e7-c5e37f3a759d
+
+### Response
+```
+{
+  "success": true,
+  "content": [],
+  "message": "Wishlist removed successfully"
+}
+```
+</details>
+
+
+
+
+
