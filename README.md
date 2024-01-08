@@ -270,11 +270,11 @@
 
 <details>
   
-<summary> <code>PATCH </code> <code>/users/update-password</code></summary>
+<summary> <code>PATCH </code> <code>/users/{userId}/update-password</code></summary>
 
 ### Curl
 
-    curl -X 'GET' \ 'http://localhost:3000/users/update-password \ 
+    curl -X 'GET' \ 'http://localhost:3000/users/b5c78d4f-a1d3-4909-9a3b-7f35496a553f/update-password \ 
     -H 'accept: application/json'
     -H 'Content-Type: application/json' \
     -H 'Authorization: Bearer  eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoiTW9pbnVsIEhvc3NhaW4iLCJ1c2VySWQiOiJiNWM3OGQ0Zi1hMWQzLTQ5MDktOWEzYi03ZjM1NDk2YTU1M2YiLCJpYXQiOjE3MDQ3MTUzMTYsImV4cCI6MTcwNDcxODkxNn0.aEOVyViMFnlp0MZVjBMFiV9BiBN9yBj_-1JLmeh3bKk'
@@ -285,7 +285,7 @@
 
 ### Request URL
 
-    http://localhost:3000/users/update-password
+    http://localhost:3000/users/{userId}/update-password
 
 ### Response
 ```
@@ -297,4 +297,42 @@
 ```
 </details>
 
+<details>
+  
+<summary> <code>PATCH </code> <code>/users/{userId}</code></summary>
 
+### Curl
+
+    curl -X 'GET' \ 'http://localhost:3000/users/b5c78d4f-a1d3-4909-9a3b-7f35496a553f \ 
+    -H 'accept: application/json'
+    -H 'Content-Type: application/json' \
+    -H 'Authorization: Bearer  eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoiTW9pbnVsIEhvc3NhaW4iLCJ1c2VySWQiOiJiNWM3OGQ0Zi1hMWQzLTQ5MDktOWEzYi03ZjM1NDk2YTU1M2YiLCJpYXQiOjE3MDQ3MTUzMTYsImV4cCI6MTcwNDcxODkxNn0.aEOVyViMFnlp0MZVjBMFiV9BiBN9yBj_-1JLmeh3bKk'
+    -d '{
+      "avatar": Image,
+      "contact": "019827373661",
+      "email": "test@gmail.com",
+      "fullName": "Test name"
+    }'
+
+### Request URL
+
+    http://localhost:3000/users/{userId}
+
+### Response
+```
+{
+ "success": true,
+  "content": {
+      "id": "b5c78d4f-a1d3-4909-9a3b-7f35496a553f",
+      "fullName": "Moinul Hossain",
+      "avatar": "",
+      "email": "moinulhossainmahim@gmail.com",
+      "contact": "01732748262",
+      "userType": "admin",
+      "status": "active",
+      "address": []
+  },
+  "message": "Updated user successfully"
+}
+```
+</details>
