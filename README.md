@@ -199,15 +199,16 @@
 </details>
 
 ### User
-**User need to be admin to access this endpoint**
 <details>
   
 <summary> <code>GET </code> <code>/users</code></summary>
 
 ### Curl
 
-    curl -X 'GET' \ 'http://localhost:3000/auth/signin \ 
+    curl -X 'GET' \ 'http://localhost:3000/users \ 
     -H 'accept: application/json'
+    -H 'Authorization: Bearer  eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoiTW9pbnVsIEhvc3NhaW4iLCJ1c2VySWQiOiJiNWM3OGQ0Zi1hMWQzLTQ5MDktOWEzYi03ZjM1NDk2YTU1M2YiLCJpYXQiOjE3MDQ3MTUzMTYsImV4cCI6MTcwNDcxODkxNn0.aEOVyViMFnlp0MZVjBMFiV9BiBN9yBj_-1JLmeh3bKk'
+
 ### Request URL
 
     http://localhost:3000/users
@@ -230,5 +231,70 @@
     "meta": {},
     "message": "Fetched users successfully"
 }
-```   
+```
+**User need to be admin to access this endpoint**
 </details>
+
+<details>
+  
+<summary> <code>GET </code> <code>/users/profile</code></summary>
+
+### Curl
+
+    curl -X 'GET' \ 'http://localhost:3000/users/profile \ 
+    -H 'accept: application/json'
+    -H 'Authorization: Bearer  eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoiTW9pbnVsIEhvc3NhaW4iLCJ1c2VySWQiOiJiNWM3OGQ0Zi1hMWQzLTQ5MDktOWEzYi03ZjM1NDk2YTU1M2YiLCJpYXQiOjE3MDQ3MTUzMTYsImV4cCI6MTcwNDcxODkxNn0.aEOVyViMFnlp0MZVjBMFiV9BiBN9yBj_-1JLmeh3bKk'
+
+### Request URL
+
+    http://localhost:3000/users/profile
+
+### Response
+```
+{
+  "success": true,
+  "content": {
+      "id": "b5c78d4f-a1d3-4909-9a3b-7f35496a553f",
+      "fullName": "Moinul Hossain",
+      "avatar": "",
+      "email": "moinulhossainmahim@gmail.com",
+      "contact": "01732748262",
+      "userType": "admin",
+      "status": "active",
+      "address": []
+  },
+  "message": "Fetched user successfully"
+}
+```
+</details>
+
+<details>
+  
+<summary> <code>PATCH </code> <code>/users/update-password</code></summary>
+
+### Curl
+
+    curl -X 'GET' \ 'http://localhost:3000/users/update-password \ 
+    -H 'accept: application/json'
+    -H 'Content-Type: application/json' \
+    -H 'Authorization: Bearer  eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoiTW9pbnVsIEhvc3NhaW4iLCJ1c2VySWQiOiJiNWM3OGQ0Zi1hMWQzLTQ5MDktOWEzYi03ZjM1NDk2YTU1M2YiLCJpYXQiOjE3MDQ3MTUzMTYsImV4cCI6MTcwNDcxODkxNn0.aEOVyViMFnlp0MZVjBMFiV9BiBN9yBj_-1JLmeh3bKk'
+    -d '{
+      "oldPassword": "Hellomahim123@",
+      "newPassword": "Hellomahim12@"
+    }'
+
+### Request URL
+
+    http://localhost:3000/users/update-password
+
+### Response
+```
+{
+  "data": [],
+  "message": "Password updated successfully",
+  "success": true
+}
+```
+</details>
+
+
