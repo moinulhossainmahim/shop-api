@@ -871,7 +871,239 @@
 ```
 </details>
 
+### Products
 
+<details>
+  
+<summary> <code>POST </code> <code>/products</code></summary>
+
+### Curl
+
+    curl -X 'POST' \ 'http://localhost:3000/products \ 
+    -H 'accept: application/json'
+    -H 'Content-Type: application/json'
+    -H 'Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoiTW9pbnVsIEhvc3NhaW4iLCJ1c2VySWQiOiJiNWM3OGQ0Zi1hMWQzLTQ5MDktOWEzYi03ZjM1NDk2YTU1M2YiLCJpYXQiOjE3MDQ3MTUzMTYsImV4cCI6MTcwNDcxODkxNn0.aEOVyViMFnlp0MZVjBMFiV9BiBN9yBj_-1JLmeh3bKk'
+    -d '{
+      "name": "Apples",
+        "desc": "An apple is a sweet, edible fruit produced by an apple tree (Malus domestica). Apple trees are ... The skin of ripe apples is generally red, yellow, green, pink, or russetted, though many bi- or tri-colored cultivars may be found.",
+        "status": "PUBLISHED",
+        "unit": "kg",
+        "price": 2,
+        "salePrice": 1.6,
+        "quantity": 300,
+        "sku": "20240108-P01",
+        "slug": "apples",
+        "images": Image[],
+        "categoryId": "365079f8-ae27-40da-9669-b0a5b956cc4d",
+        "subCategoryId": "365079f8-ae27-40da-9669-b0a5b956cc4d"
+    }'
+
+### Request URL
+
+    http://localhost:3000/products
+
+### Response
+```
+{
+   "success": true,
+  "content": {
+    "name": "Apples",
+    "desc": "An apple is a sweet, edible fruit produced by an apple tree (Malus domestica). Apple trees are ... The skin of ripe apples is generally red, yellow, green, pink, or russetted, though many bi- or tri-colored cultivars may be found.",
+    "status": "PUBLISHED",
+    "unit": "kg",
+    "price": 2,
+    "salePrice": 1.6,
+    "quantity": 300,
+    "sku": "20240108-P01",
+    "slug": "apples",
+    "featuredImg": "http://localhost:3000/products/pictures/apple-1_1704734677462.webp",
+    "galleryImg": [
+        "http://localhost:3000/products/pictures/apple-2_1704734677463.webp",
+        "http://localhost:3000/products/pictures/apple_1704734677463.webp"
+    ],
+    "id": "64eb19a5-9379-4c20-b18f-dcf1f193c230",
+    "createdAt": "2024-01-08T17:24:37.485Z"
+  },
+  "message": "Product created successfully"
+}
+```
+</details>
+
+<details>
+  
+<summary> <code>GET </code> <code>/products</code></summary>
+
+### Curl
+
+    curl -X 'GET' \ 'http://localhost:3000/products \ 
+    -H 'accept: application/json'
+
+### Request URL
+
+    http://localhost:3000/products
+
+### Response
+```
+{
+    "success": true,
+    "content": [
+        {
+            "id": "64eb19a5-9379-4c20-b18f-dcf1f193c230",
+            "createdAt": "2024-01-08T17:24:37.485Z",
+            "name": "Apples",
+            "desc": "An apple is a sweet, edible fruit produced by an apple tree (Malus domestica). Apple trees are ... The skin of ripe apples is generally red, yellow, green, pink, or russetted, though many bi- or tri-colored cultivars may be found.",
+            "status": "PUBLISHED",
+            "featuredImg": "http://localhost:3000/products/pictures/apple-1_1704734677462.webp",
+            "galleryImg": [
+                "http://localhost:3000/products/pictures/apple-2_1704734677463.webp",
+                "http://localhost:3000/products/pictures/apple_1704734677463.webp"
+            ],
+            "unit": "kg",
+            "price": "2.00",
+            "salePrice": "1.60",
+            "quantity": 300,
+            "sku": "20240108-P01",
+            "slug": "apples",
+            "categories": [
+                {
+                    "id": "365079f8-ae27-40da-9669-b0a5b956cc4d",
+                    "name": "Fruits and Vegetables",
+                    "slug": "fruits-and-vegetables",
+                    "description": "This category is for fruits and vegetables item.",
+                    "icon": "http://localhost:3000/categories/pictures/apple_1704722889181.png"
+                }
+            ],
+            "subcategories": [
+                {
+                    "id": "f2e547e6-86cc-407e-8b68-482767c75f49",
+                    "name": "Fruits",
+                    "description": "This is for fruits sub category",
+                    "slug": "fruits"
+                }
+            ]
+        }
+    ],
+    "meta": {
+        "page": 1,
+        "take": 10,
+        "itemCount": 1,
+        "pageCount": 1,
+        "hasPreviousPage": false,
+        "hasNextPage": false
+    },
+    "message": "Fetch products successfully"
+}
+```
+</details>
+
+<details>
+  
+<summary> <code>GET </code> <code>/products/{productId}</code></summary>
+
+### Curl
+
+    curl -X 'GET' \ 'http://localhost:3000/products/64eb19a5-9379-4c20-b18f-dcf1f193c230 \ 
+    -H 'accept: application/json'
+
+### Request URL
+
+    http://localhost:3000/products/64eb19a5-9379-4c20-b18f-dcf1f193c230
+
+### Response
+```
+{
+  "success": true,
+  "content": {
+      "id": "64eb19a5-9379-4c20-b18f-dcf1f193c230",
+      "createdAt": "2024-01-08T17:24:37.485Z",
+      "name": "Apples",
+      "desc": "An apple is a sweet, edible fruit produced by an apple tree (Malus domestica). Apple trees are ... The skin of ripe apples is generally red, yellow, green, pink, or russetted, though many bi- or tri-colored cultivars may be found.",
+      "status": "PUBLISHED",
+      "featuredImg": "http://localhost:3000/products/pictures/apple-1_1704734677462.webp",
+      "galleryImg": [
+          "http://localhost:3000/products/pictures/apple-2_1704734677463.webp",
+          "http://localhost:3000/products/pictures/apple_1704734677463.webp"
+      ],
+      "unit": "kg",
+      "price": "2.00",
+      "salePrice": "1.60",
+      "quantity": 300,
+      "sku": "20240108-P01",
+      "slug": "apples"
+  },
+  "message": "Get product successfully"
+}
+```
+</details>
+
+<details>
+  
+<summary> <code>PATCH </code> <code>/products/{productId}</code></summary>
+
+### Curl
+
+    curl -X 'PATCH' \ 'http://localhost:3000/products/64eb19a5-9379-4c20-b18f-dcf1f193c230 \ 
+    -H 'accept: application/json'
+    -H 'Content-Type: application/json' \
+    -H 'Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoiTW9pbnVsIEhvc3NhaW4iLCJ1c2VySWQiOiJiNWM3OGQ0Zi1hMWQzLTQ5MDktOWEzYi03ZjM1NDk2YTU1M2YiLCJpYXQiOjE3MDQ3MTUzMTYsImV4cCI6MTcwNDcxODkxNn0.aEOVyViMFnlp0MZVjBMFiV9BiBN9yBj_-1JLmeh3bKk'
+    -d '{
+      "desc": "An apple is a sweet. The skin of ripe apples is generally red, yellow, green, pink, or russetted, though many bi- or tri-colored cultivars may be found.",
+    }'
+
+### Request URL
+
+    http://localhost:3000/products/64eb19a5-9379-4c20-b18f-dcf1f193c230
+
+### Response
+```
+{
+ "success": true,
+  "content": {
+      "id": "64eb19a5-9379-4c20-b18f-dcf1f193c230",
+      "createdAt": "2024-01-08T17:24:37.485Z",
+      "name": "Apples",
+      "desc": "desc": "An apple is a sweet. The skin of ripe apples is generally red, yellow, green, pink, or russetted, though many bi- or tri-colored cultivars may be found.",
+      "status": "PUBLISHED",
+      "featuredImg": "http://localhost:3000/products/pictures/apple-1_1704734677462.webp",
+      "galleryImg": [
+          "http://localhost:3000/products/pictures/apple-2_1704734677463.webp",
+          "http://localhost:3000/products/pictures/apple_1704734677463.webp"
+      ],
+      "unit": "kg",
+      "price": "2.00",
+      "salePrice": "1.60",
+      "quantity": 300,
+      "sku": "20240108-P01",
+      "slug": "apples"
+  },
+  "message": "product updated successfully"
+}
+```
+</details>
+
+<details>
+  
+<summary> <code>Delete </code> <code>/products/{productId}</code></summary>
+
+### Curl
+
+    curl -X 'DELETE' \ 'http://localhost:3000/products/64eb19a5-9379-4c20-b18f-dcf1f193c230 \ 
+    -H 'accept: application/json'
+    -H 'Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoiTW9pbnVsIEhvc3NhaW4iLCJ1c2VySWQiOiJiNWM3OGQ0Zi1hMWQzLTQ5MDktOWEzYi03ZjM1NDk2YTU1M2YiLCJpYXQiOjE3MDQ3MTUzMTYsImV4cCI6MTcwNDcxODkxNn0.aEOVyViMFnlp0MZVjBMFiV9BiBN9yBj_-1JLmeh3bKk'
+
+### Request URL
+
+    http://localhost:3000/products/64eb19a5-9379-4c20-b18f-dcf1f193c230
+
+### Response
+```
+{
+  "success": true,
+  "content": [],
+  "message": "product deleted successfully"
+}
+```
+</details>
 
 
 
