@@ -572,7 +572,7 @@
       }
   ],
   "meta": {},
-  "message": "Fetched categories successfully"
+  "message": "Fetched sub categories successfully"
 }
 ```
 </details>
@@ -722,6 +722,151 @@
   "success": true,
   "content": [],
   "message": "Wishlist removed successfully"
+}
+```
+</details>
+
+### Address
+
+<details>
+  
+<summary> <code>POST </code> <code>/address</code></summary>
+
+### Curl
+
+    curl -X 'POST' \ 'http://localhost:3000/address \ 
+    -H 'accept: application/json'
+    -H 'Content-Type: application/json'
+    -H 'Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoiTW9pbnVsIEhvc3NhaW4iLCJ1c2VySWQiOiJiNWM3OGQ0Zi1hMWQzLTQ5MDktOWEzYi03ZjM1NDk2YTU1M2YiLCJpYXQiOjE3MDQ3MTUzMTYsImV4cCI6MTcwNDcxODkxNn0.aEOVyViMFnlp0MZVjBMFiV9BiBN9yBj_-1JLmeh3bKk'
+    -d '{
+      "title": "test",
+      "country": "test country",
+      "city": "test city",
+      "zip": "test zip",
+      "state": "test state",
+      "streetAddress": "test streetAdress",
+      "addressType": "shipping"
+    }'
+
+### Request URL
+
+    http://localhost:3000/address
+
+### Response
+```
+{
+  "success": true,
+  "content": {
+      "title": "test",
+      "country": "test country",
+      "city": "test city",
+      "state": "test state",
+      "zip": "test zip",
+      "streetAddress": "test streetAdress",
+      "addressType": "shipping",
+      "id": "40c1b9bf-e248-40b9-8a81-53971285b449",
+      "isActive": true
+    },
+    "message": "Address added successfully"
+}
+```
+</details>
+
+<details>
+  
+<summary> <code>GET </code> <code>/address</code></summary>
+
+### Curl
+
+    curl -X 'GET' \ 'http://localhost:3000/address \ 
+    -H 'accept: application/json'
+    -H 'Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoiTW9pbnVsIEhvc3NhaW4iLCJ1c2VySWQiOiJiNWM3OGQ0Zi1hMWQzLTQ5MDktOWEzYi03ZjM1NDk2YTU1M2YiLCJpYXQiOjE3MDQ3MTUzMTYsImV4cCI6MTcwNDcxODkxNn0.aEOVyViMFnlp0MZVjBMFiV9BiBN9yBj_-1JLmeh3bKk'
+
+### Request URL
+
+    http://localhost:3000/address
+
+### Response
+```
+{
+ "success": true,
+  "content": [
+    {
+        "id": "40c1b9bf-e248-40b9-8a81-53971285b449",
+        "title": "test",
+        "country": "test country",
+        "city": "test city",
+        "state": "test state",
+        "zip": "test zip",
+        "streetAddress": "test streetAdress",
+        "addressType": "shipping",
+        "isActive": true
+    }
+  ],
+  "meta": {},
+  "message": "Fetched addresses successfully"
+}
+```
+</details>
+
+<details>
+  
+<summary> <code>PATCH </code> <code>/address/{addressId}</code></summary>
+
+### Curl
+
+    curl -X 'PATCH' \ 'http://localhost:3000/address/42fc242a-b020-45d0-82e7-c5e37f3a759d \ 
+    -H 'accept: application/json'
+    -H 'Content-Type: application/json' \
+    -H 'Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoiTW9pbnVsIEhvc3NhaW4iLCJ1c2VySWQiOiJiNWM3OGQ0Zi1hMWQzLTQ5MDktOWEzYi03ZjM1NDk2YTU1M2YiLCJpYXQiOjE3MDQ3MTUzMTYsImV4cCI6MTcwNDcxODkxNn0.aEOVyViMFnlp0MZVjBMFiV9BiBN9yBj_-1JLmeh3bKk'
+    -d '{
+       "addressType": "billing"
+    }'
+
+### Request URL
+
+    http://localhost:3000/address/42fc242a-b020-45d0-82e7-c5e37f3a759d
+
+### Response
+```
+{
+  "success": true,
+  "content": {
+    "id": "40c1b9bf-e248-40b9-8a81-53971285b449",
+    "title": "test",
+    "country": "test country",
+    "city": "test city",
+    "state": "test state",
+    "zip": "test zip",
+    "streetAddress": "test streetAdress",
+    "addressType": "billing",
+    "isActive": true
+  },
+  "message": "Address updated successfully"
+}
+```
+</details>
+
+<details>
+  
+<summary> <code>Delete </code> <code>/address/{addressId}</code></summary>
+
+### Curl
+
+    curl -X 'DELETE' \ 'http://localhost:3000/address/42fc242a-b020-45d0-82e7-c5e37f3a759d \
+    -H 'accept: application/json' \
+    -H 'Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoiTW9pbnVsIEhvc3NhaW4iLCJ1c2VySWQiOiJiNWM3OGQ0Zi1hMWQzLTQ5MDktOWEzYi03ZjM1NDk2YTU1M2YiLCJpYXQiOjE3MDQ3MTUzMTYsImV4cCI6MTcwNDcxODkxNn0.aEOVyViMFnlp0MZVjBMFiV9BiBN9yBj_-1JLmeh3bKk'
+
+### Request URL
+
+    http://localhost:3000/address/42fc242a-b020-45d0-82e7-c5e37f3a759d
+
+### Response
+```
+{
+  "success": true,
+  "content": [],
+  "message": "Address Deleted successfully"
 }
 ```
 </details>
