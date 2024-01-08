@@ -1512,3 +1512,37 @@
 ```
 </details>
 
+<details>
+  
+<summary> <code>POST </code> <code>/orders/check-availability</code></summary>
+
+### Curl
+
+    curl -X 'POST' \ 'http://localhost:3000/products \ 
+    -H 'accept: application/json'
+    -H 'Content-Type: application/json'
+    -H 'Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoiTW9pbnVsIEhvc3NhaW4iLCJ1c2VySWQiOiJiNWM3OGQ0Zi1hMWQzLTQ5MDktOWEzYi03ZjM1NDk2YTU1M2YiLCJpYXQiOjE3MDQ3MTUzMTYsImV4cCI6MTcwNDcxODkxNn0.aEOVyViMFnlp0MZVjBMFiV9BiBN9yBj_-1JLmeh3bKk'
+    -d '{
+      "items": [
+          {
+              "productId": "64eb19a5-9379-4c20-b18f-dcf1f193c230",
+              "quantity": 21
+          }
+      ]
+    }'
+
+### Request URL
+
+    http://localhost:3000/orders/check-availability
+
+### Response
+```
+{
+  "success": true,
+  "content": [],
+  "message": "Customer can continue the process"
+}
+```
+</details>
+
+
