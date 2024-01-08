@@ -197,3 +197,38 @@
 
 ```   
 </details>
+
+### User
+**User need to be admin to access this endpoint**
+<details>
+  
+<summary> <code>GET </code> <code>/users</code></summary>
+
+### Curl
+
+    curl -X 'GET' \ 'http://localhost:3000/auth/signin \ 
+    -H 'accept: application/json'
+### Request URL
+
+    http://localhost:3000/users
+
+### Response
+```
+{
+  "success": true,
+    "content": [
+        {
+            "id": "b5c78d4f-a1d3-4909-9a3b-7f35496a553f",
+            "fullName": "Moinul Hossain",
+            "avatar": "",
+            "email": "moinulhossainmahim@gmail.com",
+            "userType": "admin",
+            "status": "active",
+            "address": []
+        }
+    ],
+    "meta": {},
+    "message": "Fetched users successfully"
+}
+```   
+</details>
