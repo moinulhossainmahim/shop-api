@@ -336,3 +336,164 @@
 }
 ```
 </details>
+
+### Category
+
+<details>
+  
+<summary> <code>POST </code> <code>/categories</code></summary>
+
+### Curl
+
+    curl -X 'POST' \ 'http://localhost:3000/categories \ 
+    -H 'accept: application/json'
+    -H 'Authorization: Bearer  eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoiTW9pbnVsIEhvc3NhaW4iLCJ1c2VySWQiOiJiNWM3OGQ0Zi1hMWQzLTQ5MDktOWEzYi03ZjM1NDk2YTU1M2YiLCJpYXQiOjE3MDQ3MTUzMTYsImV4cCI6MTcwNDcxODkxNn0.aEOVyViMFnlp0MZVjBMFiV9BiBN9yBj_-1JLmeh3bKk'
+    -d '{
+      "file": Img,
+      "name": "Fruits and Vegetables",
+      "description": "Category for fruits and vegetables items",
+      "slug": "fruits-and-vegetables"
+    }'
+
+### Request URL
+
+    http://localhost:3000/categories
+
+### Response
+```
+{
+   "success": true,
+  "content": {
+      "name": "Fruits and Vegetables",
+      "slug": "fruits-and-vegetables",
+      "description": "This category is for fruits and vegetables",
+      "icon": "http://localhost:3000/categories/pictures/apple_1704722889181.png",
+      "id": "365079f8-ae27-40da-9669-b0a5b956cc4d"
+  },
+  "message": "Category created successfully"
+}
+```
+</details>
+
+<details>
+  
+<summary> <code>GET </code> <code>/categories</code></summary>
+
+### Curl
+
+    curl -X 'GET' \ 'http://localhost:3000/categories \ 
+    -H 'accept: application/json'
+
+### Request URL
+
+    http://localhost:3000/categories
+
+### Response
+```
+{
+  "success": true,
+  "content": [
+      {
+          "id": "365079f8-ae27-40da-9669-b0a5b956cc4d",
+          "name": "Fruits and Vegetables",
+          "slug": "fruits-and-vegetables",
+          "description": "This category is for fruits and vegetables",
+          "icon": "http://localhost:3000/categories/pictures/apple_1704722889181.png",
+          "subCategories": []
+      }
+  ],
+  "meta": {},
+  "message": "Fetched categories successfully"
+}
+```
+</details>
+
+<details>
+  
+<summary> <code>GET </code> <code>/categories/{categoryId}</code></summary>
+
+### Curl
+
+    curl -X 'GET' \ 'http://localhost:3000/categories/42fc242a-b020-45d0-82e7-c5e37f3a759d \ 
+    -H 'accept: application/json'
+
+### Request URL
+
+    http://localhost:3000/categories/42fc242a-b020-45d0-82e7-c5e37f3a759d
+
+### Response
+```
+{
+  "success": true,
+  "content": {
+      "id": "365079f8-ae27-40da-9669-b0a5b956cc4d",
+      "name": "Fruits and Vegetables",
+      "slug": "fruits-and-vegetables",
+      "description": "This category is for fruits and vegetables",
+      "icon": "http://localhost:3000/categories/pictures/apple_1704722889181.png"
+  },
+  "message": "Fetched category successfully"
+}
+```
+</details>
+
+<details>
+  
+<summary> <code>PATCH </code> <code>/categories/{categoryId}</code></summary>
+
+### Curl
+
+    curl -X 'PATCH' \ 'http://localhost:3000/categories/42fc242a-b020-45d0-82e7-c5e37f3a759d \ 
+    -H 'accept: application/json'
+    -H 'Content-Type: application/json' \
+    -H 'Authorization: Bearer  eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoiTW9pbnVsIEhvc3NhaW4iLCJ1c2VySWQiOiJiNWM3OGQ0Zi1hMWQzLTQ5MDktOWEzYi03ZjM1NDk2YTU1M2YiLCJpYXQiOjE3MDQ3MTUzMTYsImV4cCI6MTcwNDcxODkxNn0.aEOVyViMFnlp0MZVjBMFiV9BiBN9yBj_-1JLmeh3bKk'
+    -d '{
+      "name": "Fruits and vegetables",
+      "slug": "fruits-and-vegetables",
+      "description": "This category is for fruits and vegetables item.",
+      "icon": Image,
+    }'
+
+### Request URL
+
+    http://localhost:3000/categories/42fc242a-b020-45d0-82e7-c5e37f3a759d
+
+### Response
+```
+{
+ "success": true,
+  "content": {
+      "id": "365079f8-ae27-40da-9669-b0a5b956cc4d",
+      "name": "Fruits and Vegetables",
+      "slug": "fruits-and-vegetables",
+      "description": "This category is for fruits and vegetables",
+      "icon": "http://localhost:3000/categories/pictures/apple_1704722889181.png"
+  },
+  "message": "Category updated successfully"
+}
+```
+</details>
+
+<details>
+  
+<summary> <code>Delete </code> <code>/categories/{categoryId}</code></summary>
+
+### Curl
+
+    curl -X 'DELETE' \ 'http://localhost:3000/categories/42fc242a-b020-45d0-82e7-c5e37f3a759d \ 
+    -H 'accept: application/json'
+    -H 'Authorization: Bearer  eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoiTW9pbnVsIEhvc3NhaW4iLCJ1c2VySWQiOiJiNWM3OGQ0Zi1hMWQzLTQ5MDktOWEzYi03ZjM1NDk2YTU1M2YiLCJpYXQiOjE3MDQ3MTUzMTYsImV4cCI6MTcwNDcxODkxNn0.aEOVyViMFnlp0MZVjBMFiV9BiBN9yBj_-1JLmeh3bKk'
+
+### Request URL
+
+    http://localhost:3000/categories/42fc242a-b020-45d0-82e7-c5e37f3a759d
+
+### Response
+```
+{
+  "success": true,
+  "content": [],
+  "message": "Delete category successfully"
+}
+```
+</details>
