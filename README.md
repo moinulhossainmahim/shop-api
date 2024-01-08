@@ -498,3 +498,142 @@
 }
 ```
 </details>
+
+### Sub Category
+
+<details>
+  
+<summary> <code>POST </code> <code>/sub-categories</code></summary>
+
+### Curl
+
+    curl -X 'POST' \ 'http://localhost:3000/sub-categories \ 
+    -H 'accept: application/json'
+    -H 'Content-Type: application/json'
+    -H 'Authorization: Bearer  eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoiTW9pbnVsIEhvc3NhaW4iLCJ1c2VySWQiOiJiNWM3OGQ0Zi1hMWQzLTQ5MDktOWEzYi03ZjM1NDk2YTU1M2YiLCJpYXQiOjE3MDQ3MTUzMTYsImV4cCI6MTcwNDcxODkxNn0.aEOVyViMFnlp0MZVjBMFiV9BiBN9yBj_-1JLmeh3bKk'
+    -d '{
+      "name": "Fruits",
+      "description": "This is for fruits sub category",
+      "slug": "fruits",
+      "categoryId": "365079f8-ae27-40da-9669-b0a5b956cc4d"
+    }'
+
+### Request URL
+
+    http://localhost:3000/sub-categories
+
+### Response
+```
+{
+  "success": true,
+  "content": [
+      {
+          "name": "Fruits",
+          "description": "This is for fruits sub category",
+          "slug": "fruits",
+          "id": "f2e547e6-86cc-407e-8b68-482767c75f49"
+      }
+  ],
+  "message": "Sub category created successfully"
+}
+```
+</details>
+
+<details>
+  
+<summary> <code>GET </code> <code>/sub-categories</code></summary>
+
+### Curl
+
+    curl -X 'GET' \ 'http://localhost:3000/sub-categories \ 
+    -H 'accept: application/json'
+
+### Request URL
+
+    http://localhost:3000/sub-categories
+
+### Response
+```
+{
+  "success": true,
+  "content": [
+      {
+          "id": "f2e547e6-86cc-407e-8b68-482767c75f49",
+          "name": "Fruits",
+          "description": "This is for fruits sub category",
+          "slug": "fruits",
+          "category": {
+              "id": "365079f8-ae27-40da-9669-b0a5b956cc4d",
+              "name": "Fruits and Vegetables",
+              "slug": "fruits-and-vegetables",
+              "description": "This category is for fruits and vegetables item.",
+              "icon": "http://localhost:3000/categories/pictures/apple_1704722889181.png"
+          }
+      }
+  ],
+  "meta": {},
+  "message": "Fetched categories successfully"
+}
+```
+</details>
+
+<details>
+  
+<summary> <code>PATCH </code> <code>/sub-categories/{subCategoryId}</code></summary>
+
+### Curl
+
+    curl -X 'PATCH' \ 'http://localhost:3000/sub-categories/42fc242a-b020-45d0-82e7-c5e37f3a759d \ 
+    -H 'accept: application/json'
+    -H 'Content-Type: application/json' \
+    -H 'Authorization: Bearer  eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoiTW9pbnVsIEhvc3NhaW4iLCJ1c2VySWQiOiJiNWM3OGQ0Zi1hMWQzLTQ5MDktOWEzYi03ZjM1NDk2YTU1M2YiLCJpYXQiOjE3MDQ3MTUzMTYsImV4cCI6MTcwNDcxODkxNn0.aEOVyViMFnlp0MZVjBMFiV9BiBN9yBj_-1JLmeh3bKk'
+    -d '{
+      "name": "Update sub category",
+      "description": "Fruits sub cat",
+      "slug": "fruits-sub-cat",
+      "categoryId": "365079f8-ae27-40da-9669-b0a5b956cc4d"
+    }'
+
+### Request URL
+
+    http://localhost:3000/sub-categories/42fc242a-b020-45d0-82e7-c5e37f3a759d
+
+### Response
+```
+{
+  "success": true,
+  "content": {
+      "name": "Update sub category",
+      "description": "Fruits sub cat",
+      "slug": "fruits-sub-cat",
+      "categoryId": "365079f8-ae27-40da-9669-b0a5b956cc4d"
+  },
+  "message": "sub category updated successfully"
+}
+```
+</details>
+
+<details>
+  
+<summary> <code>Delete </code> <code>/sub-categories/{categoryId}</code></summary>
+
+### Curl
+
+    curl -X 'DELETE' \ 'http://localhost:3000/sub-categories/42fc242a-b020-45d0-82e7-c5e37f3a759d \ 
+    -H 'accept: application/json'
+    -H 'Authorization: Bearer  eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoiTW9pbnVsIEhvc3NhaW4iLCJ1c2VySWQiOiJiNWM3OGQ0Zi1hMWQzLTQ5MDktOWEzYi03ZjM1NDk2YTU1M2YiLCJpYXQiOjE3MDQ3MTUzMTYsImV4cCI6MTcwNDcxODkxNn0.aEOVyViMFnlp0MZVjBMFiV9BiBN9yBj_-1JLmeh3bKk'
+
+### Request URL
+
+    http://localhost:3000/sub-categories/42fc242a-b020-45d0-82e7-c5e37f3a759d
+
+### Response
+```
+{
+  "success": true,
+  "content": [],
+  "message": "Delete sub category successfully"
+}
+```
+</details>
+
