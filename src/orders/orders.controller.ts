@@ -67,7 +67,7 @@ export class OrdersController {
   @Delete('/:id')
   @UseInterceptors(ResponseInterceptor)
   @UseGuards(JwtAuthGuard, RoleGuard)
-  // @UserRole([Role.Admin])
+  @UserRole([Role.Admin])
   async deleteOrderById(@Param('id') id: string): Promise<ApiDeleteResponse> {
     return this.ordersService.deleteOrderById(id);
   }
