@@ -1,5 +1,4 @@
 import { IsNotEmpty, IsString } from 'class-validator';
-import { Categories } from 'src/entity/Categories';
 
 export class SubCategoryDto {
   @IsNotEmpty()
@@ -15,5 +14,5 @@ export class SubCategoryDto {
   slug: string;
 
   @IsNotEmpty()
-  category: Categories;
+  categoryId: string;
 }

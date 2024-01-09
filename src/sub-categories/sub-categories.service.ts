@@ -12,24 +12,31 @@ import {
   ApiGetResponse,
   ApiDeleteResponse,
 } from 'src/common/interfaces';
+import { CategoriesService } from 'src/categories/categories.service';
 
 @Injectable()
 export class SubCategoriesService {
   constructor(
     @InjectRepository(SubCategory)
     private subCategoriesRepository: Repository<SubCategory>,
+    private readonly categoryService: CategoriesService,
   ) {}
 
   public async createSubCategory(
     subCategoryDto: SubCategoryDto,
-  ): Promise<CreateApiResponse<SubCategory[]>> {
+  ): Promise<CreateApiResponse<Omit<SubCategory, 'category'>[]>> {
+    const category = await this.categoryService.getCategoryById(
+      subCategoryDto.categoryId,
+    );
     const subCategory = this.subCategoriesRepository.create(subCategoryDto);
+    subCategory.category = category.data;
     try {
-      await this.subCategoriesRepository.save(subCategory);
+      const { category: cat, ...subCat } =
+        await this.subCategoriesRepository.save(subCategory);
       return {
         message: 'Sub category created successfully',
         success: true,
-        data: [subCategory],
+        data: [subCat],
       };
     } catch (error) {
       if (error.errno === 1062) {

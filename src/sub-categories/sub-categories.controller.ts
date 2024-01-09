@@ -33,13 +33,17 @@ export class SubCategoriesController {
   constructor(private readonly subCategoriesService: SubCategoriesService) {}
 
   @Post()
+  @UseGuards(JwtAuthGuard, RoleGuard)
+  @UserRole([Role.Admin])
   async createSubCategory(
     @Body() subCategoryDto: SubCategoryDto,
-  ): Promise<CreateApiResponse<SubCategory[]>> {
+  ): Promise<CreateApiResponse<Omit<SubCategory, 'category'>[]>> {
     return this.subCategoriesService.createSubCategory(subCategoryDto);
   }
 
   @Patch('/:id')
+  @UseGuards(JwtAuthGuard, RoleGuard)
+  @UserRole([Role.Admin])
   async updateSubCategory(
     @Param('id') id: string,
     @Body() subCategoryDto: Partial<SubCategoryDto>,
@@ -48,6 +52,8 @@ export class SubCategoriesController {
   }
 
   @Delete('/:id')
+  @UseGuards(JwtAuthGuard, RoleGuard)
+  @UserRole([Role.Admin])
   async deleteSubCategory(@Param('id') id: string): Promise<ApiDeleteResponse> {
     return this.subCategoriesService.deleteSubCategoryById(id);
   }
