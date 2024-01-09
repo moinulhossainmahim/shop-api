@@ -58,7 +58,7 @@ export class ProductsController {
     @Body() createProductDto: CreateProductDto,
     @UploadedFiles() images: Array<Express.Multer.File>,
     @Req() req,
-  ): Promise<CreateApiResponse<Product>> {
+  ): Promise<CreateApiResponse<Omit<Product, 'categories' | 'subcategories'>>> {
     if (req[UNSUPPORTED_FILE]) {
       throw new BadRequestException(
         `Accepted file extensions are: jpg, jpeg, webp, png`,
@@ -124,8 +124,6 @@ export class ProductsController {
         `Accepted file extensions are: jpg, jpeg, webp, png`,
       );
     } else {
-      console.log(updateProductDto);
-      console.log(images);
       return this.productsService.updateProduct(updateProductDto, id, images);
     }
   }

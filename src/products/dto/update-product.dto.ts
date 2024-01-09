@@ -1,4 +1,4 @@
-import { IsArray, IsEnum, IsNumberString, IsString } from 'class-validator';
+import { IsEnum, IsNumberString, IsString } from 'class-validator';
 import { ProductStatus } from '../enums/product-status.enum';
 
 export class UpdateProductDto {
@@ -29,9 +29,9 @@ export class UpdateProductDto {
   @IsString()
   slug: string;
 
-  @IsArray()
-  categories: string[];
+  @IsString()
+  categoryId: string;
 
-  @IsArray()
-  subCategories: string[];
+  @IsString()
+  subCategoryId: string;
 }

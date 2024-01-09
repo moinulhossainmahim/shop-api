@@ -78,8 +78,7 @@ export class CategoriesController {
   }
 
   @Get('/:id')
-  @UseGuards(JwtAuthGuard, RoleGuard)
-  @UserRole([Role.Admin])
+  @UseGuards(JwtAuthGuard)
   @UseInterceptors(ResponseInterceptor)
   async getCategoryById(
     @Param('id') id: string,
