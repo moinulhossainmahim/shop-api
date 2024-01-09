@@ -9,11 +9,11 @@ import {
   PrimaryGeneratedColumn,
 } from 'typeorm';
 import { ProductStatus } from 'src/products/enums/product-status.enum';
-import { Wishlist } from './Wishlist';
-import { OrderItem } from './OrderItem';
-import { Categories } from './Categories';
-import { SubCategory } from './SubCategory';
-import { Cart } from './Cart';
+import { Wishlist } from './Wishlist.entity';
+import { OrderItem } from './OrderItem.entity';
+import { Categories } from './Categories.entity';
+import { SubCategory } from './SubCategory.entity';
+import { Cart } from './Cart.entity';
 
 @Entity()
 export class Product {

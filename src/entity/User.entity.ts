@@ -9,15 +9,14 @@ import {
   Unique,
 } from 'typeorm';
 import * as bcrypt from 'bcrypt';
-import { Address } from './Address';
-import { Wishlist } from './Wishlist';
-import { Order } from './Order';
-import { Cart } from './Cart';
+import { Address } from './Address.entity';
+import { Wishlist } from './Wishlist.entity';
+import { Order } from './Order.entity';
+import { Cart } from './Cart.entity';
 
 @Entity()
 @Unique(['email'])
 export class User {
-  @Column()
   @PrimaryGeneratedColumn('uuid')
   id: string;
 

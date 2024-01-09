@@ -4,7 +4,7 @@ import {
   NotFoundException,
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { SubCategory } from 'src/entity/SubCategory';
+import { SubCategory } from 'src/entity/SubCategory.entity';
 import { Repository } from 'typeorm';
 import { SubCategoryDto } from './dto/sub-category.dto';
 import {

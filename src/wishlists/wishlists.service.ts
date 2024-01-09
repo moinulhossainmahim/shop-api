@@ -2,9 +2,9 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { PageMetaDto, PageOptionsDto } from 'src/common/dtos';
 import { CreateApiResponse, ApiGetResponse } from 'src/common/interfaces';
-import { Product } from 'src/entity/Product';
-import { User } from 'src/entity/User';
-import { Wishlist } from 'src/entity/Wishlist';
+import { Product } from 'src/entity/Product.entity';
+import { User } from 'src/entity/User.entity';
+import { Wishlist } from 'src/entity/Wishlist.entity';
 import { Repository } from 'typeorm';
 
 @Injectable()

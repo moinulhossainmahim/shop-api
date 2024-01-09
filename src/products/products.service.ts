@@ -5,11 +5,11 @@ import {
 } from '@nestjs/common';
 import { CreateProductDto } from './dto/create-product.dto';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Product } from 'src/entity/Product';
+import { Product } from 'src/entity/Product.entity';
 import { Repository } from 'typeorm';
 import { UpdateProductDto } from './dto/update-product.dto';
-import { Categories } from 'src/entity/Categories';
-import { SubCategory } from 'src/entity/SubCategory';
+import { Categories } from 'src/entity/Categories.entity';
+import { SubCategory } from 'src/entity/SubCategory.entity';
 import { uploadFileUrl } from 'src/utils/constants';
 import {
   CreateApiResponse,

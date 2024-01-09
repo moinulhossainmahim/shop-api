@@ -8,7 +8,7 @@ import { ResponseInterceptor } from 'src/interceptors/response.interceptor';
 
 @Controller('auth')
 @UseInterceptors(ResponseInterceptor)
-@ApiTags('authentication')
+@ApiTags('auth')
 export class AuthController {
   constructor(private authService: AuthService) {}
 

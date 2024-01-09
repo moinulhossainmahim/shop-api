@@ -13,9 +13,9 @@ import {
 import { OrdersService } from './orders.service';
 import { CreateOrderDto } from './dto/create-order.dto';
 import { GetUser } from 'src/decorators/get-user.decorator';
-import { User } from 'src/entity/User';
+import { User } from 'src/entity/User.entity';
 import { JwtAuthGuard } from 'src/guards/jwt-auth.guard';
-import { Order } from 'src/entity/Order';
+import { Order } from 'src/entity/Order.entity';
 import { ResponseInterceptor } from 'src/interceptors/response.interceptor';
 import { RoleGuard } from 'src/guards/role.guard';
 import { UserRole } from 'src/decorators/role.decorator';
@@ -27,7 +27,9 @@ import {
   ApiDeleteResponse,
 } from 'src/common/interfaces';
 import { PageOptionsDto } from 'src/common/dtos';
+import { ApiTags } from '@nestjs/swagger';
 
+@ApiTags('orders')
 @Controller('orders')
 export class OrdersController {
   constructor(private readonly ordersService: OrdersService) {}

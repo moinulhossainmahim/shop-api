@@ -5,11 +5,11 @@ import {
   OneToMany,
   PrimaryGeneratedColumn,
 } from 'typeorm';
-import { OrderItem } from './OrderItem';
-import { User } from './User';
+import { OrderItem } from './OrderItem.entity';
+import { User } from './User.entity';
 import { OrderStatus } from 'src/orders/enums/order-status.enum';
 import { PaymentMethod } from 'src/orders/enums/payment-method.enum';
-import { Address } from './Address';
+import { Address } from './Address.entity';
 import { generateTrackingNo } from 'src/utils/generate-tracking-no';
 import { PaymentStatus } from 'src/orders/enums/payment-status.enum';
 

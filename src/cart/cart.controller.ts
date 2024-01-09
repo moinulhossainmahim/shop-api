@@ -13,17 +13,19 @@ import {
 } from '@nestjs/common';
 import { CartService } from './cart.service';
 import { JwtAuthGuard } from 'src/guards/jwt-auth.guard';
-import { AddToCartDto } from './dto/addToCart-dto';
+import { AddToCartDto } from './dto/addToCart.dto';
 import { GetUser } from 'src/decorators/get-user.decorator';
-import { User } from 'src/entity/User';
+import { User } from 'src/entity/User.entity';
 import { ResponseInterceptor } from 'src/interceptors/response.interceptor';
 import {
   ApiDeleteResponse,
   ApiGetResponse,
   CreateApiResponse,
 } from 'src/common/interfaces';
-import { Cart } from 'src/entity/Cart';
+import { Cart } from 'src/entity/Cart.entity';
+import { ApiTags } from '@nestjs/swagger';
 
+@ApiTags('cart')
 @Controller('cart')
 export class CartController {
   constructor(private readonly cartService: CartService) {}

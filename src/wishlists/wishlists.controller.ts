@@ -11,14 +11,16 @@ import {
 import { WishlistsService } from './wishlists.service';
 import { JwtAuthGuard } from 'src/guards/jwt-auth.guard';
 import { GetUser } from 'src/decorators/get-user.decorator';
-import { User } from 'src/entity/User';
-import { Wishlist } from 'src/entity/Wishlist';
+import { User } from 'src/entity/User.entity';
+import { Wishlist } from 'src/entity/Wishlist.entity';
 import { ResponseInterceptor } from 'src/interceptors/response.interceptor';
 import { CreateApiResponse, ApiGetResponse } from 'src/common/interfaces';
 import { PageOptionsDto } from 'src/common/dtos';
+import { ApiTags } from '@nestjs/swagger';
 
 @UseGuards(JwtAuthGuard)
 @UseInterceptors(ResponseInterceptor)
+@ApiTags('wishlist')
 @Controller('wishlists')
 export class WishlistsController {
   constructor(private readonly wishlistsService: WishlistsService) {}

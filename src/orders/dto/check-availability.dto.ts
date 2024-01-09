@@ -1,4 +1,4 @@
-import { IsNotEmpty } from 'class-validator';
+import { IsArray, IsNotEmpty } from 'class-validator';
 
 export type ProductIdWithQuantity = {
   productId: string;
@@ -7,5 +7,9 @@ export type ProductIdWithQuantity = {
 
 export class CheckAvailabilityDto {
   @IsNotEmpty()
-  items: ProductIdWithQuantity[];
+  @IsArray()
+  items: {
+    productId: string;
+    quantity: number;
+  }[];
 }

@@ -4,8 +4,8 @@ import {
   NotFoundException,
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Address } from 'src/entity/Address';
-import { User } from 'src/entity/User';
+import { Address } from 'src/entity/Address.entity';
+import { User } from 'src/entity/User.entity';
 import { Repository } from 'typeorm';
 import { CreateAddressDto } from './dto/create-address.dto';
 import {
