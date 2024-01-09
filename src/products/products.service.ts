@@ -6,7 +6,7 @@ import {
 import { CreateProductDto } from './dto/create-product.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Product } from 'src/entity/Product';
-import { In, Repository } from 'typeorm';
+import { Repository } from 'typeorm';
 import { UpdateProductDto } from './dto/update-product.dto';
 import { Categories } from 'src/entity/Categories';
 import { SubCategory } from 'src/entity/SubCategory';
@@ -33,17 +33,13 @@ export class ProductsService {
   async createProduct(
     createProductDto: CreateProductDto,
     images: Array<Express.Multer.File>,
-  ): Promise<CreateApiResponse<Product>> {
-    const Promisecategories = createProductDto.categories.map(async (cat) => {
-      return await this.categoriesRepository.findOne({ where: { id: cat } });
+  ): Promise<CreateApiResponse<Omit<Product, 'categories' | 'subcategories'>>> {
+    const category = await this.categoriesRepository.findOne({
+      where: { id: createProductDto.categoryId },
     });
-    const PromisesubCategories = createProductDto.subCategories.map(
-      async (subCat) => {
-        return await this.subCategoriesRepository.findOne({
-          where: { id: subCat },
-        });
-      },
-    );
+    const subCategory = await this.subCategoriesRepository.findOne({
+      where: { id: createProductDto.subCategoryId },
+    });
     const product = this.productsRepository.create({
       salePrice: Number(createProductDto.salePrice),
       quantity: Number(createProductDto.quantity),
@@ -55,19 +51,20 @@ export class ProductsService {
       status: createProductDto.status,
       unit: createProductDto.unit,
     });
-    product.categories = await Promise.all(Promisecategories);
-    product.subcategories = await Promise.all(PromisesubCategories);
-    console.log(product.categories);
+    product.categories = [category];
+    product.subcategories = [subCategory];
     product.featuredImg = `${uploadFileUrl}/products/pictures/${images[0].filename}`;
     product.galleryImg = images
       .slice(1)
       .map((img) => `${uploadFileUrl}/products/pictures/${img.filename}`);
     try {
-      await this.productsRepository.save(product);
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+      const { categories, subcategories, ...savedProduct } =
+        await this.productsRepository.save(product);
       return {
         success: true,
         message: 'Product created successfully',
-        data: product,
+        data: savedProduct,
       };
     } catch (error) {
       if (error.errno === 1062) {
@@ -128,7 +125,10 @@ export class ProductsService {
   }
 
   async getProductById(id: string): Promise<CreateApiResponse<Product>> {
-    const product = await this.productsRepository.findOne({ where: { id } });
+    const product = await this.productsRepository.findOne({
+      where: { id },
+      relations: ['categories', 'subCategories'],
+    });
     if (product) {
       return {
         success: true,
@@ -144,20 +144,22 @@ export class ProductsService {
     createProductDto: Partial<UpdateProductDto>,
     id: string,
     files?: Array<Express.Multer.File>,
-  ): Promise<CreateApiResponse<Product>> {
+  ): Promise<CreateApiResponse<any>> {
     const { data: product } = await this.getProductById(id);
-    const Promisecategories = createProductDto.categories.map(async (cat) => {
-      return await this.categoriesRepository.findOne({ where: { id: cat } });
-    });
-    const PromisesubCategories = createProductDto.subCategories.map(
-      async (subCat) => {
-        return await this.subCategoriesRepository.findOne({
-          where: { id: subCat },
-        });
-      },
-    );
-    product.categories = await Promise.all(Promisecategories);
-    product.subcategories = await Promise.all(PromisesubCategories);
+    let category;
+    let subCategory;
+    if (createProductDto.categoryId) {
+      category = await this.categoriesRepository.findOne({
+        where: { id: createProductDto.categoryId },
+      });
+    }
+    if (createProductDto.subCategoryId) {
+      subCategory = await this.subCategoriesRepository.findOne({
+        where: { id: createProductDto.subCategoryId },
+      });
+    }
+    if (category) product.categories = [category];
+    if (subCategory) product.subcategories = [subCategory];
     if (product) {
       if (files.length) {
         product.featuredImg = `${uploadFileUrl}/products/pictures/${files[0].filename}`;
@@ -165,17 +167,24 @@ export class ProductsService {
           .slice(1)
           .map((file) => `${uploadFileUrl}/products/pictures/${file.filename}`);
       }
-      // eslint-disable-next-line @typescript-eslint/no-unused-vars
-      const { categories, subCategories, ...newCreateProductDto } =
-        createProductDto;
-      Object.assign(product, newCreateProductDto);
       try {
-        await this.productsRepository.save(product);
-        return {
-          message: 'Product updated successfully',
-          success: true,
-          data: product,
-        };
+        const updateProduct = await this.productsRepository.update(
+          { id: product.id },
+          product,
+        );
+        if (updateProduct.affected === 1) {
+          return {
+            message: 'Product updated successfully',
+            success: true,
+            data: product,
+          };
+        } else {
+          return {
+            message: 'something went wrong',
+            success: false,
+            data: {},
+          };
+        }
       } catch (error) {
         console.log(error);
       }
