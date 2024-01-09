@@ -1,4 +1,5 @@
 import {
+  BadRequestException,
   Inject,
   Injectable,
   NotFoundException,
@@ -16,6 +17,7 @@ import {
   ApiGetResponse,
   ApiDeleteResponse,
 } from 'src/common/interfaces';
+import { Role } from './enums/role.enum';
 
 @Injectable()
 export class UsersService {
@@ -90,6 +92,14 @@ export class UsersService {
     const { data: user } = await this.getUserById(id);
     if (!user) {
       throw new UnauthorizedException(`User with the given ID is not found`);
+    }
+    if (
+      user.userType === Role.Customer &&
+      updateUserDto.userType === Role.Admin
+    ) {
+      throw new BadRequestException(
+        'This user is not able to update the userType',
+      );
     }
     try {
       await this.usersRepository.update(id, updateUserDto);
