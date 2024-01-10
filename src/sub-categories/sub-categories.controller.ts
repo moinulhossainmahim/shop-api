@@ -10,7 +10,7 @@ import {
   UseInterceptors,
 } from '@nestjs/common';
 import { SubCategoriesService } from './sub-categories.service';
-import { SubCategory } from 'src/entity/SubCategory';
+import { SubCategory } from 'src/entity/SubCategory.entity';
 import { SubCategoryDto } from './dto/sub-category.dto';
 import { ApiTags } from '@nestjs/swagger';
 import { UserRole } from 'src/decorators/role.decorator';

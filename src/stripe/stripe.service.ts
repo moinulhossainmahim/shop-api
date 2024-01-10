@@ -3,7 +3,7 @@ import { ConfigService } from '@nestjs/config';
 import { Stripe } from 'stripe';
 import { CreateCheckoutSessionDto } from './dto/create-checkout-session.dto';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Product } from 'src/entity/Product';
+import { Product } from 'src/entity/Product.entity';
 import { Repository } from 'typeorm';
 
 const configService = new ConfigService();

@@ -18,7 +18,7 @@ import { FileInterceptor } from '@nestjs/platform-express';
 import { diskStorage } from 'multer';
 import { editFilename, imageFileFilter } from 'src/products/file-upload.utils';
 import { CreateCategoryDto } from './dto/create-category.dto';
-import { Categories } from '../entity/Categories';
+import { Categories } from '../entity/Categories.entity';
 import { Response } from 'express';
 import { UpdateCategoryDto } from './dto/update-category.dto';
 import { ApiTags } from '@nestjs/swagger';

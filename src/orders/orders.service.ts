@@ -1,9 +1,9 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Order } from 'src/entity/Order';
+import { Order } from 'src/entity/Order.entity';
 import { Repository } from 'typeorm';
 import { CreateOrderDto } from './dto/create-order.dto';
-import { User } from 'src/entity/User';
+import { User } from 'src/entity/User.entity';
 import { OrderItemsService } from 'src/order-items/order-items.service';
 import {
   CreateApiResponse,
