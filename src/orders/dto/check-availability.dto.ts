@@ -8,8 +8,5 @@ export type ProductIdWithQuantity = {
 export class CheckAvailabilityDto {
   @IsNotEmpty()
   @IsArray()
-  items: {
-    productId: string;
-    quantity: number;
-  }[];
+  items: ProductIdWithQuantity[];
 }
