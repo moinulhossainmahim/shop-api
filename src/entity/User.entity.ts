@@ -23,8 +23,11 @@ export class User {
   @Column()
   fullName: string;
 
-  @Column()
-  password: string;
+  @Column({ default: false })
+  isGoogleLogin: boolean;
+
+  @Column({ default: '' })
+  password?: string;
 
   @Column({ default: '' })
   avatar: string;
@@ -32,11 +35,11 @@ export class User {
   @Column()
   email: string;
 
-  @Column()
-  contact: string;
+  @Column({ default: '' })
+  contact?: string;
 
-  @Column()
-  salt: string;
+  @Column({ default: '' })
+  salt?: string;
 
   @Column({ default: Role.Customer })
   userType: Role;
