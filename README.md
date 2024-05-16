@@ -108,12 +108,6 @@
     ```bash
       npm run start:dev
     ```
-  ### For running database migrations
-  -
-    ```bash
-      npm run migration:generate ./src/migration/[MIGRATION_TITLE]
-      npm run migration:run
-    ```
   ## Using Docker
   - **Install Docker First**
 
@@ -127,9 +121,17 @@
     ```bash
     docker-compose up
     ```
+
   - **If everyting setup correctly and your containers are running then you will get the application running in [localhost:3000](http://localhost:3000)**
 
   - **Update port mappings in `docker-compose.yml` file if you want to run in different port**
+
+  ## For running database migrations
+  -
+    ```bash
+      npm run migration:generate ./src/migration/[MIGRATION_TITLE]
+      npm run migration:run
+    ```
 
 # API Documentation
 
