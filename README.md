@@ -200,6 +200,38 @@
 ```   
 </details>
 
+<details>
+
+<summary> <code>POST</code> <code>/auth/google/signin</code></summary>
+
+### Curl
+
+```
+  curl -X 'POST' \
+  'http://localhost:3000/auth/google/signin' \
+  -H 'accept: application/json' \
+  -H 'Content-Type: application/json' \
+  -d '{
+     "code": "code from google auth"
+  }'
+``` 
+
+### Request URL
+
+    http://localhost:3000/auth/google/signin
+
+
+### Response
+```
+{
+  "success": true,
+  "content": [],
+  "message": "sign in successfully"
+}
+
+```   
+</details>
+
 ### User
 <details>
   
